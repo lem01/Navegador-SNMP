@@ -2,25 +2,32 @@ package com.example.snmp.ui.view
 
 import android.content.Intent
 import android.graphics.PorterDuff
+import android.icu.text.DateFormat.getDateInstance
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.snmp.R
 import com.example.snmp.ui.adapters.HostAdapter
 import com.example.snmp.databinding.ActivityMainBinding
 import com.example.snmp.data.model.HostModel
+import com.example.snmp.data.repository.HostRepository
+import com.example.snmp.ui.viewmodel.HostViewModel
+import com.example.snmp.ui.viewmodel.HostViewModelFactory
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     lateinit var adapter: HostAdapter
     lateinit var hostList: ArrayList<HostModel>
+    lateinit var hostViewModel: HostViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,14 +42,60 @@ class MainActivity : AppCompatActivity() {
         }
         setSupportActionBar(findViewById(R.id.toolbar))
 
+        initFactory()
+
         hostList = ArrayList()
         initAdapter()
         initComponents()
 
         binding.fab.setOnClickListener {
-            hostList.add(HostModel("Host 1", "192.168.1.1"))
+//todo:
+
+//            hostList.add(
+//                HostModel(
+//                    0,
+//                    "nombreHost",
+//                    "direccionIP",
+//                    "tipoDeDispositivo",
+//                    "versionSNMP",
+//                    161,
+//                    "comunidadSNMP",
+//                    true,
+//                    "fecha"
+//                )
+//            )
+
+            //datetime dia/mes/año sin hora
+            val formatter = getDateInstance()
+            val dateString = formatter.format(java.util.Date())
+
+            hostViewModel.addHost(
+                HostModel(
+                    0,
+                    "Lennox",
+                    "192.168.1.1",
+                    "tipoDeDispositivo",
+                    "V1",
+                    161,
+                    "public",
+                    true,
+                    dateString
+                )
+            )
+
+
+
             adapter.notifyItemChanged(hostList.size - 1)
         }
+    }
+
+    private fun initFactory() {
+        // Create the repository instance
+        val repository = HostRepository(applicationContext)
+
+        // Create the ViewModel using the ViewModelProvider with the custom Factory
+        val viewModelFactory = HostViewModelFactory(repository)
+        hostViewModel = ViewModelProvider(this, viewModelFactory)[HostViewModel::class.java]
     }
 
     private fun initComponents() {
@@ -53,6 +106,13 @@ class MainActivity : AppCompatActivity() {
         binding.rcHost.layoutManager = LinearLayoutManager(this)
         binding.rcHost.adapter = adapter
 
+        hostViewModel.allHosts.observe(this) { hosts ->
+            hosts?.let {
+                hostList.clear()
+                hostList.addAll(it)
+                adapter.notifyItemChanged(hostList.size - 1)
+            }
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -63,7 +123,10 @@ class MainActivity : AppCompatActivity() {
             val drawable = item.icon
             if (drawable != null) {
                 drawable.mutate()
-                drawable.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP)
+                drawable.setColorFilter(
+                    ContextCompat.getColor(this, R.color.white),
+                    PorterDuff.Mode.SRC_ATOP
+                )
             }
         }
 

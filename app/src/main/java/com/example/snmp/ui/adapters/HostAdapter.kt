@@ -11,11 +11,10 @@ import com.example.snmp.data.model.HostModel
 class HostAdapter(private val hostList: List<HostModel>) :
     RecyclerView.Adapter<HostAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val nombreHost: TextView
         val direccionIP: TextView
 
         init {
-            nombreHost = view.findViewById(R.id.txt_nombre_host)
+
             direccionIP = view.findViewById(R.id.txt_direccion_ip)
         }
     }
@@ -31,7 +30,8 @@ class HostAdapter(private val hostList: List<HostModel>) :
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.nombreHost.text = hostList[position].nombreHost
-        holder.direccionIP.text = hostList[position].direccionIP
+        val host = hostList[position]
+
+        holder.direccionIP.text = host.direccionIP
     }
 }
