@@ -1,10 +1,13 @@
 package com.example.snmp.ui.view
 
+import android.content.Intent
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -54,6 +57,16 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         menuInflater.inflate(R.menu.menu, menu)
+
+        for (i in 0 until menu.size()) {
+            val item = menu.getItem(i)
+            val drawable = item.icon
+            if (drawable != null) {
+                drawable.mutate()
+                drawable.setColorFilter(ContextCompat.getColor(this, R.color.white), PorterDuff.Mode.SRC_ATOP)
+            }
+        }
+
         return true
     }
 
@@ -77,8 +90,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hostActivity() {
-//        val intent = Intent(this, EditHostActivity::class.java)
-//        startActivity(intent)
+        val intent = Intent(this, IpDetallesActivity::class.java)
+        startActivity(intent)
     }
 
 }

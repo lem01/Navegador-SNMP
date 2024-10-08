@@ -7,4 +7,7 @@
     <string name="direccion_ip">Buscar por IP</string>
     <string name="label_btn_dos">Sondeo de red</string>
     <string name="label_btn_uno">Escribir dirección IP</string>
+    <string name="host_details">Detalles de Host</string>
+    <string name="host_ip">HOST/IP</string>
+    <string name="escribe_la_ip_del_host">Escribe la IP del host...</string>
 </resources>
