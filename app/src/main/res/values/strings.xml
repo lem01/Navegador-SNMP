@@ -1,3 +1,10 @@
 <resources>
-    <string name="app_name">Snmp</string>
+    <string name="app_name">Navegador Snmp</string>
+    <string name="settings">Opciones</string>
+    <string name="buscar_por_ip">Buscar por IP</string>
+    <string name="buscar_por_rango_ip">Buscar por rango de IP</string>
+    <string name="nombre_del_host">Nombre del host</string>
+    <string name="direccion_ip">Buscar por IP</string>
+    <string name="label_btn_dos">Sondeo de red</string>
+    <string name="label_btn_uno">Escribir dirección IP</string>
 </resources>
