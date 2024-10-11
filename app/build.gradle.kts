@@ -56,6 +56,7 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
+    implementation("org.snmp4j:snmp4j:3.8.2")
 
     val room_version = "2.6.1"
 

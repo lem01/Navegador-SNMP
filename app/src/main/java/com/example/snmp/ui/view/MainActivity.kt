@@ -157,4 +157,12 @@ class MainActivity : AppCompatActivity() {
         startActivity(intent)
     }
 
+
+    override fun onResume() {
+        //update the list
+        adapter.notifyItemChanged(hostList.size - 1)
+
+        super.onResume()
+    }
+
 }

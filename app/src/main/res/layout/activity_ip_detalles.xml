@@ -39,6 +39,7 @@
             android:textSize="@dimen/text_size_medium" />
 
         <EditText
+            android:text="192.168.1.101"
             android:id="@+id/et_host_ip"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -104,9 +105,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="35dp"
-            android:autofillHints="161"
+            android:autofillHints="public"
             android:hint="public"
-            android:inputType="number"
+            android:inputType="text"
             android:labelFor="@+id/tv_comunidad"
             android:textColorHint="@color/black" />
     </LinearLayout>
@@ -191,7 +192,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/btnConextionPrueba"
+        android:id="@+id/btn_conexion_prueba"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
