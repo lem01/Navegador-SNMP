@@ -1,10 +1,12 @@
 package com.example.snmp.utils
 
+import CustomProgressDialog
 import android.content.Context
 import android.widget.Toast
 import com.example.snmp.data.model.HostModel
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.snmp4j.CommunityTarget
@@ -24,6 +26,17 @@ class SnmpManagerV2c : SnmpManagerInterface {
 
     override fun snmpTest(hostModel: HostModel, context: Context) {
         CoroutineScope(Dispatchers.IO).launch {
+
+            lateinit var customProgressDialog: CustomProgressDialog
+            CoroutineScope(Dispatchers.Main).launch {
+                customProgressDialog =
+                    CustomProgressDialog(context, "Conectando", "Conectando con el dispositivo")
+                customProgressDialog.show()
+           
+            }
+
+            delay(1000)
+
             try {
                 val transport: TransportMapping<*> = DefaultUdpTransportMapping()
                 snmp = Snmp(transport)
@@ -54,10 +67,13 @@ class SnmpManagerV2c : SnmpManagerInterface {
                 if (response.response.errorStatus == PDU.noError) {
                     mensajeToast(context, "Conexión exitosa V2")
                     println("Respuesta: ${response.response.get(0)}")
+
+                    customProgressDialog.dismiss()
                 }
 
                 close()
             } catch (e: Exception) {
+                customProgressDialog.dismiss()
                 e.printStackTrace()
                 mensajeToast(context, "Error: ${e.message}")
                 close()

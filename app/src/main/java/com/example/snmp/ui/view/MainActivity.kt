@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -22,7 +23,7 @@ import com.example.snmp.ui.viewmodel.HostViewModel
 import com.example.snmp.ui.viewmodel.HostViewModelFactory
 
 class MainActivity : AppCompatActivity() {
-
+    private lateinit var addHostLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityMainBinding
     lateinit var adapter: HostAdapter
     lateinit var hostList: ArrayList<HostModel>
@@ -42,29 +43,19 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         initFactory()
-
         hostList = ArrayList()
         initAdapter()
         initComponents()
 
+        hostViewModel.allHosts.observe(this) { hosts ->
+            hosts?.let {
+                hostList.clear()
+                hostList.addAll(it)
+                adapter.notifyItemChanged(hostList.size - 1) // Notificar al adaptador para que actualice toda la lista
+            }
+        }
+
         binding.fab.setOnClickListener {
-//todo:
-
-//            hostList.add(
-//                HostModel(
-//                    0,
-//                    "nombreHost",
-//                    "direccionIP",
-//                    "tipoDeDispositivo",
-//                    "versionSNMP",
-//                    161,
-//                    "comunidadSNMP",
-//                    true,
-//                    "fecha"
-//                )
-//            )
-
-            //datetime dia/mes/año sin hora
             val formatter = getDateInstance()
             val dateString = formatter.format(java.util.Date())
 
@@ -82,9 +73,7 @@ class MainActivity : AppCompatActivity() {
                 )
             )
 
-
-
-            adapter.notifyItemChanged(hostList.size - 1)
+            hostViewModel.loadAllHosts()
         }
     }
 
@@ -152,14 +141,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        hostViewModel.allHosts.observe(this) { hosts ->
-            hosts?.let {
-                hostList.clear()
-                hostList.addAll(it)
-                adapter.notifyItemChanged(hostList.size - 1)
-            }
-        }
+        hostViewModel.loadAllHosts()
     }
-
 
 }

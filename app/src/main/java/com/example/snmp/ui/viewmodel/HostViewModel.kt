@@ -1,8 +1,9 @@
 package com.example.snmp.ui.viewmodel
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.snmp.data.model.HostModel
 import com.example.snmp.data.repository.HostRepository
@@ -13,14 +14,14 @@ import kotlinx.coroutines.launch
 
 class HostViewModel(private val repository: HostRepository) : ViewModel() {
 
-    val allHosts = repository.getAllHosts().asLiveData()
+    private val _allHosts = MutableLiveData<List<HostModel>>()
+    val allHosts: LiveData<List<HostModel>> get() = _allHosts
 
     fun addHost(host: HostModel) {
         viewModelScope.launch {
             repository.saveHost(host)
         }
     }
-
 
     fun snmpV1Test(hostModel: HostModel, context: Context) {
         if (isvalidIp(hostModel.direccionIP)) {
@@ -40,6 +41,13 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
     fun detelteHost(id: Int) {
         viewModelScope.launch {
             repository.deleteHost(id)
+        }
+    }
+
+    fun loadAllHosts() {
+        viewModelScope.launch {
+            val hosts = repository.getAllHosts()
+            _allHosts.postValue(hosts)
         }
     }
 

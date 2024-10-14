@@ -5,7 +5,6 @@ import androidx.room.Room
 import com.example.snmp.data.database.AppDatabase
 import com.example.snmp.data.model.HostModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 
 class HostRepository(context: Context) {
@@ -22,8 +21,11 @@ class HostRepository(context: Context) {
         }
     }
 
-    // Función para obtener todos los usuarios (hosts) como un Flow
-    fun getAllHosts(): Flow<List<HostModel>> = hostDao.getAll()
+    suspend fun getAllHosts(): List<HostModel> {
+        return withContext(Dispatchers.IO) {
+            hostDao.getAll()
+        }
+    }
 
     ///delete item
     suspend fun deleteHost(id: Int) {

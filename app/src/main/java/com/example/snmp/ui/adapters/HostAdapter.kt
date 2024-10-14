@@ -44,7 +44,7 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val host = hostList[position]
+        val host = hostList[holder.adapterPosition]
 
         initImgHost(host, holder)
 
@@ -68,11 +68,11 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
                     }
 
                     2 -> {
-                        //eliminar
-                        hostList.removeAt(position)
-                        notifyItemRemoved(position)
 
                         hostViewModel.detelteHost(host.id)
+                        //eliminar
+                        hostList.removeAt(holder.adapterPosition)
+                        notifyItemRemoved(holder.adapterPosition)
 
                     }
 

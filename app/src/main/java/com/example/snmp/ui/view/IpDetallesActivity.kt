@@ -1,5 +1,7 @@
 package com.example.snmp.ui.view
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import android.widget.Toast
@@ -89,6 +91,7 @@ class IpDetallesActivity : AppCompatActivity() {
                 hostViewModel.snmpV2cTest(hostModel, this)
             }
         }
+
     }
 
     private fun initSpinner() {
@@ -167,9 +170,12 @@ class IpDetallesActivity : AppCompatActivity() {
 
         hostViewModel.addHost(host)
 
-
         Toast.makeText(this, "Host guardado con éxito", Toast.LENGTH_SHORT).show()
+
+        val resultIntent = Intent()
+        setResult(Activity.RESULT_OK, resultIntent)
         finish()
+
     }
 
     private fun initFactory() {
