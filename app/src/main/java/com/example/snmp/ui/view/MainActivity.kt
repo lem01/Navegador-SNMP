@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
@@ -102,17 +101,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        adapter = HostAdapter(hostList)
+        adapter = HostAdapter(hostList, hostViewModel)
         binding.rcHost.layoutManager = LinearLayoutManager(this)
         binding.rcHost.adapter = adapter
 
-        hostViewModel.allHosts.observe(this) { hosts ->
-            hosts?.let {
-                hostList.clear()
-                hostList.addAll(it)
-                adapter.notifyItemChanged(hostList.size - 1)
-            }
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -159,10 +151,15 @@ class MainActivity : AppCompatActivity() {
 
 
     override fun onResume() {
-        //update the list
-        adapter.notifyItemChanged(hostList.size - 1)
-
         super.onResume()
+        hostViewModel.allHosts.observe(this) { hosts ->
+            hosts?.let {
+                hostList.clear()
+                hostList.addAll(it)
+                adapter.notifyItemChanged(hostList.size - 1)
+            }
+        }
     }
+
 
 }

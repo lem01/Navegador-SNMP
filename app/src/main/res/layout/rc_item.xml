@@ -26,12 +26,13 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:padding="2dp"
-                android:tint="@null"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/img_host"
+                android:layout_width="21dp"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/host" />
+                android:padding="2dp"
+                android:src="@drawable/host"
+                android:tint="@null" />
 
             <TextView
                 android:id="@+id/txt_direccion_ip"

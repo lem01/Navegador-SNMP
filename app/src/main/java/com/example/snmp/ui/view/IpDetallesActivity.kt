@@ -77,13 +77,16 @@ class IpDetallesActivity : AppCompatActivity() {
         val ipHost = binding.etHostIp.text.toString()
         val tipoDispositivo = binding.spTipo.selectedItem.toString()
 
+        val hostModel =
+            HostModel(0, ipHost, ipHost, tipoDispositivo, version, puerto, comunidad, true, "")
+
         when (version) {
             VersionSnmp.V1.name -> {
-                hostViewModel.snmpV1Test(ipHost, puerto, comunidad)
+                hostViewModel.snmpV1Test(hostModel, this)
             }
 
             VersionSnmp.V2c.name -> {
-                hostViewModel.snmpV2cTest(ipHost, puerto, comunidad, this)
+                hostViewModel.snmpV2cTest(hostModel, this)
             }
         }
     }
@@ -133,8 +136,8 @@ class IpDetallesActivity : AppCompatActivity() {
     private fun saveHost() {
         val nombreHost = binding.etHostIp.text
         val direccionIp = binding.etHostIp.text
-        val versionSnmp = "v1"
-        val tipoDeDispositivo = TipoDispositivo.HOST.name
+        val versionSnmp = binding.spVersionSnmp.selectedItem.toString()
+        val tipoDeDispositivo = binding.spTipo.selectedItem.toString()
         var puerto =
             if (binding.etPuerto.text.isEmpty()) 161 else binding.etPuerto.text.toString()
                 .toInt()
@@ -163,6 +166,7 @@ class IpDetallesActivity : AppCompatActivity() {
         )
 
         hostViewModel.addHost(host)
+
 
         Toast.makeText(this, "Host guardado con éxito", Toast.LENGTH_SHORT).show()
         finish()

@@ -24,4 +24,11 @@ class HostRepository(context: Context) {
 
     // Función para obtener todos los usuarios (hosts) como un Flow
     fun getAllHosts(): Flow<List<HostModel>> = hostDao.getAll()
+
+    ///delete item
+    suspend fun deleteHost(id: Int) {
+        withContext(Dispatchers.IO) {
+            hostDao.deleteById(id)
+        }
+    }
 }
