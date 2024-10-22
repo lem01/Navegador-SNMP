@@ -4,6 +4,7 @@ import CustomProgressDialog
 import android.content.Context
 import android.widget.Toast
 import com.example.snmp.data.model.HostModel
+import id.ionbit.ionalert.IonAlert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -32,10 +33,10 @@ class SnmpManagerV2c : SnmpManagerInterface {
                 customProgressDialog =
                     CustomProgressDialog(context, "Conectando", "Conectando con el dispositivo")
                 customProgressDialog.show()
-           
+
             }
 
-            delay(1000)
+            delay(600)
 
             try {
                 val transport: TransportMapping<*> = DefaultUdpTransportMapping()
@@ -50,7 +51,7 @@ class SnmpManagerV2c : SnmpManagerInterface {
                     community = OctetString(hostModel.comunidadSNMP)
                     version = SnmpConstants.version2c
                     retries = 2
-                    timeout = 1000
+                    timeout = 600
                 }
 
                 val pdu = PDU().apply {
@@ -65,7 +66,8 @@ class SnmpManagerV2c : SnmpManagerInterface {
 
 
                 if (response.response.errorStatus == PDU.noError) {
-                    mensajeToast(context, "Conexión exitosa V2")
+                    mensajeAlert(context, "Correcto", "Conexión exitosa V1", IonAlert.SUCCESS_TYPE)
+
                     println("Respuesta: ${response.response.get(0)}")
 
                     customProgressDialog.dismiss()
@@ -75,7 +77,8 @@ class SnmpManagerV2c : SnmpManagerInterface {
             } catch (e: Exception) {
                 customProgressDialog.dismiss()
                 e.printStackTrace()
-                mensajeToast(context, "Error: ${e.message}")
+                mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
+
                 close()
             }
         }
@@ -95,6 +98,15 @@ class SnmpManagerV2c : SnmpManagerInterface {
 
     override fun setOid() {
         TODO("Not yet implemented")
+    }
+
+    override fun mensajeAlert(context: Context, s: String, s1: String, successType: Int) {
+        CoroutineScope(Dispatchers.Main).launch {
+            IonAlert(context, successType)
+                .setTitleText(s)
+                .setContentText(s1)
+                .show()
+        }
     }
 
     private suspend fun mensajeToast(context: Context, message: String) {

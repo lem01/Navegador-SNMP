@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import com.example.snmp.R
 import com.example.snmp.data.model.HostModel
 import com.example.snmp.data.repository.HostRepository
@@ -17,9 +18,12 @@ import com.example.snmp.databinding.ActivityIpDetallesBinding
 import com.example.snmp.ui.viewmodel.HostViewModel
 import com.example.snmp.ui.viewmodel.HostViewModelFactory
 import com.example.snmp.utils.TipoDispositivo
+import id.ionbit.ionalert.IonAlert
+import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
+import java.util.Objects
 import java.util.TimeZone
 
 enum class VersionSnmp {
@@ -27,7 +31,7 @@ enum class VersionSnmp {
 }
 
 class IpDetallesActivity : AppCompatActivity() {
-    lateinit var hostViewModel: HostViewModel
+    private lateinit var hostViewModel: HostViewModel
 
     private lateinit var binding: ActivityIpDetallesBinding
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -42,7 +46,6 @@ class IpDetallesActivity : AppCompatActivity() {
         }
         setSupportActionBar(findViewById(R.id.toolbar))
         initFactory()
-
         initSpinner()
 
         binding.toolbar.setNavigationOnClickListener {
@@ -50,34 +53,143 @@ class IpDetallesActivity : AppCompatActivity() {
         }
 
         binding.btnAceptar.setOnClickListener {
-            if (valitateFields())
-                saveHost()
+            lifecycleScope.launch {
+                manejadorBtnAceptar()
+            }
         }
 
-        binding.btnConexionPrueba.setOnClickListener() {
+
+        binding.include.btnConexionPrueba.setOnClickListener() {
             if (!valitateFields())
                 return@setOnClickListener
-
 
             println("Prueba de conexión")
             snmpPuebaConexion()
 
         }
 
+        lifecycleScope.launch {
+            initEditarHost()
+            initVerHost()
+        }
+
+        ocultarToggleButton()
+
+    }
+
+    private fun ocultarToggleButton() {
+        binding.include.toggleButtonGroup.visibility = android.view.View.GONE
+    }
+
+    private suspend fun manejadorBtnAceptar() {
+        when {
+            intent.getBooleanExtra("editarHost", false) -> updateHost()
+            intent.getBooleanExtra("verHost", false) -> viewHost()
+            else -> saveHost()
+        }
+    }
+
+    private fun viewHost() {
+
+    }
+
+    private suspend fun updateHost() {
+        val nombreHost = binding.include.etHostIp.text
+        val direccionIp = binding.include.etHostIp.text
+        val versionSnmp = binding.include.spVersionSnmp.selectedItem.toString()
+        val tipoDeDispositivo = binding.include.spTipo.selectedItem.toString()
+        var puerto =
+            if (binding.include.etPuerto.text.isEmpty()) 161 else binding.include.etPuerto.text.toString()
+                .toInt()
+
+        if ((puerto != 161) or (puerto != 162)) {
+            puerto = 161
+        }
+        val comunidad =
+            if (binding.include.etComunidad.text.isEmpty()) "public" else binding.include.etComunidad.text.toString()
+
+        val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale("es", "NI"))
+        sdf.timeZone = TimeZone.getTimeZone("America/Managua")
+        var currentDate = sdf.format(Date())
+
+        val id = intent.getIntExtra("idHost", 0)
+
+        val hostActual: HostModel = hostViewModel.getHostById(id)
+        if (Objects.isNull(hostActual)) {
+            Toast.makeText(this, "No se encontró el host", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val fechaCreacion = hostActual.fecha.toString()
+
+        val host = HostModel(
+            id,
+            nombreHost.toString(),
+            direccionIp.toString(),
+            tipoDeDispositivo,
+            versionSnmp,
+            puerto,
+            comunidad,
+            true,
+            fechaCreacion
+        )
+
+        hostViewModel.updateHost(host)
+
+        Toast.makeText(this, "Actualizado con éxito", Toast.LENGTH_SHORT).show()
+
+        val resultIntent = Intent()
+        setResult(Activity.RESULT_OK, resultIntent)
+        finish()
+    }
+
+    private suspend fun initVerHost() {
+        if (intent.getBooleanExtra("verHost", false)) {
+            val idHost = intent.getIntExtra("idHost", 0)
+            val host = hostViewModel.getHostById(idHost)
+            llenarCampos(host)
+            bloquearCampos()
+        }
+    }
+
+    private fun bloquearCampos() {
+        binding.include.etHostIp.isEnabled = false
+        binding.include.etPuerto.isEnabled = false
+        binding.include.etComunidad.isEnabled = false
+        binding.include.spTipo.isEnabled = false
+        binding.include.spVersionSnmp.isEnabled = false
+        binding.btnAceptar.isEnabled = false
+        binding.include.btnConexionPrueba.isEnabled = false
+    }
+
+    private suspend fun initEditarHost() {
+        val intent = intent
+        if (intent.getBooleanExtra("editarHost", false)) {
+            val idHost = intent.getIntExtra("idHost", 0)
+            val host = hostViewModel.getHostById(idHost)
+            llenarCampos(host)
+        }
+    }
+
+    private fun llenarCampos(host: HostModel) {
+        binding.include.etHostIp.setText(host.direccionIP)
+        binding.include.etPuerto.setText(host.puertoSNMP.toString())
+        binding.include.etComunidad.setText(host.comunidadSNMP)
+        binding.include.spTipo.setSelection(TipoDispositivo.valueOf(host.tipoDeDispositivo).ordinal)
+        binding.include.spVersionSnmp.setSelection(VersionSnmp.valueOf(host.versionSNMP).ordinal)
     }
 
     private fun snmpPuebaConexion() {
         val puerto: Int =
-            if (binding.etPuerto.text.isEmpty()) 161 else binding.etPuerto.text.toString()
+            if (binding.include.etPuerto.text.isEmpty()) 161 else binding.include.etPuerto.text.toString()
                 .toInt()
 
-
-        val comunidad = binding.etComunidad.text.isEmpty().let {
-            if (it) "public" else binding.etComunidad.text.toString()
+        val comunidad = binding.include.etComunidad.text.isEmpty().let {
+            if (it) "public" else binding.include.etComunidad.text.toString()
         }
-        val version = binding.spVersionSnmp.selectedItem.toString()
-        val ipHost = binding.etHostIp.text.toString()
-        val tipoDispositivo = binding.spTipo.selectedItem.toString()
+        val version = binding.include.spVersionSnmp.selectedItem.toString()
+        val ipHost = binding.include.etHostIp.text.toString()
+        val tipoDispositivo = binding.include.spTipo.selectedItem.toString()
 
         val hostModel =
             HostModel(0, ipHost, ipHost, tipoDispositivo, version, puerto, comunidad, true, "")
@@ -105,7 +217,7 @@ class IpDetallesActivity : AppCompatActivity() {
 
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spTipo.adapter = adapter
+        binding.include.spTipo.adapter = adapter
 
 
         val versionSnmp = ArrayList<String>()
@@ -114,21 +226,21 @@ class IpDetallesActivity : AppCompatActivity() {
         val adapterVersion =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, versionSnmp)
         adapterVersion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        binding.spVersionSnmp.adapter = adapterVersion
+        binding.include.spVersionSnmp.adapter = adapterVersion
     }
 
     private fun valitateFields(): Boolean {
-        if (binding.etHostIp.text.isEmpty()) {
-            binding.etHostIp.error = "Campo requerido"
+        if (binding.include.etHostIp.text.isEmpty()) {
+            binding.include.etHostIp.error = "Campo requerido"
             return false
         }
 
         val puerto: Int =
-            if (binding.etPuerto.text.isEmpty()) 161 else binding.etPuerto.text.toString()
+            if (binding.include.etPuerto.text.isEmpty()) 161 else binding.include.etPuerto.text.toString()
                 .toInt()
 
         if ((puerto != 161) and (puerto != 162)) {
-            binding.etPuerto.error = "El puerto debe ser 161 o 162"
+            binding.include.etPuerto.error = "El puerto debe ser 161 o 162"
             return false
         }
 
@@ -137,19 +249,19 @@ class IpDetallesActivity : AppCompatActivity() {
     }
 
     private fun saveHost() {
-        val nombreHost = binding.etHostIp.text
-        val direccionIp = binding.etHostIp.text
-        val versionSnmp = binding.spVersionSnmp.selectedItem.toString()
-        val tipoDeDispositivo = binding.spTipo.selectedItem.toString()
+        val nombreHost = binding.include.etHostIp.text
+        val direccionIp = binding.include.etHostIp.text
+        val versionSnmp = binding.include.spVersionSnmp.selectedItem.toString()
+        val tipoDeDispositivo = binding.include.spTipo.selectedItem.toString()
         var puerto =
-            if (binding.etPuerto.text.isEmpty()) 161 else binding.etPuerto.text.toString()
+            if (binding.include.etPuerto.text.isEmpty()) 161 else binding.include.etPuerto.text.toString()
                 .toInt()
 
         if ((puerto != 161) or (puerto != 162)) {
             puerto = 161
         }
         val comunidad =
-            if (binding.etComunidad.text.isEmpty()) "public" else binding.etComunidad.text.toString()
+            if (binding.include.etComunidad.text.isEmpty()) "public" else binding.include.etComunidad.text.toString()
 
 
         val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale("es", "NI"))

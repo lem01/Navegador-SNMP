@@ -8,4 +8,5 @@ interface SnmpManagerInterface {
     fun close()
     fun getOid()
     fun setOid()
+    abstract fun mensajeAlert(context: Context, s: String, s1: String, successType: Int)
 }

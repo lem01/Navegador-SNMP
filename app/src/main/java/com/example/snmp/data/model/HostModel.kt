@@ -17,5 +17,5 @@ data class HostModel(
     @ColumnInfo(name = "puertoSNMP") val puertoSNMP: Int,
     @ColumnInfo(name = "comunidadSNMP") val comunidadSNMP: String,
     @ColumnInfo(name = "estado") val estado: Boolean,
-    @ColumnInfo(name = "fecha") val fecha: String,
+    @ColumnInfo(name = "fecha") val fecha: String?,
 )

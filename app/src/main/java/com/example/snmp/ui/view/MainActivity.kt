@@ -124,12 +124,41 @@ class MainActivity : AppCompatActivity() {
             }
 
             R.id.btn_dos -> {
+//                showPoppedMenuProtocoloDeBusqueda()
 
+                Intent(this, DescubrirHostsActivity::class.java).also {
+                    startActivity(it)
+                }
                 true
             }
 
             else -> super.onOptionsItemSelected(item)
         }
+
+    }
+
+    private fun showPoppedMenuProtocoloDeBusqueda() {
+        val popupMenu = androidx.appcompat.widget.PopupMenu(this, binding.toolbar)
+
+        popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "SNMP")
+        popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "ICMP")
+
+        popupMenu.show()
+
+        popupMenu.setOnMenuItemClickListener {
+            when (it.itemId) {
+                1 -> {
+                    //todo
+                }
+
+                2 -> {
+                    //todo
+
+                }
+            }
+            true
+        }
+
 
     }
 

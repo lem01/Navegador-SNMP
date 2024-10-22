@@ -4,6 +4,7 @@ import CustomProgressDialog
 import android.content.Context
 import android.widget.Toast
 import com.example.snmp.data.model.HostModel
+import id.ionbit.ionalert.IonAlert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -34,7 +35,7 @@ class SnmpManagerV1 : SnmpManagerInterface {
 
             }
 
-            delay(1000)
+            delay(500)
 
             try {
 
@@ -50,7 +51,7 @@ class SnmpManagerV1 : SnmpManagerInterface {
                     community = OctetString(hostModel.comunidadSNMP)
                     version = SnmpConstants.version1
                     retries = 2
-                    timeout = 1000
+                    timeout = 500
                 }
 
                 val pdu = PDU().apply {
@@ -64,7 +65,9 @@ class SnmpManagerV1 : SnmpManagerInterface {
                     throw Exception("No respuesta recibida, la solicitud agotó el tiempo.")
 
                 if (response.response.errorStatus == PDU.noError) {
-                    mensajeToast(context, "Conexión exitosa V2")
+
+                    mensajeAlert(context, "Correcto", "Conexión exitosa V1", IonAlert.SUCCESS_TYPE)
+
                     println("Respuesta: ${response.response.get(0)}")
 
                     customProgressDialog.dismiss()
@@ -75,7 +78,7 @@ class SnmpManagerV1 : SnmpManagerInterface {
                 customProgressDialog.dismiss()
 
                 e.printStackTrace()
-                mensajeToast(context, "Error: ${e.message}")
+                mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
                 close()
             }
         }
@@ -97,9 +100,20 @@ class SnmpManagerV1 : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
+    override fun mensajeAlert(context: Context, s: String, s1: String, successType: Int) {
+        CoroutineScope(Dispatchers.Main).launch {
+            IonAlert(context, successType)
+                .setTitleText(s)
+                .setContentText(s1)
+                .show()
+        }
+    }
+
     private suspend fun mensajeToast(context: Context, message: String) {
         withContext(Dispatchers.Main) {
             Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
         }
     }
+
+
 }

@@ -1,5 +1,6 @@
 package com.example.snmp.ui.adapters
 
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -8,9 +9,11 @@ import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.snmp.R
 import com.example.snmp.data.model.HostModel
+import com.example.snmp.ui.view.IpDetallesActivity
 import com.example.snmp.ui.viewmodel.HostViewModel
 import com.example.snmp.utils.TipoDispositivo
 import kotlinx.coroutines.CoroutineScope
@@ -65,6 +68,13 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
                 when (it.itemId) {
                     1 -> {
                         //ver
+
+                        val intent =
+                            Intent(holder.cardItem.context, IpDetallesActivity::class.java).apply {
+                                putExtra("idHost", host.id)
+                                putExtra("verHost", true)
+                            }
+                        startActivity(holder.cardItem.context, intent, null)
                     }
 
                     2 -> {
@@ -77,7 +87,15 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
                     }
 
                     3 -> {
-                        //editar
+
+                        //iniciar nueva actividad y pasar el host
+                        val intent =
+                            Intent(holder.cardItem.context, IpDetallesActivity::class.java).apply {
+                                putExtra("idHost", host.id)
+                                putExtra("editarHost", true)
+                            }
+                        startActivity(holder.cardItem.context, intent, null)
+
                     }
 
                     4 -> {

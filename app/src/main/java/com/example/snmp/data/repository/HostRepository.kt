@@ -33,4 +33,17 @@ class HostRepository(context: Context) {
             hostDao.deleteById(id)
         }
     }
+
+    suspend fun getHostById(idHost: Int) : HostModel {
+       return withContext(Dispatchers.IO) {
+            hostDao.getById(idHost)
+        }
+    }
+
+    suspend fun updateHost(host: HostModel) {
+        withContext(Dispatchers.IO) {
+            hostDao.update(host)
+        }
+
+    }
 }
