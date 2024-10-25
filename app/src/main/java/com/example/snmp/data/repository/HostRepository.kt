@@ -11,7 +11,10 @@ class HostRepository(context: Context) {
     private val db: AppDatabase = Room.databaseBuilder(
         context.applicationContext,
         AppDatabase::class.java, "mib_database"
-    ).build()
+    )
+        .fallbackToDestructiveMigration()
+        .fallbackToDestructiveMigrationOnDowngrade()
+        .build()
     private val hostDao = db.hostDao()
 
     // Método para guardar el host en la base de datos
@@ -34,8 +37,8 @@ class HostRepository(context: Context) {
         }
     }
 
-    suspend fun getHostById(idHost: Int) : HostModel {
-       return withContext(Dispatchers.IO) {
+    suspend fun getHostById(idHost: Int): HostModel {
+        return withContext(Dispatchers.IO) {
             hostDao.getById(idHost)
         }
     }

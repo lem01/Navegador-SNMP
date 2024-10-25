@@ -18,7 +18,7 @@ import com.example.snmp.databinding.ActivityIpDetallesBinding
 import com.example.snmp.ui.viewmodel.HostViewModel
 import com.example.snmp.ui.viewmodel.HostViewModelFactory
 import com.example.snmp.utils.TipoDispositivo
-import id.ionbit.ionalert.IonAlert
+import com.example.snmp.utils.VersionSnmp
 import kotlinx.coroutines.launch
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -26,9 +26,6 @@ import java.util.Locale
 import java.util.Objects
 import java.util.TimeZone
 
-enum class VersionSnmp {
-    V1, V2c
-}
 
 class IpDetallesActivity : AppCompatActivity() {
     private lateinit var hostViewModel: HostViewModel
@@ -59,7 +56,7 @@ class IpDetallesActivity : AppCompatActivity() {
         }
 
 
-        binding.include.btnConexionPrueba.setOnClickListener() {
+        binding.include.btnFormulario.setOnClickListener() {
             if (!valitateFields())
                 return@setOnClickListener
 
@@ -159,7 +156,7 @@ class IpDetallesActivity : AppCompatActivity() {
         binding.include.spTipo.isEnabled = false
         binding.include.spVersionSnmp.isEnabled = false
         binding.btnAceptar.isEnabled = false
-        binding.include.btnConexionPrueba.isEnabled = false
+        binding.include.btnFormulario.isEnabled = false
     }
 
     private suspend fun initEditarHost() {
@@ -292,7 +289,6 @@ class IpDetallesActivity : AppCompatActivity() {
 
     private fun initFactory() {
         val repository = HostRepository(applicationContext)
-
         val viewModelFactory = HostViewModelFactory(repository)
         hostViewModel = ViewModelProvider(this, viewModelFactory)[HostViewModel::class.java]
     }

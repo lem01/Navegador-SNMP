@@ -1,6 +1,6 @@
 package com.example.snmp.data.model
 
-data class icmpModel(
+data class IcmpModel(
     val ip: String,
     val ttl: Int,
     val rtt: Long,

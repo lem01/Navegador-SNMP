@@ -1,21 +1,26 @@
 package com.example.snmp.ui.viewmodel
 
 import android.content.Context
-import android.content.Intent
-import androidx.core.content.ContextCompat.startActivity
+import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+
+
 import androidx.lifecycle.viewModelScope
 import com.example.snmp.data.model.HostModel
+import com.example.snmp.data.model.HostModelClass
 import com.example.snmp.data.repository.HostRepository
-import com.example.snmp.ui.view.IpDetallesActivity
 import com.example.snmp.utils.SnmpManagerV1
 import com.example.snmp.utils.SnmpManagerV2c
 import kotlinx.coroutines.launch
 
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
+
 
 class HostViewModel(private val repository: HostRepository) : ViewModel() {
+
 
     private val _allHosts = MutableLiveData<List<HostModel>>()
     val allHosts: LiveData<List<HostModel>> get() = _allHosts

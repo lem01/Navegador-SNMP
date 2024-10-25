@@ -1,5 +1,6 @@
 package com.example.snmp.ui.view
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.widget.ArrayAdapter
 import androidx.activity.enableEdgeToEdge
@@ -8,11 +9,16 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.snmp.R
 import com.example.snmp.databinding.ActivityDescubrirHostsBinding
+import com.example.snmp.ui.view.descubrir_host_detalles.DescubrirHostDetalles
+import com.example.snmp.utils.Constantes
 import com.example.snmp.utils.TipoDispositivo
+import com.example.snmp.utils.VersionSnmp
 
 class DescubrirHostsActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityDescubrirHostsBinding
+    lateinit var preferences: SharedPreferences;
+    lateinit var editor: SharedPreferences.Editor;
 
     enum class tipoDeBusqueda {
         SNMP, ICMP
@@ -31,17 +37,47 @@ class DescubrirHostsActivity : AppCompatActivity() {
             insets
         }
         setSupportActionBar(findViewById(R.id.toolbar))
+        initPrefences()
         initSpinner()
         initToogleButton()
         initLabelsCoponents()
 
         binding.include.lyTipoDispositivo.visibility = android.view.View.GONE
 
-        binding.include.btnConexionPrueba.setOnClickListener(){
+        binding.include.btnFormulario.text = "Descubrir Hosts"
+        binding.include.btnFormulario.setOnClickListener() {
+
+            if (!valitateFields())
+                return@setOnClickListener
+
+            val puerto = if (binding.include.etPuerto.text.toString()
+                    .isEmpty()
+            ) "161" else binding.include.etPuerto.text.toString()
+            val comunidad = if (binding.include.etComunidad.text.toString()
+                    .isEmpty()
+            ) "public" else binding.include.etComunidad.text.toString()
+
+            editor.putString(Constantes.SNMP_RANGO_IP, binding.include.etHostIp.text.toString())
+            editor.putString(Constantes.SNMP_COMUNIDAD, comunidad)
+            editor.putString(Constantes.SNMP_PUERTO, puerto)
+            editor.putString(
+                Constantes.SNMP_VERSION,
+                binding.include.spVersionSnmp.selectedItem.toString()
+            )
+            editor.apply()
+
             val intent = android.content.Intent(this, DescubrirHostDetalles::class.java)
             startActivity(intent)
         }
 
+        binding.include.lyTipoDispositivo.visibility = android.view.View.GONE
+
+
+    }
+
+    private fun initPrefences() {
+        preferences = getSharedPreferences("configuracion", android.content.Context.MODE_PRIVATE)
+        editor = preferences.edit()
 
     }
 
@@ -109,4 +145,23 @@ class DescubrirHostsActivity : AppCompatActivity() {
         binding.include.spVersionSnmp.adapter = adapterVersion
     }
 
+
+    private fun valitateFields(): Boolean {
+        if (binding.include.etHostIp.text.isEmpty()) {
+            binding.include.etHostIp.error = "Campo requerido"
+            return false
+        }
+
+        val puerto: Int =
+            if (binding.include.etPuerto.text.isEmpty()) 161 else binding.include.etPuerto.text.toString()
+                .toInt()
+
+        if ((puerto != 161) and (puerto != 162)) {
+            binding.include.etPuerto.error = "El puerto debe ser 161 o 162"
+            return false
+        }
+
+        return true
+
+    }
 }

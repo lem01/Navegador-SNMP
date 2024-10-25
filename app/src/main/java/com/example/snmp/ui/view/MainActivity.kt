@@ -23,11 +23,12 @@ import com.example.snmp.ui.viewmodel.HostViewModel
 import com.example.snmp.ui.viewmodel.HostViewModelFactory
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var hostViewModel: HostViewModel
+
     private lateinit var addHostLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityMainBinding
     lateinit var adapter: HostAdapter
     lateinit var hostList: ArrayList<HostModel>
-    lateinit var hostViewModel: HostViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
