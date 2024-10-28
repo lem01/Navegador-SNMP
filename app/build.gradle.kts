@@ -12,11 +12,11 @@ android {
         viewBinding = true
         compose = true
     }
-    namespace = "com.example.snmp"
+    namespace = "com.example.nav_snmp"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.snmp"
+        applicationId = "com.example.nav_snmp"
         minSdk = 28
         targetSdk = 34
         versionCode = 1
