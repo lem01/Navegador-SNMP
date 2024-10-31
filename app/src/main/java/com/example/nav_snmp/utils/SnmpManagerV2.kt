@@ -100,11 +100,6 @@ class SnmpManagerV2c : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
-    override suspend fun descubrirHost(hostModel: HostModel, context: Context): List<HostModel> {
-        return emptyList()
-
-    }
-
     override fun mensajeAlert(context: Context, s: String, s1: String, successType: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             IonAlert(context, successType)

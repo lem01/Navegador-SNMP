@@ -33,16 +33,31 @@ data class HostModel(
 ) : HostModelInterface
 
 class HostModelClass(
-    override val id: Int,
-    override val nombreHost: String,
-    override val direccionIP: String,
-    override val tipoDeDispositivo: String,
-    override val versionSNMP: String,
-    override val puertoSNMP: Int,
-    override val comunidadSNMP: String,
-    override val estado: Boolean,
-    override val fecha: String?,
+    override var id: Int,
+    override var nombreHost: String,
+    override var direccionIP: String,
+    override var tipoDeDispositivo: String,
+    override var versionSNMP: String,
+    override var puertoSNMP: Int,
+    override var comunidadSNMP: String,
+    override var estado: Boolean,
+    override var fecha: String?,
     initialChecked: Boolean = false
 ) : HostModelInterface {
     var checked by mutableStateOf(initialChecked)
+
+    fun copy(
+        id: Int = this.id,
+        nombreHost: String = this.nombreHost,
+        direccionIP: String = this.direccionIP,
+        tipoDeDispositivo: String = this.tipoDeDispositivo,
+        versionSNMP: String = this.versionSNMP,
+        puertoSNMP: Int = this.puertoSNMP,
+        comunidadSNMP: String = this.comunidadSNMP,
+        estado: Boolean = this.estado,
+        fecha: String? = this.fecha,
+        checked: Boolean = this.checked
+    ) = HostModelClass(
+        id, nombreHost, direccionIP, tipoDeDispositivo, versionSNMP, puertoSNMP, comunidadSNMP, estado, fecha, checked
+    )
 }

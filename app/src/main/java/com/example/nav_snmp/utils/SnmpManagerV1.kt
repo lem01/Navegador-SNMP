@@ -2,11 +2,18 @@ package com.example.nav_snmp.utils
 
 import CustomProgressDialog
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import com.example.nav_snmp.data.model.HostModel
+import com.example.nav_snmp.data.model.HostModelClass
+import com.example.nav_snmp.ui.viewmodel.DescubrirHostViewModel
+import com.example.nav_snmp.ui.viewmodel.HostViewModel
 import id.ionbit.ionalert.IonAlert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -14,6 +21,7 @@ import org.snmp4j.CommunityTarget
 import org.snmp4j.PDU
 import org.snmp4j.Snmp
 import org.snmp4j.TransportMapping
+import org.snmp4j.event.ResponseEvent
 import org.snmp4j.mp.SnmpConstants
 import org.snmp4j.smi.Address
 import org.snmp4j.smi.GenericAddress
@@ -58,7 +66,7 @@ class SnmpManagerV1 : SnmpManagerInterface {
 
                 val pdu = PDU().apply {
                     type = PDU.GETNEXT
-                    add(VariableBinding(OID("1.3.6.1.2.1.1")))
+                    add(VariableBinding(OID(CommonOids.SYSTEM.SYS_NAME)))
                 }
 
                 val response = snmp?.send(pdu, communityTarget)
@@ -102,22 +110,41 @@ class SnmpManagerV1 : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
-    override suspend fun descubrirHost(hostModel: HostModel, context: Context): List<HostModel> {
+    suspend fun descubrirHost(hostModel: HostModelClass, context: Context): List<HostModelClass> {
         val direccionesIp = generarDireccionesPosibles(hostModel)
         val direccionesAlcanzables = realizarPing(direccionesIp)
 
-        var listHost = mutableListOf<HostModel>()
+        DescubrirHostViewModel.hostIntentados.hostIntentados = direccionesIp.size
 
-        direccionesIp.map { ip ->
-            val host = hostModel.copy(direccionIP = ip)
-            if (pruebaConexionSnmp(host, context))
-                listHost.add(host)
+        val listaHosts = mutableListOf<HostModelClass>()
+
+        coroutineScope {
+            var counter = 0
+
+            val deferredResults = direccionesIp.map { ip ->
+                async(Dispatchers.IO) {
+
+//                    if(counter == 50)
+//                        //salir del ciclo
+//                        return@async null
+
+                    counter++
+                    val host = hostModel.copy(direccionIP = ip, id = counter)
+                    val map: HashMap<String, Any> = pruebaConexionSnmp(host)
+
+                    if (map["estado"] == true) {
+                        map["host"] as HostModelClass
+                    } else {
+                        null
+                    }
+                }
+            }
+
+            // Esperar los resultados y filtrar los nulos
+            listaHosts.addAll(deferredResults.awaitAll().filterNotNull())
         }
 
-        println("direcciones ip: $direccionesIp")
-        println("Direcciones alcanzables: $direccionesAlcanzables")
-
-        return listHost
+        return listaHosts
     }
 
     override fun mensajeAlert(context: Context, s: String, s1: String, successType: Int) {
@@ -129,7 +156,7 @@ class SnmpManagerV1 : SnmpManagerInterface {
         }
     }
 
-    fun generarDireccionesPosibles(hostModel: HostModel): List<String> {
+    fun generarDireccionesPosibles(hostModel: HostModelClass): List<String> {
         val rangoIp = InetAddress.getByName(hostModel.direccionIP) // Usar la IP de hostModel
         val subRed = InetAddress.getByName("255.255.255.0")
 
@@ -175,7 +202,8 @@ class SnmpManagerV1 : SnmpManagerInterface {
         return 1L shl (32 - subnetBits) // 2^(32 - bits de red)
     }
 
-    suspend fun pruebaConexionSnmp(hostModel: HostModel, context: Context): Boolean {
+    suspend fun pruebaConexionSnmp(hostModel: HostModelClass): HashMap<String, Any> {
+        val map: HashMap<String, Any> = HashMap()
         return try {
             withContext(Dispatchers.IO) {
                 val transport: TransportMapping<*> = DefaultUdpTransportMapping()
@@ -190,32 +218,67 @@ class SnmpManagerV1 : SnmpManagerInterface {
                     community = OctetString(hostModel.comunidadSNMP)
                     version = SnmpConstants.version1
                     retries = 2
-                    timeout = 100
                 }
 
-                val pdu = PDU().apply {
-                    type = PDU.GET
-                    add(VariableBinding(OID(CommonOids.SYS_DESCR)))
+                var response =
+                    enviarMensajeSnmp(snmp!!, communityTarget, CommonOids.SYSTEM.SYS_NAME)
+
+                if (response.response == null || response.response.errorStatus != PDU.noError) {
+                    return@withContext map.apply {
+                        put("estado", false)
+                    }
                 }
 
-                val response = snmp?.send(pdu, communityTarget)
-
-                if (response?.response == null) {
-                    throw Exception("No respuesta recibida, la solicitud agotó el tiempo.")
+                hostModel.nombreHost = response.response.get(0).variable.toString()
+                if (hostModel.nombreHost.equals("") || hostModel.nombreHost.isEmpty()) {
+                    hostModel.nombreHost = "Genérico"
                 }
 
-                println("Respuesta: ${response.response.get(0)}")
-               return@withContext response.response.errorStatus == PDU.noError
+                response = enviarMensajeSnmp(snmp!!, communityTarget, CommonOids.IP.IP_FORWARDING)
 
+                if (response.response == null || response.response.errorStatus != PDU.noError) {
+                    return@withContext map.apply {
+                        put("estado", false)
+                    }
+                }
+
+                if (response.response.get(0).variable.toString().equals("1")) {
+                    hostModel.tipoDeDispositivo = TipoDispositivo.ROUTER.name
+                }
+
+                return@withContext map.apply {
+                    put("estado", true)
+                    put("host", hostModel)
+                }
             }
+        } catch (e: NullPointerException) {
+            e.printStackTrace()
+            println("${e.message}")
+
+            return hashMapOf("estado" to false)
         } catch (e: Exception) {
             e.printStackTrace()
             println("${e.message}")
-            false
+
+            return hashMapOf("estado" to false)
         } finally {
             close()
         }
     }
+
+    private fun enviarMensajeSnmp(
+        snmp: Snmp,
+        communityTarget: CommunityTarget<Address>,
+        oid: String
+    ): ResponseEvent<Address> {
+        val pdu = PDU().apply {
+            type = PDU.GETNEXT
+            add(VariableBinding(OID(oid)))
+        }
+
+        return snmp.send(pdu, communityTarget)
+    }
+
 
 }
 
@@ -225,6 +288,3 @@ private suspend fun mensajeToast(context: Context, message: String) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }
-
-
-

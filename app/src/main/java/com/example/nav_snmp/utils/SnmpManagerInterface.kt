@@ -12,6 +12,5 @@ interface SnmpManagerInterface {
     fun close()
     fun getOid()
     fun setOid()
-    suspend fun descubrirHost(hostModel: HostModel, context: Context): List<HostModel>
     abstract fun mensajeAlert(context: Context, s: String, s1: String, successType: Int)
 }

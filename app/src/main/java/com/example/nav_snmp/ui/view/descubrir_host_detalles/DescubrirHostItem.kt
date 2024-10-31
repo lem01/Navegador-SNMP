@@ -91,8 +91,8 @@ fun DescubrirHostItem(
                 Spacer(modifier = Modifier.size(20.dp))
 
                 Column {
-                    Text(text = "Nombre del dispositivo")
-                    Text(text = "192.168.1.1")
+                    Text(text = hostModel.nombreHost)
+                    Text(text = hostModel.direccionIP)
                 }
             }
 
