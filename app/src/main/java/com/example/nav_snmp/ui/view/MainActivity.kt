@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             val formatter = getDateInstance()
             val dateString = formatter.format(java.util.Date())
 
-            hostViewModel.addHost(
+            hostViewModel.saveHost(
                 HostModel(
                     0,
                     "Lennox",
@@ -164,7 +164,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun hostActivity() {
-        val intent = Intent(this, IpDetallesActivity::class.java)
+        val intent = Intent(this, IpManualActivity::class.java)
         startActivity(intent)
     }
 

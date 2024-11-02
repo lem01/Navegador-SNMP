@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 import androidx.room.Update
 import com.example.nav_snmp.data.model.HostModel
 
@@ -19,8 +20,9 @@ interface HostDao {
     @Insert
     fun insert(host: HostModel)
 
-    @Insert
-    fun insertAll(vararg hosts: HostModel)
+    @Transaction
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(hosts: List<HostModel>)
 
     //no actualzar la fecha
     @Update(onConflict = OnConflictStrategy.REPLACE)

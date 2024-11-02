@@ -13,28 +13,25 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.example.nav_snmp.R
 import com.example.nav_snmp.data.model.HostModel
-import com.example.nav_snmp.ui.view.IpDetallesActivity
+import com.example.nav_snmp.ui.view.IpManualActivity
 import com.example.nav_snmp.ui.viewmodel.HostViewModel
 import com.example.nav_snmp.utils.TipoDispositivo
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
 class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewModel: HostViewModel) :
     RecyclerView.Adapter<HostAdapter.ViewHolder>() {
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val direccionIP: TextView
+        val nombreHost: TextView
         val cardItem: CardView
         val imgHost: ImageView
 
         init {
-
+            nombreHost = view.findViewById(R.id.txt_nombre_host)
             direccionIP = view.findViewById(R.id.txt_direccion_ip)
             cardItem = view.findViewById(R.id.card_view_item)
             imgHost = view.findViewById(R.id.img_host)
         }
     }
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.rc_item, parent, false)
@@ -51,6 +48,7 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
 
         initImgHost(host, holder)
 
+        holder.nombreHost.text = host.nombreHost
         holder.direccionIP.text = host.direccionIP
 
         holder.cardItem.setOnClickListener {
@@ -70,7 +68,7 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
                         //ver
 
                         val intent =
-                            Intent(holder.cardItem.context, IpDetallesActivity::class.java).apply {
+                            Intent(holder.cardItem.context, IpManualActivity::class.java).apply {
                                 putExtra("idHost", host.id)
                                 putExtra("verHost", true)
                             }
@@ -90,7 +88,7 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
 
                         //iniciar nueva actividad y pasar el host
                         val intent =
-                            Intent(holder.cardItem.context, IpDetallesActivity::class.java).apply {
+                            Intent(holder.cardItem.context, IpManualActivity::class.java).apply {
                                 putExtra("idHost", host.id)
                                 putExtra("editarHost", true)
                             }

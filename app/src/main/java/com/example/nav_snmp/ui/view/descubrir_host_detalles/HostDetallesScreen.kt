@@ -1,5 +1,7 @@
 package com.example.nav_snmp.ui.view.descubrir_host_detalles
 
+import android.app.Activity
+import android.content.Intent
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,9 +44,11 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.viewModelScope
 import com.example.nav_snmp.data.model.HostModelClass
 import com.example.nav_snmp.ui.theme.SnmpTheme
+import com.example.nav_snmp.ui.view.MainActivity
 import com.example.nav_snmp.ui.viewmodel.DescubrirHostViewModel
 import id.ionbit.ionalert.IonAlert
 import kotlinx.coroutines.delay
@@ -56,12 +60,11 @@ fun HostDetallesScreen(modifier: Modifier, descubrirHostDetalles: DescubrirHostD
     val viewModel: DescubrirHostViewModel = DescubrirHostViewModel.descubrirHost
 
     LaunchedEffect(Unit) {
-        viewModel.loadHosts() // Carga los hosts al inicio
+        viewModel.loadHosts()
     }
 
     Scaffold(modifier = modifier, topBar = {
         TopAppBar(
-
             colors = TopAppBarDefaults.centerAlignedTopAppBarColors(
                 containerColor = MaterialTheme.colorScheme.primaryContainer,
                 titleContentColor = MaterialTheme.colorScheme.primary,
@@ -141,6 +144,24 @@ fun BotonFlotante(descubrirHostDetalles: DescubrirHostDetalles) {
                         .setContentText("Debe seleccionar al menos un dispositivo")
                         .show()
                     return@ExtendedFloatingActionButton
+                }
+
+                val listaHosts = mutableListOf<HostModelClass>()
+
+                DescubrirHostViewModel.descubrirHost.hostDescubiertos.forEach { host ->
+                    if (host.checked) {
+                        listaHosts.add(host)
+                    }
+                }
+                DescubrirHostViewModel.descubrirHost.saveAllHosts(listaHosts) {
+                    val intent =
+                        Intent(descubrirHostDetalles.context, MainActivity::class.java).apply {
+                            flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
+                        }
+                    startActivity(descubrirHostDetalles.context, intent, null)
+
+                    (descubrirHostDetalles.context as Activity).finish()
+
                 }
 
                 Toast.makeText(

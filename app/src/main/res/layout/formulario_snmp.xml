@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:id="@+id/ly_ip_host"
+        android:id="@+id/ly_nombre_host"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
@@ -15,6 +15,37 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toggle_button_group">
+
+        <TextView
+            android:id="@+id/tv_nombre_host"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/nombre_del_host"
+            android:textSize="@dimen/text_size_medium" />
+
+        <EditText
+            android:id="@+id/et_nombre_host"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:autofillHints=""
+            android:hint="@string/escribe_el_nombre_del_host"
+            android:inputType="text"
+            android:labelFor="@+id/tv_host_ip"
+            android:text="" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/ly_ip_host"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="24dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ly_nombre_host">
 
         <TextView
             android:id="@+id/tv_host_ip"

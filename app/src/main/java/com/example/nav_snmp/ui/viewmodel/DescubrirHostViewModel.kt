@@ -1,18 +1,30 @@
 package com.example.nav_snmp.ui.viewmodel
 
 import android.content.Context
+import android.content.Intent
 import android.content.SharedPreferences
-import androidx.collection.mutableIntSetOf
+import androidx.appcompat.widget.SearchView.SearchAutoComplete
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.viewModelScope
+import com.example.nav_snmp.data.model.HostModel
 import com.example.nav_snmp.data.model.HostModelClass
 import com.example.nav_snmp.data.repository.HostRepository
+import com.example.nav_snmp.ui.view.MainActivity
 import com.example.nav_snmp.utils.Constantes
 import com.example.nav_snmp.utils.SnmpManagerV1
+import com.example.nav_snmp.utils.TipoDispositivo
 import com.example.nav_snmp.utils.VersionSnmp
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.text.SimpleDateFormat
+import java.util.Date
+import java.util.Locale
+import java.util.TimeZone
 
 class DescubrirHostViewModel(
     private val repository: HostRepository,
@@ -85,9 +97,9 @@ class DescubrirHostViewModel(
 
         var hostModel = HostModelClass(
             id = 0,
-            nombreHost = "Host # 1",
+            nombreHost = "",
             direccionIP = host!!,
-            tipoDeDispositivo = "Host",
+            tipoDeDispositivo = TipoDispositivo.HOST.name,
             versionSNMP = versionSnmp!!,
             puertoSNMP = puerto!!.toInt(),
             comunidadSNMP = comunidad!!,
@@ -128,6 +140,38 @@ class DescubrirHostViewModel(
             host.checked = checked
         }
     }
+
+    fun saveAllHosts(
+        listaHosts: MutableList<HostModelClass>,
+        onComplete: () -> Unit // Callback para notificar cuando se complete
+    ) {
+        val lista = mutableListOf<HostModel>()
+        val sdf = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale("es", "NI"))
+        sdf.timeZone = TimeZone.getTimeZone("America/Managua")
+        val currentDate = sdf.format(Date())
+        //fecha dat
+        listaHosts.map { host ->
+            lista.add(
+                HostModel(
+                    id = host.id,
+                    nombreHost = host.nombreHost,
+                    direccionIP = host.direccionIP,
+                    tipoDeDispositivo = host.tipoDeDispositivo,
+                    versionSNMP = host.versionSNMP,
+                    puertoSNMP = host.puertoSNMP,
+                    comunidadSNMP = host.comunidadSNMP,
+                    estado = host.estado,
+                    fecha = currentDate
+                )
+            )
+        }
+
+        viewModelScope.launch {
+            descubrirHost.repository.saveAllHosts(lista)
+            onComplete()
+        }
+    }
+
 
 }
 

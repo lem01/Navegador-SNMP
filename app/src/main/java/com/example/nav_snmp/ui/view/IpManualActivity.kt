@@ -14,7 +14,7 @@ import androidx.lifecycle.lifecycleScope
 import com.example.nav_snmp.R
 import com.example.nav_snmp.data.model.HostModel
 import com.example.nav_snmp.data.repository.HostRepository
-import com.example.nav_snmp.databinding.ActivityIpDetallesBinding
+import com.example.nav_snmp.databinding.ActivityIpManualBinding
 import com.example.nav_snmp.ui.viewmodel.HostViewModel
 import com.example.nav_snmp.ui.viewmodel.HostViewModelFactory
 import com.example.nav_snmp.utils.TipoDispositivo
@@ -27,13 +27,13 @@ import java.util.Objects
 import java.util.TimeZone
 
 
-class IpDetallesActivity : AppCompatActivity() {
+class IpManualActivity : AppCompatActivity() {
     private lateinit var hostViewModel: HostViewModel
 
-    private lateinit var binding: ActivityIpDetallesBinding
+    private lateinit var binding: ActivityIpManualBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = ActivityIpDetallesBinding.inflate(layoutInflater)
+        binding = ActivityIpManualBinding.inflate(layoutInflater)
         setContentView(binding.root)
         enableEdgeToEdge()
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -55,6 +55,9 @@ class IpDetallesActivity : AppCompatActivity() {
             }
         }
 
+        binding.btnCancelar.setOnClickListener {
+            finish()
+        }
 
         binding.include.btnFormulario.setOnClickListener() {
             if (!valitateFields())
@@ -91,7 +94,11 @@ class IpDetallesActivity : AppCompatActivity() {
     }
 
     private suspend fun updateHost() {
-        val nombreHost = binding.include.etHostIp.text
+        var nombreHost = binding.include.etHostIp.text.toString()
+        if (nombreHost.isEmpty()) {
+            nombreHost = "Genérico"
+        }
+
         val direccionIp = binding.include.etHostIp.text
         val versionSnmp = binding.include.spVersionSnmp.selectedItem.toString()
         val tipoDeDispositivo = binding.include.spTipo.selectedItem.toString()
@@ -121,7 +128,7 @@ class IpDetallesActivity : AppCompatActivity() {
 
         val host = HostModel(
             id,
-            nombreHost.toString(),
+            nombreHost,
             direccionIp.toString(),
             tipoDeDispositivo,
             versionSnmp,
@@ -169,6 +176,7 @@ class IpDetallesActivity : AppCompatActivity() {
     }
 
     private fun llenarCampos(host: HostModel) {
+        binding.include.etNombreHost.setText(host.nombreHost)
         binding.include.etHostIp.setText(host.direccionIP)
         binding.include.etPuerto.setText(host.puertoSNMP.toString())
         binding.include.etComunidad.setText(host.comunidadSNMP)
@@ -246,7 +254,11 @@ class IpDetallesActivity : AppCompatActivity() {
     }
 
     private fun saveHost() {
-        val nombreHost = binding.include.etHostIp.text
+        var nombreHost = binding.include.etNombreHost.text.toString()
+        if (nombreHost.isEmpty()) {
+            nombreHost = "Genérico"
+        }
+
         val direccionIp = binding.include.etHostIp.text
         val versionSnmp = binding.include.spVersionSnmp.selectedItem.toString()
         val tipoDeDispositivo = binding.include.spTipo.selectedItem.toString()
@@ -277,7 +289,7 @@ class IpDetallesActivity : AppCompatActivity() {
             currentDate
         )
 
-        hostViewModel.addHost(host)
+        hostViewModel.saveHost(host)
 
         Toast.makeText(this, "Host guardado con éxito", Toast.LENGTH_SHORT).show()
 

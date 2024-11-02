@@ -4,7 +4,7 @@
     <string name="buscar_por_ip">Buscar por IP</string>
     <string name="buscar_por_rango_ip">Buscar por rango de IP</string>
     <string name="nombre_del_host">Nombre del host</string>
-    <string name="direccion_ip">Buscar por IP</string>
+    <string name="direccion_ip">Dirección IP</string>
     <string name="label_btn_dos">Descubrir Hosts</string>
     <string name="label_btn_uno">Dirección IP Manual</string>
     <string name="host_details">Detalles de Host</string>
@@ -13,4 +13,5 @@
     <string name="version_snmp">Versión SNMP</string>
     <string name="descubrir_hosts">Descubrir Hosts</string>
     <string name="title_activity_descubrir_host_detalles">DescubrirHostDetalles</string>
+    <string name="escribe_el_nombre_del_host">Escribe el nombre del host</string>
 </resources>

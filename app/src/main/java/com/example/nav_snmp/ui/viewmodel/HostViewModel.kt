@@ -1,22 +1,18 @@
 package com.example.nav_snmp.ui.viewmodel
 
 import android.content.Context
-import androidx.compose.runtime.toMutableStateList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
 
 import androidx.lifecycle.viewModelScope
 import com.example.nav_snmp.data.model.HostModel
-import com.example.nav_snmp.data.model.HostModelClass
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.utils.SnmpManagerV1
 import com.example.nav_snmp.utils.SnmpManagerV2c
 import kotlinx.coroutines.launch
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 
 
 class HostViewModel(private val repository: HostRepository) : ViewModel() {
@@ -25,7 +21,7 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
     private val _allHosts = MutableLiveData<List<HostModel>>()
     val allHosts: LiveData<List<HostModel>> get() = _allHosts
 
-    fun addHost(host: HostModel) {
+    fun saveHost(host: HostModel) {
         viewModelScope.launch {
             repository.saveHost(host)
         }

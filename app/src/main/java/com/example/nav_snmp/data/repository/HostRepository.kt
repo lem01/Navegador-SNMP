@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.example.nav_snmp.data.database.AppDatabase
 import com.example.nav_snmp.data.model.HostModel
+import com.example.nav_snmp.data.model.HostModelClass
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -48,5 +49,11 @@ class HostRepository(context: Context) {
             hostDao.update(host)
         }
 
+    }
+
+    suspend fun saveAllHosts(listaHosts: MutableList<HostModel>) {
+        withContext(Dispatchers.IO) {
+            hostDao.insertAll(listaHosts)
+        }
     }
 }
