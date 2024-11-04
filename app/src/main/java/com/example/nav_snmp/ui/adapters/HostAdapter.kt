@@ -11,6 +11,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nav_snmp.OperacionSnmpActivity
 import com.example.nav_snmp.R
 import com.example.nav_snmp.data.model.HostModel
 import com.example.nav_snmp.ui.view.IpManualActivity
@@ -97,7 +98,12 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
                     }
 
                     4 -> {
-                        //operacion snmp
+
+                        val intent =
+                            Intent(holder.cardItem.context, OperacionSnmpActivity::class.java).apply {
+                                putExtra("id", host.id)
+                            }
+                        startActivity(holder.cardItem.context, intent, null)
                     }
 
 

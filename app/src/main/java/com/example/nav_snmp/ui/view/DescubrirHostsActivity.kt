@@ -44,6 +44,7 @@ class DescubrirHostsActivity : AppCompatActivity() {
 
         binding.include.lyTipoDispositivo.visibility = android.view.View.GONE
         binding.include.lyNombreHost.visibility = android.view.View.GONE
+        binding.include.lyDescripcion.visibility = android.view.View.GONE
 
         binding.include.btnFormulario.text = "Descubrir Hosts"
         binding.include.btnFormulario.setOnClickListener() {

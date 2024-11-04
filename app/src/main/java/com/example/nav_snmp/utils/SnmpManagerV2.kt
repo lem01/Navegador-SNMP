@@ -100,6 +100,27 @@ class SnmpManagerV2c : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
+    override suspend fun get(
+        hostModel: HostModel,
+        oid: String,
+        tipoOperacion: TipoOperacion,
+        context: Context
+    ): Any {
+        TODO("Not yet implemented")
+    }
+
+    override fun getNext(hostModel: HostModel, context: Context) {
+        TODO("Not yet implemented")
+    }
+
+    override fun set(hostModel: HostModel, context: Context) {
+        TODO("Not yet implemented")
+    }
+
+    override fun walk(hostModel: HostModel, context: Context) {
+        TODO("Not yet implemented")
+    }
+
     override fun mensajeAlert(context: Context, s: String, s1: String, successType: Int) {
         CoroutineScope(Dispatchers.Main).launch {
             IonAlert(context, successType)

@@ -73,6 +73,7 @@ class IpManualActivity : AppCompatActivity() {
             initVerHost()
         }
 
+        binding.include.lyDescripcion.visibility = android.view.View.GONE
         ocultarToggleButton()
 
     }

@@ -29,10 +29,15 @@ import org.snmp4j.smi.OID
 import org.snmp4j.smi.OctetString
 import org.snmp4j.smi.VariableBinding
 import org.snmp4j.transport.DefaultUdpTransportMapping
+import java.io.Serializable
 import java.net.InetAddress
+import kotlin.coroutines.resume
+import kotlin.coroutines.resumeWithException
+import kotlin.coroutines.suspendCoroutine
 
 
 class SnmpManagerV1 : SnmpManagerInterface {
+    private val TAG = "SnmpManagerV1"
     private var snmp: Snmp? = null
 
     override fun snmpTest(hostModel: HostModel, context: Context) {
@@ -110,6 +115,81 @@ class SnmpManagerV1 : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
+
+
+override suspend fun get(hostModel: HostModel,oid: String, tipoOperacion: TipoOperacion, context: Context): String {
+    return suspendCoroutine { continuation ->
+        val mensaje = ""
+        CoroutineScope(Dispatchers.IO).launch {
+            lateinit var customProgressDialog: CustomProgressDialog
+            CoroutineScope(Dispatchers.Main).launch {
+                customProgressDialog =
+                    CustomProgressDialog(context, "", "Cargando")
+                customProgressDialog.show()
+            }
+
+            delay(500)
+
+            try {
+                val transport: TransportMapping<*> = DefaultUdpTransportMapping()
+                snmp = Snmp(transport)
+                snmp?.listen()
+
+                val targetAddress: Address =
+                    GenericAddress.parse("udp:${hostModel.direccionIP}/${hostModel.puertoSNMP}")
+
+                val communityTarget = CommunityTarget<Address>().apply {
+                    address = targetAddress
+                    community = OctetString(hostModel.comunidadSNMP)
+                    version = SnmpConstants.version1
+                    retries = 2
+                    timeout = 500
+                }
+
+                 val pduType: Int = RecursoPdu().obtenerRecurso(tipoOperacion)
+
+                val pdu = PDU().apply {
+                    type = pduType
+                    add(VariableBinding(OID(CommonOids.SYSTEM.SYS_NAME)))
+                }
+
+                val response = snmp?.send(pdu, communityTarget)
+
+                if (response?.response == null)
+                    throw Exception("No respuesta recibida, la solicitud agotó el tiempo.")
+
+                if (response.response.errorStatus == PDU.noError) {
+                    println("Respuesta: ${response.response.get(0)}")
+                    customProgressDialog.dismiss()
+                    continuation.resume(mensaje)
+                } else {
+                    continuation.resumeWithException(Exception("Error en la respuesta SNMP"))
+                }
+                close()
+            } catch (e: Exception) {
+                customProgressDialog.dismiss()
+                e.printStackTrace()
+                mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
+                close()
+//                    continuation.resumeWithException(e)
+                continuation.resume("")
+            }
+        }
+    }
+}
+
+    override fun getNext(hostModel: HostModel, context: Context) {
+        TODO("Not yet implemented")
+    }
+
+    override fun set(hostModel: HostModel, context: Context) {
+        TODO("Not yet implemented")
+    }
+
+    override fun walk(hostModel: HostModel, context: Context) {
+        TODO("Not yet implemented")
+    }
+
     suspend fun descubrirHost(hostModel: HostModelClass, context: Context): List<HostModelClass> {
         val direccionesIp = generarDireccionesPosibles(hostModel)
         val direccionesAlcanzables = realizarPing(direccionesIp)
@@ -123,7 +203,6 @@ class SnmpManagerV1 : SnmpManagerInterface {
 
             val deferredResults = direccionesIp.map { ip ->
                 async(Dispatchers.IO) {
-
 //                    if(counter == 50)
 //                        //salir del ciclo
 //                        return@async null
@@ -218,6 +297,7 @@ class SnmpManagerV1 : SnmpManagerInterface {
                     community = OctetString(hostModel.comunidadSNMP)
                     version = SnmpConstants.version1
                     retries = 2
+
                 }
 
                 var response =
@@ -251,14 +331,21 @@ class SnmpManagerV1 : SnmpManagerInterface {
                     put("host", hostModel)
                 }
             }
-        } catch (e: NullPointerException) {
+        }
+        catch (e: RuntimeException ) {
+            Log.e(TAG, e.message.toString())
+            return map.apply {
+                put("estado", false)
+            }
+        }
+        catch (e: NullPointerException) {
             e.printStackTrace()
-            println("${e.message}")
+            Log.e(TAG, e.message.toString())
 
             return hashMapOf("estado" to false)
         } catch (e: Exception) {
             e.printStackTrace()
-            println("${e.message}")
+            Log.e(TAG, e.message.toString())
 
             return hashMapOf("estado" to false)
         } finally {

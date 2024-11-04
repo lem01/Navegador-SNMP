@@ -17,6 +17,10 @@
         android:theme="@style/Theme.Snmp"
         tools:targetApi="31">
         <activity
+            android:name=".OperacionSnmpActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.view.MainActivity"/>
+        <activity
             android:name=".ui.view.descubrir_host_detalles.DescubrirHostDetalles"
             android:exported="false"
             android:label="@string/title_activity_descubrir_host_detalles"

@@ -64,7 +64,7 @@
             android:inputType="text"
             android:labelFor="@+id/tv_host_ip"
             android:text="192.168.1.101" />
-    </LinearLayout>
+        </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ly_puerto"
@@ -92,6 +92,36 @@
             android:autofillHints="161"
             android:hint="161"
             android:inputType="number"
+            android:labelFor="@+id/tv_host_ip"
+            android:textColorHint="@color/black_opacity" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="invisible"
+        android:id="@+id/ly_oid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="100dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ly_comunidad">
+
+        <TextView
+            android:id="@+id/tv_oid"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="OID"
+            android:textSize="@dimen/text_size_medium" />
+
+        <EditText
+            android:id="@+id/et_oid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:autofillHints="161"
+            android:inputType="number|text"
             android:labelFor="@+id/tv_host_ip"
             android:textColorHint="@color/black_opacity" />
     </LinearLayout>
@@ -136,7 +166,7 @@
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ly_puerto">
+        app:layout_constraintTop_toBottomOf="@+id/ly_oid">
 
         <TextView
             android:id="@+id/tv_tipo_dispositivo"
@@ -179,6 +209,69 @@
             android:gravity="center" />
     </LinearLayout>
 
+    <LinearLayout
+        android:visibility="invisible"
+        android:id="@+id/ly_tipo_operacion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ly_version_snmp">
+
+        <TextView
+            android:id="@+id/tv_tipo_operacion"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="@string/tipo_operacion"
+            android:textSize="@dimen/text_size_medium" />
+
+        <Spinner
+            android:id="@+id/sp_tipo_operacion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="35dp"
+            android:gravity="center" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:visibility="invisible"
+        android:id="@+id/ly_descripcion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/ly_tipo_operacion">
+
+        <TextView
+            android:id="@+id/txt_descripcion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:text="Resultado" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/text_field_descripcion"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/ed_descripcion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:minLines="2"
+                android:gravity="top|start"
+                />
+
+        </com.google.android.material.textfield.TextInputLayout>
+    </LinearLayout>
+
     <Button
         android:id="@+id/btn_formulario"
         android:layout_width="wrap_content"
@@ -187,7 +280,7 @@
         android:layout_marginEnd="16dp"
         android:text="Conexión de Prueba"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ly_version_snmp" />
+        app:layout_constraintTop_toBottomOf="@+id/ly_descripcion" />
 
     <com.google.android.material.button.MaterialButtonToggleGroup
         android:id="@+id/toggle_button_group"
