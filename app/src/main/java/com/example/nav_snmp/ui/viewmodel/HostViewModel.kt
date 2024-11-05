@@ -1,6 +1,7 @@
 package com.example.nav_snmp.ui.viewmodel
 
 import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 
@@ -13,10 +14,13 @@ import com.example.nav_snmp.utils.SnmpManagerV2c
 import kotlinx.coroutines.launch
 
 import androidx.lifecycle.ViewModel
+import com.example.nav_snmp.utils.TipoOperacion
 
 
 class HostViewModel(private val repository: HostRepository) : ViewModel() {
 
+    private val _respuestaOperacionSnmp = MutableLiveData<String>()
+    val respuestaOperacion: LiveData<String> get() = _respuestaOperacionSnmp
 
     private val _allHosts = MutableLiveData<List<HostModel>>()
     val allHosts: LiveData<List<HostModel>> get() = _allHosts
@@ -79,5 +83,21 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
             repository.updateHost(host)
         }
     }
-}
 
+    suspend fun operacionSnmp(
+        hostModel: HostModel,
+        oid: String,
+        tipoOperacion: TipoOperacion,
+        context: Context
+    ) {
+        if (isvalidIp(hostModel.direccionIP)) {
+            val snmpManagerV1 = SnmpManagerV1()
+           val respuesta =  snmpManagerV1.get(hostModel, oid, tipoOperacion, context)
+
+            println("Respuesta: $respuesta")
+
+            _respuestaOperacionSnmp.postValue(respuesta)
+            Toast.makeText(context, respuesta, Toast.LENGTH_SHORT).show()
+        }
+    }
+}

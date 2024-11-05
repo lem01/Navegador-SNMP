@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.nav_snmp.data.model.HostModel
@@ -38,46 +39,67 @@ class OperacionSnmpActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         initFactory()
         initSpinner()
+//todo: quitar luego
+        binding.include.etOid.setText("1.3.6.1.2.1.1.1")
+        hostViewModel.respuestaOperacion.observe(
+            this, Observer { respuesta ->
+                binding.include.edDescripcion.setText(respuesta)
+            })
 
         ocultarComponentes()
         mostrarComponentes()
-        lifecycleScope.launch {
-            initComponents()
-        }
+        initComponents()
 
         binding.include.btnFormulario.setOnClickListener {
+            if (!validarCampos()) return@setOnClickListener
+            lifecycleScope.launch {
+                operacionSnmp()
+            }
+        }
+    }
 
-            if (!validarCampos()) {
-                return@setOnClickListener
+    private suspend fun operacionSnmp() {
+        val puerto: Int =
+            if (binding.include.etPuerto.text.isEmpty()) 161 else binding.include.etPuerto.text.toString()
+                .toInt()
+
+        val comunidad = binding.include.etComunidad.text.isEmpty().let {
+            if (it) "public" else binding.include.etComunidad.text.toString()
+        }
+        val version = binding.include.spVersionSnmp.selectedItem.toString()
+        val ipHost = binding.include.etHostIp.text.toString()
+        val tipoDispositivo = binding.include.spTipo.selectedItem.toString()
+        val oid = binding.include.etOid.text.toString()
+        val hostModel =
+            HostModel(0, ipHost, ipHost, tipoDispositivo, version, puerto, comunidad, true, "")
+
+        val tipoOperacion: TipoOperacion =
+            TipoOperacion.valueOf(binding.include.spTipoOperacion.selectedItem.toString())
+        when (version) {
+            VersionSnmp.V1.name -> {
+                hostViewModel.operacionSnmp(
+                    hostModel, oid,
+                    tipoOperacion, this
+                )
             }
 
+            VersionSnmp.V2c.name -> {
+                hostViewModel.snmpV2cTest(hostModel, this)
+            }
         }
+
     }
 
     private fun validarCampos(): Boolean {
         var isValid = true
-
-        if (binding.include.etComunidad.text.isEmpty()) {
-            binding.include.etComunidad.error = "Campo requerido"
-            isValid = false
-        }
-
         if (binding.include.etHostIp.text.isEmpty()) {
             binding.include.etHostIp.error = "Campo requerido"
             isValid = false
         }
-
-        val puerto: Int = if (binding.include.etPuerto.text.isEmpty()) 161 else binding.include.etPuerto.text.toString().toInt()
-        if (puerto != 161 && puerto != 162) {
-            binding.include.etPuerto.error = "El puerto debe ser 161 o 162"
-            isValid = false
-        }
-
         if (binding.include.etOid.text.isEmpty()) {
             binding.include.etOid.error = "Campo requerido"
             isValid = false
         }
-
         return isValid
     }
 
@@ -114,7 +136,6 @@ class OperacionSnmpActivity : AppCompatActivity() {
         adapterVersion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.include.spVersionSnmp.adapter = adapterVersion
 
-
         val listaOperaciones = ArrayList<String>()
 
         listaOperaciones.add(TipoOperacion.GET.name)
@@ -128,12 +149,14 @@ class OperacionSnmpActivity : AppCompatActivity() {
 
     }
 
-    private suspend fun initComponents() {
-        val idHost = intent.getIntExtra("id", 0)
-        val host = hostViewModel.getHostById(idHost)
-        llenarCampos(host)
-        bloquearCampos()
-        cambiarTextos()
+    private fun initComponents() {
+        lifecycleScope.launch {
+            val idHost = intent.getIntExtra("id", 0)
+            val host = hostViewModel.getHostById(idHost)
+            llenarCampos(host)
+            bloquearCampos()
+            cambiarTextos()
+        }
     }
 
     private fun cambiarTextos() {

@@ -266,6 +266,7 @@
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
                 android:minLines="2"
+                android:textColor="@color/black"
                 android:gravity="top|start"
                 />
 
