@@ -1,5 +1,6 @@
 package com.example.nav_snmp.ui.adapters
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.Menu
@@ -11,6 +12,7 @@ import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
+import com.example.nav_snmp.GraficosAtivity
 import com.example.nav_snmp.OperacionSnmpActivity
 import com.example.nav_snmp.R
 import com.example.nav_snmp.data.model.HostModel
@@ -61,6 +63,7 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
             popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "Eliminar")
             popupMenu.menu.add(Menu.NONE, 3, Menu.NONE, "Editar")
             popupMenu.menu.add(Menu.NONE, 4, Menu.NONE, "Operación SNMP")
+            popupMenu.menu.add(Menu.NONE, 5, Menu.NONE, "Ver gráficos")
             popupMenu.show()
 
             popupMenu.setOnMenuItemClickListener {
@@ -78,10 +81,8 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
 
                     2 -> {
 
-                        hostViewModel.detelteHost(host.id)
-                        //eliminar
-                        hostList.removeAt(holder.adapterPosition)
-                        notifyItemRemoved(holder.adapterPosition)
+                        dialogoConfirmacionEliminar(holder.cardItem.context, host, holder)
+
 
                     }
 
@@ -100,18 +101,42 @@ class HostAdapter(private var hostList: MutableList<HostModel>, val hostViewMode
                     4 -> {
 
                         val intent =
-                            Intent(holder.cardItem.context, OperacionSnmpActivity::class.java).apply {
+                            Intent(
+                                holder.cardItem.context,
+                                OperacionSnmpActivity::class.java
+                            ).apply {
                                 putExtra("id", host.id)
                             }
                         startActivity(holder.cardItem.context, intent, null)
                     }
 
+                    5 -> {
+                        val intent =
+                            Intent(holder.cardItem.context, GraficosAtivity::class.java).apply {
+                                putExtra("idHost", host.id)
+                                putExtra("verHost", true)
+                            }
+                        startActivity(holder.cardItem.context, intent, null)
+                    }
 
                 }
                 true
             }
 
         }
+    }
+
+    private fun dialogoConfirmacionEliminar(context: Context, host: HostModel, holder: ViewHolder) {
+        val builder = android.app.AlertDialog.Builder(context)
+        builder.setTitle("Eliminar")
+        builder.setMessage("¿Está seguro de eliminar el host ${host.nombreHost}?")
+        builder.setPositiveButton("Si") { dialog, which ->
+            hostViewModel.detelteHost(host.id)
+            hostList.removeAt(holder.adapterPosition)
+            notifyItemRemoved(holder.adapterPosition)
+        }
+        builder.setNegativeButton("No") { dialog, which -> }
+        builder.show()
     }
 
     private fun initImgHost(host: HostModel, holder: ViewHolder) {

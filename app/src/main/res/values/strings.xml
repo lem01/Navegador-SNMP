@@ -16,4 +16,5 @@
     <string name="escribe_el_nombre_del_host">Escribe el nombre del host</string>
     <string name="operacion_snmp">Operación Snmp</string>
     <string name="tipo_operacion">Típo de operación</string>
+    <string name="graficos">Gráficos</string>
 </resources>
