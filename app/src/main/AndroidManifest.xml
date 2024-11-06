@@ -17,29 +17,38 @@
         android:theme="@style/Theme.Snmp"
         tools:targetApi="31">
         <activity
-            android:name=".GraficosAtivity"
-            android:parentActivityName=".ui.view.MainActivity"
+            android:name=".ui.view.sistema.SistemaActivity"
             android:exported="false" />
         <activity
-            android:name=".OperacionSnmpActivity"
+            android:name=".ui.view.graficos.GraficosAtivity"
             android:exported="false"
-            android:parentActivityName=".ui.view.MainActivity" />
+            android:parentActivityName=".ui.view.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.view.OperacionSnmpActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.view.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.view.descubrir_host_detalles.DescubrirHostDetalles"
             android:exported="false"
             android:label="@string/title_activity_descubrir_host_detalles"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.Snmp" />
         <activity
             android:name=".ui.view.DescubrirHostsActivity"
             android:exported="false"
-            android:parentActivityName=".ui.view.MainActivity" />
+            android:parentActivityName=".ui.view.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.view.IpManualActivity"
             android:exported="false"
-            android:parentActivityName=".ui.view.MainActivity" />
+            android:parentActivityName=".ui.view.MainActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.view.MainActivity"
-            android:exported="true">
+            android:exported="true"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

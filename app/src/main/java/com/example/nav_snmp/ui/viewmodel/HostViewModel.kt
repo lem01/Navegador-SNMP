@@ -29,6 +29,7 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
         viewModelScope.launch {
             repository.saveHost(host)
         }
+
     }
 
     fun snmpV1Test(hostModel: HostModel, context: Context) {

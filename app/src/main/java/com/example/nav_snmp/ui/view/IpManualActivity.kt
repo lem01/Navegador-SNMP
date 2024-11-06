@@ -95,7 +95,7 @@ class IpManualActivity : AppCompatActivity() {
     }
 
     private suspend fun updateHost() {
-        var nombreHost = binding.include.etHostIp.text.toString()
+        var nombreHost = binding.include.etNombreHost.text.toString()
         if (nombreHost.isEmpty()) {
             nombreHost = "Genérico"
         }

@@ -5,9 +5,10 @@
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
 
     </style>
-<!--    change menu color icon-->
+    <!--    change menu color icon-->
 
     <style name="Theme.Snmp.PopupOverlay" parent="ThemeOverlay.MaterialComponents.Light" />
+
     <style name="Theme.Snmp.PopupOverlay.Dark" parent="Theme.Snmp.PopupOverlay" />
 
 </resources>

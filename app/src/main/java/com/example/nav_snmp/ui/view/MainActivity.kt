@@ -91,7 +91,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initAdapter() {
-        adapter = HostAdapter(hostList, hostViewModel)
+        adapter = HostAdapter(hostList, hostViewModel, this)
         binding.rcHost.layoutManager = LinearLayoutManager(this)
         binding.rcHost.adapter = adapter
 

@@ -7,4 +7,5 @@ class Constantes {
         const val SNMP_COMUNIDAD = "SNMP_COMUNIDAD"
         const val SNMP_PUERTO = "SNMP_PUERTO"
     }
+
 }

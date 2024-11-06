@@ -1,8 +1,7 @@
-package com.example.nav_snmp
+package com.example.nav_snmp.ui.view
 
 import android.os.Bundle
 import android.widget.ArrayAdapter
-import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -10,9 +9,9 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.nav_snmp.R
 import com.example.nav_snmp.data.model.HostModel
 import com.example.nav_snmp.data.repository.HostRepository
-import com.example.nav_snmp.databinding.ActivityIpManualBinding
 import com.example.nav_snmp.databinding.ActivityOperacionSnmpBinding
 import com.example.nav_snmp.ui.viewmodel.HostViewModel
 import com.example.nav_snmp.ui.viewmodel.HostViewModelFactory
