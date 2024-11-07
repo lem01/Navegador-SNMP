@@ -22,7 +22,12 @@ interface SnmpManagerInterface {
 
     fun getNext(hostModel: HostModel, context: Context)
     fun set(hostModel: HostModel, context: Context)
-    fun walk(hostModel: HostModel, context: Context)
+    suspend fun walk(
+        hostModel: HostModel,
+        oid: String,
+        context: Context,
+        isShowProgress: Boolean
+    ): List<String>
 
     abstract fun mensajeAlert(context: Context, s: String, s1: String, successType: Int)
 }

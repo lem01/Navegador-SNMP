@@ -16,20 +16,15 @@ import com.example.nav_snmp.utils.TipoOperacion
 import com.example.nav_snmp.utils.VersionSnmp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import java.util.Locale
 
 class InformacionSistemaViewModel(
     private val repository: HostRepository,
     private val context: Context
 ) : ViewModel() {
 
-
-    private val _tiempoDeFuncionaiento = MutableLiveData<String>()
-    val tiempoDeFuncionaiento: MutableLiveData<String> get() = _tiempoDeFuncionaiento
-
-    private val _informacionSitemaModel = MutableLiveData<InformacionSistemaModel>()
-    val informacionSitemaModel: MutableLiveData<InformacionSistemaModel>
-        get() = _informacionSitemaModel
+    private val _sistemaModel = MutableLiveData<InformacionSistemaModel>()
+    val sistemaModel: MutableLiveData<InformacionSistemaModel>
+        get() = _sistemaModel
 
     private val _showInformacionSistema = MutableLiveData<Boolean>()
     val showInformacionSistema: MutableLiveData<Boolean> get() = _showInformacionSistema
@@ -63,10 +58,10 @@ class InformacionSistemaViewModel(
             VersionSnmp.V1.name -> {
                 val snmpManagerV1 = SnmpManagerV1()
 
-                _tiempoDeFuncionaiento.value = snmpManagerV1.get(
+                val tiempoDeFuncionaiento = snmpManagerV1.get(
                     host,
                     CommonOids.SYSTEM.SYS_UP_TIME,
-                    TipoOperacion.GET_NEXT,
+                    TipoOperacion.GET,
                     context,
                     false
                 )
@@ -74,54 +69,43 @@ class InformacionSistemaViewModel(
                 var fecha = snmpManagerV1.get(
                     host,
                     CommonOids.HOST.HR_SYSTEM_DATE,
-                    TipoOperacion.GET_NEXT,
+                    TipoOperacion.GET,
                     context,
                     false
                 )
-
-                fecha = Convertidor.convertirOctetStringAFecha(fecha)
+                fecha = Convertidor.getFormater(fecha,CommonOids.HOST.HR_SYSTEM_DATE)
 
                 val numeroDeUsuarios = snmpManagerV1.get(
                     host,
                     CommonOids.HOST.HR_SYSTEM_NUM_USERS,
-                    TipoOperacion.GET_NEXT,
+                    TipoOperacion.GET,
                     context,
                     false
                 )
                 val numeroDeProcesos = snmpManagerV1.get(
                     host,
                     CommonOids.HOST.HR_SYSTEM_PROCESSES,
-                    TipoOperacion.GET_NEXT,
+                    TipoOperacion.GET,
                     context,
                     false
                 )
                 val maximoNumeroDeProcesos = snmpManagerV1.get(
                     host,
                     CommonOids.HOST.HR_SYSTEM_MAX_PROCESSES,
-                    TipoOperacion.GET_NEXT,
+                    TipoOperacion.GET,
                     context,
                     false
                 )
 
-                _informacionSitemaModel.value = InformacionSistemaModel(
-                    _tiempoDeFuncionaiento.value.toString(),
+                _sistemaModel.value = InformacionSistemaModel(
+                    tiempoDeFuncionaiento,
                     fecha,
                     numeroDeUsuarios,
                     numeroDeProcesos,
                     maximoNumeroDeProcesos
                 )
-
-                withContext(Dispatchers.Main) {
-                    Toast.makeText(context, _tiempoDeFuncionaiento.value, Toast.LENGTH_SHORT)
-                        .show()
-                }
-
             }
-
         }
-
-//        val snmpManagerV2c = SnmpManagerV2c()
-//        snmpManagerV2c.get(host, context)
     }
 
     private fun isvalidIp(input: String): Boolean {
@@ -141,7 +125,6 @@ class InformacionSistemaViewModel(
     suspend fun getHostById(idHost: Int): HostModel {
         return repository.getHostById(idHost)
     }
-
 
 }
 

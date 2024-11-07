@@ -223,7 +223,6 @@ class SnmpManagerV1 : SnmpManagerInterface {
                         val respuesta = response.response.get(0).variable.toString()
                         continuation.resume(respuesta)
 
-
                     } else {
                         continuation.resumeWithException(Exception("Error en la respuesta SNMP"))
                     }
@@ -247,8 +246,83 @@ class SnmpManagerV1 : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
-    override fun walk(hostModel: HostModel, context: Context) {
-        TODO("Not yet implemented")
+    override suspend fun walk(
+        hostModel: HostModel,
+        oid: String,
+        context: Context,
+        isShowProgress: Boolean
+    ): List<String> {
+        return suspendCoroutine { continuation ->
+            val resultList = mutableListOf<String>()
+            CoroutineScope(Dispatchers.IO).launch {
+                lateinit var customProgressDialog: CustomProgressDialog
+                if (isShowProgress) {
+                    CoroutineScope(Dispatchers.Main).launch {
+                        customProgressDialog = CustomProgressDialog(context, "", "Cargando")
+                        customProgressDialog.show()
+                    }
+                }
+                delay(200)
+
+                try {
+                    val transport: TransportMapping<*> = DefaultUdpTransportMapping()
+                    snmp = Snmp(transport)
+                    snmp?.listen()
+
+                    val targetAddress: Address =
+                        GenericAddress.parse("udp:${hostModel.direccionIP}/${hostModel.puertoSNMP}")
+
+                    val communityTarget = CommunityTarget<Address>().apply {
+                        address = targetAddress
+                        community = OctetString(hostModel.comunidadSNMP)
+                        version = SnmpConstants.version1
+                        retries = 2
+                        timeout = 500
+                    }
+
+                    val pdu = PDU().apply {
+                            type = PDU.GETNEXT
+                        add(VariableBinding(OID(oid)))
+                    }
+
+                    var nextOid = OID(oid)
+                    while (true) {
+                        val response = snmp?.send(pdu, communityTarget)
+
+                        if (response?.response == null || response.response.errorStatus != PDU.noError) {
+                            break
+                        }
+
+                        val variableBinding = response.response.get(0)
+                        val variableOid = variableBinding.oid
+
+                        // Stop if we reach beyond the subtree of the initial OID
+                        if (!variableOid.startsWith(OID(oid))) break
+
+                        resultList.add(variableBinding.variable.toString())
+
+                        // Update the PDU with the next OID for walking
+                        nextOid = variableOid
+                        pdu.clear()
+                        pdu.add(VariableBinding(nextOid))
+                    }
+
+                    if (isShowProgress) {
+                        customProgressDialog.dismiss()
+                    }
+                    continuation.resume(resultList)
+                    close()
+                } catch (e: Exception) {
+                    if (isShowProgress) {
+                        customProgressDialog.dismiss()
+                    }
+                    e.printStackTrace()
+                    mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
+                    close()
+                    continuation.resume(emptyList())
+                }
+            }
+        }
     }
 
     suspend fun descubrirHost(hostModel: HostModelClass, context: Context): List<HostModelClass> {

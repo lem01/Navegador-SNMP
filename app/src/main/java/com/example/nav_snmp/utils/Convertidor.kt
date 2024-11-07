@@ -1,7 +1,10 @@
 package com.example.nav_snmp.utils
 
+import java.text.DecimalFormat
+import java.text.DecimalFormatSymbols
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 object Convertidor {
 
@@ -26,4 +29,43 @@ object Convertidor {
         val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss")
         return fecha.format(formatter)
     }
+
+    fun getFormater(s: String, oid: String): String {
+        var formater = ""
+        formater = when (oid) {
+
+            CommonOids.HOST.HR_SYSTEM_DATE -> {
+                convertirOctetStringAFecha(s)
+            }
+
+            else -> {
+                s
+            }
+        }
+
+        return formater
+    }
+
+    fun convertToGigabytes(unidadesAsignacion: String, tamanios: String): Double {
+        val totalBytes = unidadesAsignacion.toDouble() * tamanios.toDouble()
+        val totalGigabytes =
+            totalBytes / (1024.0 * 1024 * 1024)  // Usamos 1024.0 para hacer la división como Double
+        return totalGigabytes
+    }
+
+    fun formatDoubleToString(numbers: List<Double>): List<String> {
+        val symbols = DecimalFormatSymbols(Locale.US)
+        val oneDecimalFormat = DecimalFormat("#.#", symbols)
+        val twoDecimalFormat = DecimalFormat("#.##", symbols)
+
+        return numbers.map { number ->
+            val decimalPart = number - number.toInt()  // Obtiene solo la parte decimal
+            if (decimalPart in 0.00..0.09) {
+                oneDecimalFormat.format(number)  // Si la parte decimal está entre 0.00 y 0.09, formatea con un solo decimal
+            } else {
+                twoDecimalFormat.format(number)  // Si no, formatea con dos decimales
+            }
+        }
+    }
+
 }

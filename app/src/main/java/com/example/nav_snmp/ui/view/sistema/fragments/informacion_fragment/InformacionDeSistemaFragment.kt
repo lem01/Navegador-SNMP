@@ -44,15 +44,6 @@ class InformacionDeSistemaFragment : Fragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
-
-//        preferences = requireContext().getSharedPreferences("preferences", Context.MODE_PRIVATE)
-//        editor = preferences.edit()
-//
-//        var idHost = preferences.getInt(Preferencias.ID_HOST, 0)
-//        Toast.makeText(requireContext(), idHost, Toast.LENGTH_SHORT).show()
-//
-//        println("idHost: $idHost")
-
     }
 
     override fun onCreateView(
@@ -62,15 +53,11 @@ class InformacionDeSistemaFragment : Fragment() {
 
         initFactory()
 
-
         _binding = FragmentInformacionDeSitemaBinding.inflate(layoutInflater)
         val root: View = binding.root
 
-
-
         return root
     }
-
 
     companion object {
         /**
@@ -94,24 +81,25 @@ class InformacionDeSistemaFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-//                preferences = requireContext().getSharedPreferences("preferences", Context.MODE_PRIVATE)
-//        editor = preferences.edit()
-//
-//        var idHost = preferences.getInt(Preferencias.ID_HOST, 0)
-//        Toast.makeText(requireContext(), idHost, Toast.LENGTH_SHORT).show()
-//
-//        println("idHost: $idHost")
 
-//        viewModel = ViewModelProvider(this)[InformacionSistemaViewModel::class.java]
         lifecycleScope.launch {
             viewModel.cargarDatosSistema(requireContext())
         }
 
+        viewModel.sistemaModel.observe(viewLifecycleOwner) { sistemaModel ->
+            binding.tvTiempoFuncionamiento.text = sistemaModel?.tiempoDeFuncionamiento
+            binding.tvFecha.text = sistemaModel?.fecha
+            binding.tvNoUsuarios.text = sistemaModel?.numeroDeUsuarios
+            binding.tvNoProcesos.text = sistemaModel?.numeroDeProcesos
+            binding.tvMaxProcesos.text = sistemaModel?.maximoNumeroDeProcesos
+        }
+
         initBarraProgreso(viewModel)
 
-        viewModel.tiempoDeFuncionaiento.observe(viewLifecycleOwner) {
-            binding.tvTiempoFuncionamiento.text = it
-        }
+        initShowDatos(viewModel)
+    }
+
+    private fun initShowDatos(viewModel: InformacionSistemaViewModel) {
         viewModel.showInformacionSistema.observe(viewLifecycleOwner) {
             if (it) {
                 binding.lyInformacionDeSistema.visibility = View.VISIBLE
@@ -119,8 +107,6 @@ class InformacionDeSistemaFragment : Fragment() {
                 binding.lyInformacionDeSistema.visibility = View.GONE
             }
         }
-
-
     }
 
     private fun initBarraProgreso(viewModel: InformacionSistemaViewModel) {

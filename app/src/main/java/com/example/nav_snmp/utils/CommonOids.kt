@@ -3,29 +3,28 @@ package com.example.nav_snmp.utils
 class CommonOids {
 
     object SYSTEM {
-        const val SYS_DESCR = "1.3.6.1.2.1.1.1"
-        const val SYS_OBJECT_ID = "1.3.6.1.2.1.1.2"
-        const val SYS_UP_TIME = "1.3.6.1.2.1.1.3"
-        const val SYS_CONTACT = "1.3.6.1.2.1.1.4"
-        const val SYS_NAME = "1.3.6.1.2.1.1.5"
-        const val SYS_LOCATION = "1.3.6.1.2.1.1.6"
-        const val SYS_SERVICES = "1.3.6.1.2.1.1.7"
+        const val SYS_DESCR = "1.3.6.1.2.1.1.1.0"
+        const val SYS_OBJECT_ID = "1.3.6.1.2.1.1.2.0"
+        const val SYS_UP_TIME = "1.3.6.1.2.1.1.3.0"
+        const val SYS_CONTACT = "1.3.6.1.2.1.1.4.0"
+        const val SYS_NAME = "1.3.6.1.2.1.1.5.0"
+        const val SYS_LOCATION = "1.3.6.1.2.1.1.6.0"
+        const val SYS_SERVICES = "1.3.6.1.2.1.1.7.0"
     }
 
     object INTERFACES {
-        const val IF_NUMBER = "1.3.6.1.2.1.2.1"
-        const val IF_TABLE = "1.3.6.1.2.1.2.2"
-        const val IF_INDEX = "1.3.6.1.2.1.2.2.1"
-        const val IF_DESCR = "1.3.6.1.2.1.2.2.2"
-        const val IF_TYPE = "1.3.6.1.2.1.2.2.3"
-        const val IF_MTU = "1.3.6.1.2.1.2.2.4"
-        const val IF_SPEED = "1.3.6.1.2.1.2.2.5"
-        const val IF_PHYS_ADDRESS = "1.3.6.1.2.1.2.2.6"
-        const val IF_ADMIN_STATUS = "1.3.6.1.2.1.2.2.7"
-        const val IF_OPER_STATUS = "1.3.6.1.2.1.2.2.8"
-        const val IF_LAST_CHANGE = "1.3.6.1.2.1.2.2.9"
+        const val IF_INDEX = ".1.3.6.1.2.1.2.2.1.1"
+        const val IF_DESCR = ".1.3.6.1.2.1.2.2.1.2"
+        const val IF_TYPE = ".1.3.6.1.2.1.2.2.1.3"
+        const val IF_MTU = ".1.3.6.1.2.1.2.2.1.4"
+        const val IF_SPEED = ".1.3.6.1.2.1.2.2.1.5"
+        const val IF_PHYS_ADDRESS = ".1.3.6.1.2.1.2.2.1.6"
+        const val IF_ADMIN_STATUS = ".1.3.6.1.2.1.2.2.1.7"
+        const val IF_OPER_STATUS = ".1.3.6.1.2.1.2.2.1.7"
+        const val IF_LAST_CHANGE = ".1.3.6.1.2.1.2.2.1.9"
     }
 
+    //TODO: QUITARLA SI NP SE IDENTIFICA
     object NETWORK_ADDRESSES {
         const val IF_TABLE = "1.3.6.1.2.1.3.1"
         const val IF_XTABLE = "1.3.6.1.2.1.3.2"
@@ -37,9 +36,9 @@ class CommonOids {
     }
 
     object IP {
-        const val IP_FORWARDING = "1.3.6.1.2.1.4.1"
-        const val IP_DEFAULT_TTL = "1.3.6.1.2.1.4.2"
-        const val IP_IN_RECEIVES = "1.3.6.1.2.1.4.3"
+        const val IP_FORWARDING = ".1.3.6.1.2.1.4.1.0"
+        const val IP_DEFAULT_TTL = ".1.3.6.1.2.1.4.2.0"
+        const val IP_IN_RECEIVES = ".1.3.6.1.2.1.4.3.0"
     }
 
     object IP_ROUTE_TABLE {
@@ -55,10 +54,20 @@ class CommonOids {
     }
 
     object HOST {
-        const val HR_SYSTEM_DATE = "1.3.6.1.2.1.25.1.2"
-        const val HR_SYSTEM_NUM_USERS = "1.3.6.1.2.1.25.1.5"
-        const val HR_SYSTEM_PROCESSES = "1.3.6.1.2.1.25.1.5"
-        const val HR_SYSTEM_MAX_PROCESSES = "1.3.6.1.2.1.25.1.7"
+        const val HR_SYSTEM_UPTIME = "1.3.6.1.2.1.25.1.1.0"
+        const val HR_SYSTEM_DATE = "1.3.6.1.2.1.25.1.2.0"
+        const val HR_SYSTEM_NUM_USERS = "1.3.6.1.2.1.25.1.5.0"
+        const val HR_SYSTEM_PROCESSES = "1.3.6.1.2.1.25.1.6.0"
+        const val HR_SYSTEM_MAX_PROCESSES = "1.3.6.1.2.1.25.1.7.0"
+
+        object HRSTORAGE {
+            const val HR_STORAGE_TYPE = ".1.3.6.1.2.1.25.2.3.1.2"
+            const val HR_STORAGE_DESCR = ".1.3.6.1.2.1.25.2.3.1.3"
+            const val HR_STORAGE_ALLOCATION_UNITS = ".1.3.6.1.2.1.25.2.3.1.4"
+            const val HR_STORAGE_SIZE = ".1.3.6.1.2.1.25.2.3.1.5"
+            const val HR_STORAGE_USED = ".1.3.6.1.2.1.25.2.3.1.6"
+
+        }
 
     }
 

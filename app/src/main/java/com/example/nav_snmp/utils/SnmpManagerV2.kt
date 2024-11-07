@@ -118,9 +118,15 @@ class SnmpManagerV2c : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
-    override fun walk(hostModel: HostModel, context: Context) {
+    override suspend fun walk(
+        hostModel: HostModel,
+        oid: String,
+        context: Context,
+        isShowProgress: Boolean
+    ): List<String> {
         TODO("Not yet implemented")
     }
+
 
     override fun mensajeAlert(context: Context, s: String, s1: String, successType: Int) {
         CoroutineScope(Dispatchers.Main).launch {
