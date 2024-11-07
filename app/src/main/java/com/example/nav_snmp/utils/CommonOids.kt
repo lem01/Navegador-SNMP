@@ -54,6 +54,14 @@ class CommonOids {
         const val STARTING_TIME_ROUTING_TABLE_ENTRY = "1.3.6.1.2.1.4.21.1.18"
     }
 
+    object HOST {
+        const val HR_SYSTEM_DATE = "1.3.6.1.2.1.25.1.2"
+        const val HR_SYSTEM_NUM_USERS = "1.3.6.1.2.1.25.1.5"
+        const val HR_SYSTEM_PROCESSES = "1.3.6.1.2.1.25.1.5"
+        const val HR_SYSTEM_MAX_PROCESSES = "1.3.6.1.2.1.25.1.7"
+
+    }
+
     private val additionalOids = mutableMapOf<String, String>()
 
     fun getOid(name: String): String? {

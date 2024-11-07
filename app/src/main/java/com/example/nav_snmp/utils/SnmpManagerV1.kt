@@ -7,7 +7,6 @@ import android.widget.Toast
 import com.example.nav_snmp.data.model.HostModel
 import com.example.nav_snmp.data.model.HostModelClass
 import com.example.nav_snmp.ui.viewmodel.DescubrirHostViewModel
-import com.example.nav_snmp.ui.viewmodel.HostViewModel
 import id.ionbit.ionalert.IonAlert
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -29,7 +28,6 @@ import org.snmp4j.smi.OID
 import org.snmp4j.smi.OctetString
 import org.snmp4j.smi.VariableBinding
 import org.snmp4j.transport.DefaultUdpTransportMapping
-import java.io.Serializable
 import java.net.InetAddress
 import kotlin.coroutines.resume
 import kotlin.coroutines.resumeWithException
@@ -120,18 +118,74 @@ class SnmpManagerV1 : SnmpManagerInterface {
         hostModel: HostModel,
         oid: String,
         tipoOperacion: TipoOperacion,
-        context: Context
+        context: Context,
+        isShowPgrogress: Boolean
     ): String {
+        if (isShowPgrogress)
+            return suspendCoroutine { continuation ->
+                val mensaje = ""
+                CoroutineScope(Dispatchers.IO).launch {
+                    lateinit var customProgressDialog: CustomProgressDialog
+                    CoroutineScope(Dispatchers.Main).launch {
+                        customProgressDialog =
+                            CustomProgressDialog(context, "", "Cargando")
+                        customProgressDialog.show()
+                    }
+                    delay(200)
+                    try {
+                        val transport: TransportMapping<*> = DefaultUdpTransportMapping()
+                        snmp = Snmp(transport)
+                        snmp?.listen()
+
+                        val targetAddress: Address =
+                            GenericAddress.parse("udp:${hostModel.direccionIP}/${hostModel.puertoSNMP}")
+
+                        val communityTarget = CommunityTarget<Address>().apply {
+                            address = targetAddress
+                            community = OctetString(hostModel.comunidadSNMP)
+                            version = SnmpConstants.version1
+                            retries = 2
+                            timeout = 500
+                        }
+
+                        val pduType: Int = RecursoPdu().obtenerRecurso(tipoOperacion)
+
+                        val pdu = PDU().apply {
+                            type = pduType
+                            add(
+                                VariableBinding(OID(oid))
+                            )
+                        }
+
+                        val response = snmp?.send(pdu, communityTarget)
+
+                        if (response?.response == null)
+                            throw Exception("No respuesta recibida, la solicitud agotó el tiempo.")
+
+                        if (response.response.errorStatus != PDU.noError) {
+                            continuation.resumeWithException(Exception("Error en la respuesta SNMP"))
+                        }
+
+                        val respuesta = response.response.get(0).variable.toString()
+
+                        customProgressDialog.dismiss()
+                        continuation.resume(respuesta)
+                        close()
+                    } catch (e: Exception) {
+                        customProgressDialog.dismiss()
+                        e.printStackTrace()
+                        mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
+                        close()
+//                    continuation.resumeWithException(e)
+                        continuation.resume("")
+                    }
+                }
+            }
+
         return suspendCoroutine { continuation ->
             val mensaje = ""
             CoroutineScope(Dispatchers.IO).launch {
-                lateinit var customProgressDialog: CustomProgressDialog
-                CoroutineScope(Dispatchers.Main).launch {
-                    customProgressDialog =
-                        CustomProgressDialog(context, "", "Cargando")
-                    customProgressDialog.show()
-                }
-                delay(500)
+                delay(200)
                 try {
                     val transport: TransportMapping<*> = DefaultUdpTransportMapping()
                     snmp = Snmp(transport)
@@ -162,16 +216,19 @@ class SnmpManagerV1 : SnmpManagerInterface {
                     if (response?.response == null)
                         throw Exception("No respuesta recibida, la solicitud agotó el tiempo.")
 
+
                     if (response.response.errorStatus == PDU.noError) {
 //                        println("Respuesta: ${response.response.get(0)}")
-                        customProgressDialog.dismiss()
-                        continuation.resume(response.response.get(0).variable.toString())
+
+                        val respuesta = response.response.get(0).variable.toString()
+                        continuation.resume(respuesta)
+
+
                     } else {
                         continuation.resumeWithException(Exception("Error en la respuesta SNMP"))
                     }
                     close()
                 } catch (e: Exception) {
-                    customProgressDialog.dismiss()
                     e.printStackTrace()
                     mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
                     close()

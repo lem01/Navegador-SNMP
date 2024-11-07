@@ -12,7 +12,14 @@ interface SnmpManagerInterface {
     fun close()
     fun getOid()
     fun setOid()
-    suspend fun get(hostModel: HostModel,oid: String,tipoOperacion: TipoOperacion, context: Context): Any
+    suspend fun get(
+        hostModel: HostModel,
+        oid: String,
+        tipoOperacion: TipoOperacion,
+        context: Context,
+        isShowPgrogress: Boolean = true,
+    ): Any
+
     fun getNext(hostModel: HostModel, context: Context)
     fun set(hostModel: HostModel, context: Context)
     fun walk(hostModel: HostModel, context: Context)

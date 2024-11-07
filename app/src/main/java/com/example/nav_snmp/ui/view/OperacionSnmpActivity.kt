@@ -39,7 +39,7 @@ class OperacionSnmpActivity : AppCompatActivity() {
         initFactory()
         initSpinner()
 //todo: quitar luego
-        binding.include.etOid.setText("1.3.6.1.2.1.1.1")
+        binding.include.etOid.setText("1.3.6.1.2.1.25.1.2")
         hostViewModel.respuestaOperacion.observe(
             this, Observer { respuesta ->
                 binding.include.edDescripcion.setText(respuesta)
@@ -175,8 +175,8 @@ class OperacionSnmpActivity : AppCompatActivity() {
         binding.include.etNombreHost.isEnabled = false
         binding.include.etHostIp.isEnabled = false
         binding.include.spTipo.isEnabled = false
-        binding.include.edDescripcion.isEnabled = false
-        binding.include.edDescripcion.isFocusable = false
+//        binding.include.edDescripcion.isEnabled = false
+//        binding.include.edDescripcion.isFocusable = false
 
         binding.include.btnFormulario.isEnabled = true
 

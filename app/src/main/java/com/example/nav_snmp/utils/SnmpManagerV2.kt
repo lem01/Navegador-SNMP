@@ -104,7 +104,8 @@ class SnmpManagerV2c : SnmpManagerInterface {
         hostModel: HostModel,
         oid: String,
         tipoOperacion: TipoOperacion,
-        context: Context
+        context: Context,
+        isShowPgrogress: Boolean
     ): Any {
         TODO("Not yet implemented")
     }

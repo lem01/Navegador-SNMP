@@ -1,6 +1,6 @@
 package com.example.nav_snmp.data.model
 
-data class IformacionSistemaModel (
+data class InformacionSistemaModel (
     val tiempoDeFuncionamiento: String,
     val fecha: String,
     val numeroDeUsuarios: String,

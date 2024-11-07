@@ -14,6 +14,8 @@ import com.example.nav_snmp.utils.SnmpManagerV2c
 import kotlinx.coroutines.launch
 
 import androidx.lifecycle.ViewModel
+import com.example.nav_snmp.utils.CommonOids
+import com.example.nav_snmp.utils.Convertidor
 import com.example.nav_snmp.utils.TipoOperacion
 
 
@@ -93,7 +95,13 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
     ) {
         if (isvalidIp(hostModel.direccionIP)) {
             val snmpManagerV1 = SnmpManagerV1()
-           val respuesta =  snmpManagerV1.get(hostModel, oid, tipoOperacion, context)
+            var respuesta = snmpManagerV1.get(hostModel, oid, tipoOperacion, context)
+
+            if (oid == CommonOids.HOST.HR_SYSTEM_DATE) {
+                val fecha =
+                    Convertidor.convertirOctetStringAFecha(respuesta)
+                respuesta = fecha
+            }
 
             println("Respuesta: $respuesta")
 
