@@ -1,4 +1,4 @@
-package com.example.nav_snmp.ui.view.sistema
+package com.example.nav_snmp.ui.view.icmp
 
 import android.os.Bundle
 import androidx.activity.OnBackPressedCallback
@@ -9,17 +9,19 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import com.example.nav_snmp.R
+import com.example.nav_snmp.databinding.ActivityIcmpBinding
 import com.example.nav_snmp.databinding.ActivitySistemaBinding
 import com.google.android.material.tabs.TabLayout
 
-class SistemaActivity : AppCompatActivity() {
-    private lateinit var binding: ActivitySistemaBinding
+class IcmpActivity : AppCompatActivity() {
+
+    private lateinit var binding: ActivityIcmpBinding
     private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivitySistemaBinding.inflate(layoutInflater)
+        binding = ActivityIcmpBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -29,22 +31,28 @@ class SistemaActivity : AppCompatActivity() {
         }
 
         binding.toolbar.setNavigationOnClickListener {
-//            onBackPressedDispatcher.onBackPressed()
-            //salir de esta actividad
             finish()
         }
 
         initNavController()
+        initNav()
 
+        // Maneja el evento de retroceso del sistema
+        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                finish() // Finaliza la actividad
+            }
+        })
+    }
+
+    private fun initNav() {
         binding.tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
             override fun onTabSelected(tab: TabLayout.Tab) {
                 when (tab.position) {
-                    0 -> navController.navigate(R.id.informacion_sitema_fragment)
-                    1 -> navController.navigate(R.id.almacenamiento_fragment)
-                    2 -> navController.navigate(R.id.procesos_fragment)
+                    0 -> navController.navigate(R.id.icmpEntradaFragment)
+                    1 -> navController.navigate(R.id.icmpSalidaFragment)
                 }
             }
-
 
             override fun onTabUnselected(tab: TabLayout.Tab?) {
                 // no-op
@@ -54,19 +62,10 @@ class SistemaActivity : AppCompatActivity() {
                 // no-op
             }
         })
-
-        // Maneja el evento de retroceso del sistema
-        onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                finish() // Finaliza la actividad
-            }
-        })
-
     }
 
     private fun initNavController() {
         navController = findNavController(R.id.nav_host_fragment)
         binding.tabLayout.getTabAt(navController.graph.startDestinationId)
-
     }
 }

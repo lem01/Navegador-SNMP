@@ -65,5 +65,10 @@
     <string name="almacenamiento">Almacenamiento</string>
     <string name="icmp">icmp</string>
     <string name="procesos">Procesos</string>
+    <string name="herramientas">Herramientas</string>
+    <string name="datos_icmp">Datos ICMP</string>
+    <string name="icmp_entrada">ICMP Entrada</string>
+    <string name="icmp_salida">ICMP Salida</string>
+    <string name="tabla_de_conexiones_fragment">Tabla de conexiones</string>
 
 </resources>

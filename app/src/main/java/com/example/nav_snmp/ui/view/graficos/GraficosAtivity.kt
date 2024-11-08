@@ -8,6 +8,7 @@ import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.nav_snmp.R
 import com.example.nav_snmp.databinding.ActivityGraficosAtivityBinding
+import com.example.nav_snmp.ui.view.icmp.IcmpActivity
 import com.example.nav_snmp.ui.view.sistema.SistemaActivity
 
 class GraficosAtivity : AppCompatActivity() {
@@ -33,7 +34,11 @@ class GraficosAtivity : AppCompatActivity() {
             val intent = Intent(this, SistemaActivity::class.java)
             startActivity(intent)
         }
-    }
 
+        binding.cardViewIcmp.setOnClickListener{
+            val intent = Intent(this, IcmpActivity::class.java)
+            startActivity(intent)
+        }
+    }
 
 }

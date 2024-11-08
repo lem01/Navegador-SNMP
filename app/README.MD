@@ -10,12 +10,14 @@
 - [ ] Hacer snmp getbulk
 - [ ] Hacer snmp set
 - [ ] Descubrir host por icmp
-- [ ] Validar el swap de los tab view para que
-  navegue correctamente entre ellos:
-  ![img.png](img.png)
+
+- [ ] La vista almacenamiento debe mostar el espacio libre y el estado
 
 # En proceso
 
 # Hecho
 
 - [ ] Hacer snmp getwalk
+- [ ] Validar el swap de los tab view para que
+    navegue correctamente entre ellos:
+    ![img.png](img.png)

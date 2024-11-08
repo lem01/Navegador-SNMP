@@ -77,7 +77,7 @@ class AlmacenamientoFragment : Fragment() {
                 dividerDrawable =
                     resources.getDrawable(android.R.drawable.divider_horizontal_bright, null)
 
-                val headers = listOf("Indice", "Descripción", "Estado", "Errores")
+                val headers = listOf("Nombre", "Tamaño", "Usado", "Libre")
                 headers.forEach { header ->
                     addView(TextView(requireContext()).apply {
                         text = header
