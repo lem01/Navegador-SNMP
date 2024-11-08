@@ -66,9 +66,16 @@ class CommonOids {
             const val HR_STORAGE_ALLOCATION_UNITS = ".1.3.6.1.2.1.25.2.3.1.4"
             const val HR_STORAGE_SIZE = ".1.3.6.1.2.1.25.2.3.1.5"
             const val HR_STORAGE_USED = ".1.3.6.1.2.1.25.2.3.1.6"
-
         }
 
+        object HR_SWRUN {
+            const val HR_SWRUN_NAME = ".1.3.6.1.2.1.25.4.2.1.2"
+            const val HR_SWRUN_ID = ".1.3.6.1.2.1.25.4.2.1.3"
+            const val HR_SWRUN_PATH = ".1.3.6.1.2.1.25.4.2.1.4"
+            const val HR_SWRUN_PARAMETERS = ".1.3.6.1.2.1.25.4.2.1.5"
+            const val HR_SWRUN_TYPE = ".1.3.6.1.2.1.25.4.2.1.6"
+            const val HR_SWRUN_STATUS = ".1.3.6.1.2.1.25.4.2.1.7"
+        }
     }
 
     private val additionalOids = mutableMapOf<String, String>()

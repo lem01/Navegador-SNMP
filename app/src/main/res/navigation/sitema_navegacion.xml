@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/procesos_fragment"
-        android:name="com.example.nav_snmp.ui.view.sistema.fragments.ProcesosFragment"
+        android:name="com.example.nav_snmp.ui.view.sistema.fragments.procesos_fragment.ProcesosFragment"
         android:label="Procesos"
         tools:layout="@layout/fragment_procesos" />
 
