@@ -2,7 +2,6 @@ package com.example.nav_snmp.ui.view.sistema.fragments.procesos_fragment
 
 import android.content.Context
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -62,28 +61,79 @@ class ProcesosViewModel(
                     false
                 )
 
+                var listaEstado = snmpManagerV1.walk(
+                    host,
+                    CommonOids.HOST.HR_SWRUN.HR_SWRUN_STATUS,
+                    context,
+                    false
+                )
+
                 withContext(Dispatchers.Main) {
-                    Toast.makeText(
-                        context, "procesos: ${
-                            listaNombre.map {
-                                "$it   "
-                            }
-                        }", Toast.LENGTH_SHORT
-                    ).show()
+//                    Toast.makeText(
+//                        context, "procesos: ${
+//                            listaNombre.map {
+//                                "$it   "
+//                            }
+//                        }", Toast.LENGTH_SHORT
+//                    ).show()
 
                     Log.d(
-                        TAG, "procesos: ${
-                            listaNombre.map {
+                        TAG, "estados: ${
+                            listaEstado.map {
                                 "$it   "
                             }
                         }"
                     )
 
                 }
-                _procesoModel.value = getListaProcesosModel(listaNombre)
+                val listaErrores = getListaErrores(listaEstado)
+                listaEstado = getListaEstados(listaEstado)
+
+
+                _procesoModel.value = getListaProcesosModel(listaNombre, listaEstado, listaErrores)
             }
         }
     }
+
+    private fun getListaErrores(listaEstado: List<String>): List<String> {
+        val list = mutableListOf<String>()
+
+        listaEstado.map {
+            when (it) {
+                "2" -> list.add("0")  // "Corriendo" - No hay error
+                "3" -> list.add("0")  // "Advertencia" - No hay error grave, pero hay advertencia
+                "4" -> list.add("1")  // "En prueba" - Error, ya que está en fase de prueba
+                "5" -> list.add("1")  // "Apagado" - Error, el dispositivo está apagado
+                "6" -> list.add("1")  // "No presente" - Error, el dispositivo no está presente
+                "7" -> list.add("1")  // "Desactivado" - Error, el dispositivo está desactivado
+                else -> {
+                    list.add("0")  // Si no se reconoce el estado, se asume que no hay error
+                }
+            }
+        }
+
+        return list
+    }
+
+    private fun getListaEstados(listaEstado: List<String>): List<String> {
+        val list = mutableListOf<String>()
+        listaEstado.map { estado ->
+            when (estado) {
+                "1" -> list.add("Desconocido")    // unknown
+                "2" -> list.add("Corriendo")      // running
+                "3" -> list.add("Advertencia")    // warning
+                "4" -> list.add("En prueba")      // testing
+                "5" -> list.add("Apagado")        // down
+                "6" -> list.add("No presente")    // notPresent
+                "7" -> list.add("Desactivado")    // disabled
+                else -> {
+                    list.add("Desconocido")  // En caso de que el estado no sea reconocido
+                }
+            }
+        }
+        return list
+    }
+
 
     private fun isvalidIp(input: String): Boolean {
         // Expresión regular para IPv4
@@ -106,16 +156,18 @@ class ProcesosViewModel(
     //todo terminar
     private fun getListaProcesosModel(
         listaNombres: List<String>,
+        listaEstado: List<String>,
+        listaErrores: List<String>
 
-        ): List<ProcesosModel> {
+    ): List<ProcesosModel> {
         val listaProcesosModel = mutableListOf<ProcesosModel>()
         for (i in listaNombres.indices) {
             listaProcesosModel.add(
                 ProcesosModel(
+                    "${i + 1}",
                     listaNombres[i],
-                    "",
-                    "",
-                    ""
+                    listaEstado[i],
+                    listaErrores[i]
                 )
             )
         }

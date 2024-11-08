@@ -1,5 +1,6 @@
 package com.example.nav_snmp.ui.view.sistema.fragments.almacenamiento_fragment
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.text.TextUtils
 import android.view.Gravity
@@ -70,6 +71,30 @@ class AlmacenamientoFragment : Fragment() {
     private fun initTableLayout(viewModel: AlmacenamientoViewModel) {
 
         viewModel.almacenamientoModel.observe(viewLifecycleOwner) {
+
+            val headerRow = TableRow(requireContext()).apply {
+                showDividers = TableRow.SHOW_DIVIDER_MIDDLE
+                dividerDrawable =
+                    resources.getDrawable(android.R.drawable.divider_horizontal_bright, null)
+
+                val headers = listOf("Indice", "Descripción", "Estado", "Errores")
+                headers.forEach { header ->
+                    addView(TextView(requireContext()).apply {
+                        text = header
+                        layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                        gravity = Gravity.CENTER
+                        setPadding(
+                            5.dp.value.toInt(),
+                            5.dp.value.toInt(),
+                            5.dp.value.toInt(),
+                            8.dp.value.toInt()
+                        )
+                        setTypeface(typeface, Typeface.BOLD)
+                        setTextSize(16f)
+                    })
+                }
+            }
+            binding.tableLayout.addView(headerRow)
 
             it.map {
                 val tableRow = TableRow(requireContext()).apply {

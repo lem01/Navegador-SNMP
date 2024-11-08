@@ -88,6 +88,7 @@ class InformacionDeSistemaFragment : Fragment() {
             binding.tvNoUsuarios.text = sistemaModel?.numeroDeUsuarios
             binding.tvNoProcesos.text = sistemaModel?.numeroDeProcesos
             binding.tvMaxProcesos.text = sistemaModel?.maximoNumeroDeProcesos
+            binding.tvNombre.text = sistemaModel?.nombre
         }
 
         initBarraProgreso(viewModel)

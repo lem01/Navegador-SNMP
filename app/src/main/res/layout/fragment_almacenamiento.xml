@@ -27,67 +27,10 @@
             android:id="@+id/tableLayout"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:background="@null"
-            android:divider="@android:color/darker_gray"
+            android:divider="@android:color/black"
             android:showDividers="beginning|middle|end"
-            android:stretchColumns="1"
-            android:tint="@null">
+            android:stretchColumns="1">
 
-            <TableRow
-                android:id="@+id/row1"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:divider="@android:color/darker_gray"
-                android:orientation="horizontal"
-                android:showDividers="middle"
-                android:padding="8dp"
-               >
-
-                <TextView
-                    android:id="@+id/tv_nombre"
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="Nombre"
-                    android:textSize="15.5sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_tamaño"
-
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="Tamaño"
-                    android:textSize="15.5sp"
-                    android:textStyle="bold" />
-
-                <TextView
-                    android:id="@+id/tv_memoria_usada"
-
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="Memoria Usada"
-                    android:textSize="15.5sp"
-                    android:textStyle="bold"
-
-                    />
-
-                <TextView
-                    android:id="@+id/tv_memoria_libre"
-
-                    android:layout_width="100dp"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:padding="5dp"
-                    android:text="Memoria Libre"
-                    android:textSize="15.5sp"
-                    android:textStyle="bold" />
-            </TableRow>
         </TableLayout>
     </HorizontalScrollView>
 

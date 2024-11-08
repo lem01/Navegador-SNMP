@@ -1,12 +1,23 @@
 package com.example.nav_snmp.ui.view.sistema.fragments.procesos_fragment
 
+import android.graphics.Typeface
 import android.os.Bundle
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.FrameLayout
+import android.widget.ScrollView
+import android.widget.TableLayout
+import android.widget.TableRow
+import android.widget.TextView
+import androidx.compose.ui.res.colorResource
+import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
+import com.example.nav_snmp.R
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.databinding.FragmentProcesosBinding
 import com.example.nav_snmp.ui.view.sistema.fragments.almacenamiento_fragment.AlmacenamientoViewModel
@@ -58,9 +69,124 @@ class ProcesosFragment : Fragment() {
         initBarraProgreso(viewModel)
 
         initShowDatos(viewModel)
+        initTableLayout(viewModel)
 
     }
 
+    private fun initTableLayout(viewModel: ProcesosViewModel) {
+        val headerRow = TableRow(requireContext()).apply {
+            showDividers = TableRow.SHOW_DIVIDER_MIDDLE and TableRow.SHOW_DIVIDER_BEGINNING and TableRow.SHOW_DIVIDER_END
+            dividerDrawable =
+                resources.getDrawable(android.R.drawable.divider_horizontal_dark, null)
+
+            val headers = listOf("Indice", "Descripción", "Estado", "Errores")
+            headers.forEach { header ->
+                addView(TextView(requireContext()).apply {
+                    text = header
+                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                    gravity = Gravity.CENTER
+                    setPadding(
+                        5.dp.value.toInt(),
+                        5.dp.value.toInt(),
+                        5.dp.value.toInt(),
+                        8.dp.value.toInt()
+                    )
+                    setTypeface(typeface, Typeface.BOLD)
+                    setTextSize(16f)
+                })
+            }
+        }
+        binding.tableLayout.addView(headerRow)
+
+        val scrollView = ScrollView(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT
+            )
+        }
+
+        val contentTableLayout = TableLayout(requireContext()).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT
+            )
+        }
+
+        viewModel.procesoModel.observe(viewLifecycleOwner) {
+//            contentTableLayout.removeAllViews()
+
+            it.map { proceso ->
+                val tableRow = TableRow(requireContext()).apply {
+                    layoutParams = TableRow.LayoutParams(
+                        TableRow.LayoutParams.MATCH_PARENT,
+                        TableRow.LayoutParams.WRAP_CONTENT
+                    )
+                }
+
+                // Crear y agregar cada TextView con un divisor
+                val textView1 = TextView(requireContext()).apply {
+                    text = proceso.indice
+                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                    gravity = Gravity.CENTER
+                    setPadding(5.dp.value.toInt(), 5.dp.value.toInt(), 5.dp.value.toInt(), 8.dp.value.toInt())
+                }
+
+                val textView2 = TextView(requireContext()).apply {
+                    text = proceso.descripcion
+                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                    gravity = Gravity.CENTER
+                    setPadding(5.dp.value.toInt(), 5.dp.value.toInt(), 5.dp.value.toInt(), 8.dp.value.toInt())
+                }
+
+                val textView3 = TextView(requireContext()).apply {
+                    text = proceso.estado
+                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                    gravity = Gravity.CENTER
+                    setPadding(5.dp.value.toInt(), 5.dp.value.toInt(), 5.dp.value.toInt(), 8.dp.value.toInt())
+                }
+
+                val textView4 = TextView(requireContext()).apply {
+                    text = proceso.errores
+                    layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                    gravity = Gravity.CENTER
+                    setPadding(5.dp.value.toInt(), 5.dp.value.toInt(), 5.dp.value.toInt(), 8.dp.value.toInt())
+                }
+
+                // Agregar los TextViews y los divisores verticales
+                tableRow.addView(textView1)
+                tableRow.addView(createDivider()) // Divisor vertical
+                tableRow.addView(textView2)
+                tableRow.addView(createDivider()) // Divisor vertical
+                tableRow.addView(textView3)
+                tableRow.addView(createDivider()) // Divisor vertical
+                tableRow.addView(textView4)
+
+                // Envolver el TableRow en un FrameLayout para divisores horizontales
+                val frameLayout = FrameLayout(requireContext()).apply {
+                    background = ContextCompat.getDrawable(requireContext(), R.drawable.table_row_divider)
+                    addView(tableRow)
+                }
+
+                // Agregar el FrameLayout al TableLayout
+                contentTableLayout.addView(frameLayout)
+            }
+
+
+        }
+
+        // Agregar el TableLayout de contenido al ScrollView
+        scrollView.addView(contentTableLayout)
+
+        // Finalmente, agregar el ScrollView al TableLayout principal
+        binding.tableLayout.addView(scrollView)
+    }
+
+    private fun createDivider(): View {
+        return View(requireContext()).apply {
+            layoutParams = TableRow.LayoutParams(1.dp.value.toInt(), TableRow.LayoutParams.MATCH_PARENT)
+            setBackgroundColor(ContextCompat.getColor(requireContext(), android.R.color.darker_gray))
+        }
+    }
     private fun initShowDatos(viewModel: ProcesosViewModel) {
         viewModel.showDatos.observe(viewLifecycleOwner) {
             if (it) {

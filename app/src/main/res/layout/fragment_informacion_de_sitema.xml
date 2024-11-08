@@ -20,10 +20,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
-        android:visibility="invisible"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/linearProgressIndicator">
+
+        <com.google.android.material.card.MaterialCardView
+
+            android:id="@+id/card_nombre"
+            style="@style/Widget.Material3.CardView.Outlined"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:layout_marginTop="16dp"
+            android:layout_marginEnd="10dp"
+            android:paddingHorizontal="16dp"
+            app:cardCornerRadius="8dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/ly_nombre"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="start"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginVertical="8dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/label_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Nombre"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/tv_nombre"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginTop="6dp"
+                    android:text="Genérico" />
+            </LinearLayout>
+
+        </com.google.android.material.card.MaterialCardView>
 
         <com.google.android.material.card.MaterialCardView
 
@@ -96,7 +140,7 @@
                     android:id="@+id/label_fecha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Fecha"
+                    android:text="Fecha y Hora"
                     android:textSize="16sp"
                     android:textStyle="bold" />
 

@@ -73,7 +73,7 @@ class InformacionSistemaViewModel(
                     context,
                     false
                 )
-                fecha = Convertidor.getFormater(fecha,CommonOids.HOST.HR_SYSTEM_DATE)
+                fecha = Convertidor.getFormater(fecha, CommonOids.HOST.HR_SYSTEM_DATE)
 
                 val numeroDeUsuarios = snmpManagerV1.get(
                     host,
@@ -82,6 +82,7 @@ class InformacionSistemaViewModel(
                     context,
                     false
                 )
+
                 val numeroDeProcesos = snmpManagerV1.get(
                     host,
                     CommonOids.HOST.HR_SYSTEM_PROCESSES,
@@ -89,6 +90,7 @@ class InformacionSistemaViewModel(
                     context,
                     false
                 )
+
                 val maximoNumeroDeProcesos = snmpManagerV1.get(
                     host,
                     CommonOids.HOST.HR_SYSTEM_MAX_PROCESSES,
@@ -97,12 +99,22 @@ class InformacionSistemaViewModel(
                     false
                 )
 
+                var nombre = snmpManagerV1.get(
+                    host,
+                    CommonOids.SYSTEM.SYS_NAME,
+                    TipoOperacion.GET,
+                    context,
+                    false
+                )
+                nombre = nombre.ifEmpty { "Genérico" }
+
                 _sistemaModel.value = InformacionSistemaModel(
                     tiempoDeFuncionaiento,
                     fecha,
                     numeroDeUsuarios,
                     numeroDeProcesos,
-                    maximoNumeroDeProcesos
+                    maximoNumeroDeProcesos,
+                    nombre
                 )
             }
         }
