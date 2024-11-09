@@ -7,17 +7,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import com.example.nav_snmp.R
-import com.example.nav_snmp.databinding.ActivityGraficosAtivityBinding
+import com.example.nav_snmp.databinding.ActivityHerramientasBinding
 import com.example.nav_snmp.ui.view.icmp.IcmpActivity
 import com.example.nav_snmp.ui.view.sistema.SistemaActivity
+import com.example.nav_snmp.ui.view.tcp.TcpActivity
 
-class GraficosAtivity : AppCompatActivity() {
-    private lateinit var binding: ActivityGraficosAtivityBinding
+class HerramientasActivity : AppCompatActivity() {
+    private lateinit var binding: ActivityHerramientasBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
-        binding = ActivityGraficosAtivityBinding.inflate(layoutInflater)
+        binding = ActivityHerramientasBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
@@ -37,6 +38,11 @@ class GraficosAtivity : AppCompatActivity() {
 
         binding.cardViewIcmp.setOnClickListener{
             val intent = Intent(this, IcmpActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.cardViewTcp.setOnClickListener{
+            val intent = Intent(this, TcpActivity::class.java)
             startActivity(intent)
         }
     }

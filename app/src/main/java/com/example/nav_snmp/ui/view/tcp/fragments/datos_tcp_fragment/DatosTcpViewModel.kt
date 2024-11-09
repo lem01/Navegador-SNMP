@@ -1,11 +1,12 @@
-package com.example.nav_snmp.ui.view.icmp.fragments.icmp_salida_fragment
+package com.example.nav_snmp.ui.view.tcp.fragments.datos_tcp_fragment
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.example.nav_snmp.data.model.DatosTcpModel
 import com.example.nav_snmp.data.model.HostModel
-import com.example.nav_snmp.data.model.IcmpSalidaModel
+import com.example.nav_snmp.data.model.IcmpEntradaModel
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.utils.CommonOids
 import com.example.nav_snmp.utils.Preferencias
@@ -15,15 +16,16 @@ import com.example.nav_snmp.utils.VersionSnmp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class IcmpSalidaViewModel(
+
+class DatosTcpViewModel(
     private val repository: HostRepository,
     private val context: Context
 ) : ViewModel() {
-    private val TAG = "IcmpSalidaViewModel"
+    private val TAG = "DatosTcpViewModel"
 
-    private val _icmpModel = MutableLiveData<IcmpSalidaModel>()
-    val icmpModel: MutableLiveData<IcmpSalidaModel>
-        get() = _icmpModel
+    private val _datosTcpModel = MutableLiveData<DatosTcpModel>()
+    val datosTcpModel: MutableLiveData<DatosTcpModel>
+        get() = _datosTcpModel
 
     private val _showDatos = MutableLiveData<Boolean>()
     val showDatos: MutableLiveData<Boolean> get() = _showDatos
@@ -31,7 +33,7 @@ class IcmpSalidaViewModel(
     private val _barraProgreso = MutableLiveData<Boolean>()
     val barraProgreso: MutableLiveData<Boolean> get() = _barraProgreso
 
-    suspend fun cargarDatosSistema(requireContext: Context) {
+    suspend fun cargarDatos(requireContext: Context) {
 
         barraProgreso.postValue(true)
         _showDatos.postValue(false)
@@ -39,7 +41,7 @@ class IcmpSalidaViewModel(
         val preferences = requireContext.getSharedPreferences("preferences", Context.MODE_PRIVATE)
         val id = preferences.getInt(Preferencias.ID_HOST, 0)
         val host: HostModel = getHostById(id)
-//
+
         operacionesSnmp(host)
 
         barraProgreso.postValue(false)
@@ -58,96 +60,125 @@ class IcmpSalidaViewModel(
             VersionSnmp.V1.name -> {
                 val snmpManagerV1 = SnmpManagerV1()
 
-                val Enviados = snmpManagerV1.get(
+                var tiempoMinimoDeReTransmision = snmpManagerV1.get(
                     host,
-                    CommonOids.ICMP.ICMP_OUT_MSGS,
+                    CommonOids.TCP.TCP_RTO_MIN,
                     TipoOperacion.GET,
                     context,
                     false
                 )
 
-                var smpConError = snmpManagerV1.get(
+                var tiempoMaximoDeReTransmision = snmpManagerV1.get(
                     host,
-                    CommonOids.ICMP.ICMP_OUT_ERRORS,
+                    CommonOids.TCP.TCP_RTO_MAX,
+                    TipoOperacion.GET,
+                    context,
+                    false
+                )
+                var maximoDeConexiones = snmpManagerV1.get(
+                    host,
+                    CommonOids.TCP.TCP_MAX_CONN,
                     TipoOperacion.GET,
                     context,
                     false
                 )
 
-                val smpDestinoNoAlcanzable = snmpManagerV1.get(
+
+                ////////////////
+
+                var conexionesActivasIniciadas = snmpManagerV1.get(
                     host,
-                    CommonOids.ICMP.ICMP_OUT_DEST_UNREACH,
+                    CommonOids.TCP.TCP_ACTIVE_OPENS,
                     TipoOperacion.GET,
                     context,
                     false
                 )
 
-                val smpTiempoExcedente = snmpManagerV1.get(
+                var conexionesPasivasEstablecidas =
+                    snmpManagerV1.get( //solicitudes de conexion puede ser
+                        host,
+                        CommonOids.TCP.TCP_PASSIVE_OPENS,
+                        TipoOperacion.GET,
+                        context,
+                        false
+                    )
+
+                //todo sumar tambien tcpEstabResets
+                var intentosDeConexionesFallidos = snmpManagerV1.get(  //numero de intentos fallidos
                     host,
-                    CommonOids.ICMP.ICMP_OUT_TIME_EXCDS,
+                    CommonOids.TCP.TCP_ATTEMPT_FAILS,
                     TipoOperacion.GET,
                     context,
                     false
                 )
 
-                val smpProblemasDeParametros = snmpManagerV1.get(
+                var reinciosDeConexiones = snmpManagerV1.get(  //numero de intentos fallidos
                     host,
-                    CommonOids.ICMP.ICMP_OUT_PROBS,
+                    CommonOids.TCP.TCP_ESTAB_RESETS,
                     TipoOperacion.GET,
                     context,
                     false
                 )
 
-                var controlDeFlujo = snmpManagerV1.get(
+                ////////
+
+                var conexionesEstablecidasActuales = snmpManagerV1.get(
                     host,
-                    CommonOids.ICMP.ICMP_OUT_SRC_QENCHS,
+                    CommonOids.TCP.TCP_CURR_ESTAB,
                     TipoOperacion.GET,
                     context,
                     false
                 )
 
-                var smsDeRedireccion = snmpManagerV1.get(
+                var segmentosRecividios = snmpManagerV1.get(
                     host,
-                    CommonOids.ICMP.ICMP_OUT_REDIRECTS,
+                    CommonOids.TCP.TCP_IN_SEGS,
                     TipoOperacion.GET,
                     context,
                     false
                 )
 
-                var smpEco = snmpManagerV1.get(
+                var segmentosEnviados = snmpManagerV1.get(
                     host,
-                    CommonOids.ICMP.ICMP_OUT_ECHOS,
+                    CommonOids.TCP.TCP_OUT_SEGS,
                     TipoOperacion.GET,
                     context,
                     false
                 )
 
-                var smsMarcaDeTiempo = snmpManagerV1.get(
+
+                var segmentosReTransmitidos = snmpManagerV1.get(
                     host,
-                    CommonOids.ICMP.ICMP_OUT_TIMESTAMPS,
+                    CommonOids.TCP.TCP_RETRANS_SEGS,
                     TipoOperacion.GET,
                     context,
                     false
                 )
 
-                _icmpModel.value = IcmpSalidaModel(
-                    Enviados,
-                    smpConError,
-                    smpDestinoNoAlcanzable,
-                    smpTiempoExcedente,
-                    smpProblemasDeParametros,
-                    controlDeFlujo,
-                    smsDeRedireccion,
-                    smpEco,
-                    smsMarcaDeTiempo
+
+                tiempoMinimoDeReTransmision = validateDatosTcp(tiempoMinimoDeReTransmision)
+                tiempoMaximoDeReTransmision = validateDatosTcp(tiempoMaximoDeReTransmision)
+                maximoDeConexiones = validateDatosTcp(maximoDeConexiones)
+
+                _datosTcpModel.value = DatosTcpModel(
+                    tiempoMinimoDeReTransmision,
+                    tiempoMaximoDeReTransmision,
+                    maximoDeConexiones,
+                    conexionesActivasIniciadas,
+                    conexionesPasivasEstablecidas,
+                    intentosDeConexionesFallidos,
+                    reinciosDeConexiones,
+                    conexionesEstablecidasActuales,
+                    segmentosRecividios,
+                    segmentosEnviados,
+                    segmentosReTransmitidos,
                 )
 
-                withContext(Dispatchers.Main) {
-//                    Toast.makeText(context, "Datos cargados ${_icmpModel.map {  " ${it.}" }}", Toast.LENGTH_SHORT).show()
-                }
             }
         }
     }
+
+    private fun validateDatosTcp(s: String) = if (s == "-1") "Sin limite" else s
 
     private fun isvalidIp(input: String): Boolean {
         // Expresión regular para IPv4
@@ -169,15 +200,15 @@ class IcmpSalidaViewModel(
     }
 }
 
-class IcmpSalidaViewModelFactory(
+class DatosTcpViewModelFactory(
     private val repository: HostRepository,
     private val context: Context
 ) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(IcmpSalidaViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(DatosTcpViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return IcmpSalidaViewModel(repository, context) as T
+            return DatosTcpViewModel(repository, context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

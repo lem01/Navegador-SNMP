@@ -1,56 +1,40 @@
-package com.example.nav_snmp.ui.view.sistema.fragments.procesos_fragment
+package com.example.nav_snmp.ui.view.tcp.fragments.tabla_de_conexiones_fragment
 
-import android.graphics.Typeface
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
 import android.util.Log
-import android.view.Gravity
+import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.widget.FrameLayout
-import android.widget.ScrollView
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
-import androidx.compose.ui.res.colorResource
-import androidx.compose.ui.unit.dp
-import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.nav_snmp.R
-import com.example.nav_snmp.data.model.ProcesosModel
 import com.example.nav_snmp.data.model.TablaDeConexionesModel
 import com.example.nav_snmp.data.repository.HostRepository
-import com.example.nav_snmp.databinding.FragmentProcesosBinding
-import com.example.nav_snmp.ui.adapters.ProcesosAdapter
+import com.example.nav_snmp.databinding.FragmentTablaDeConexionesTcpBinding
 import com.example.nav_snmp.ui.adapters.TablaDeConexionesTCPAdapter
-import com.example.nav_snmp.ui.view.sistema.fragments.almacenamiento_fragment.AlmacenamientoViewModel
 import kotlinx.coroutines.launch
-import java.util.ArrayList
+
+// TODO: Rename parameter arguments, choose names that match
+// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+private const val ARG_PARAM1 = "param1"
+private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [ProcesosFragment.newInstance] factory method to
+ * Use the [TablaDeConexionesTCPFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class ProcesosFragment : Fragment() {
-    lateinit var adapter: ProcesosAdapter
-    lateinit var list: ArrayList<ProcesosModel>
-
-    private lateinit var viewModel: ProcesosViewModel
-    private var _binding: FragmentProcesosBinding? = null
-    private val binding get() = _binding!!
-
+class TablaDeConexionesTCPFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    private val ARG_PARAM1 = "param1"
-    private val ARG_PARAM2 = "param2"
+    lateinit var adapter: TablaDeConexionesTCPAdapter
+    lateinit var list: ArrayList<TablaDeConexionesModel>
+
+    private lateinit var viewModel: TablaDeConexionesTCPViewModel
+    private var _binding: FragmentTablaDeConexionesTcpBinding? = null
+    private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,7 +51,7 @@ class ProcesosFragment : Fragment() {
 
         initFactory()
 
-        _binding = FragmentProcesosBinding.inflate(layoutInflater)
+        _binding = FragmentTablaDeConexionesTcpBinding.inflate(layoutInflater)
         val root: View = binding.root
         return root
     }
@@ -83,51 +67,37 @@ class ProcesosFragment : Fragment() {
         initShowDatos(viewModel)
         initAdapter()
         initObservers(viewModel)
-
-    }
-
-    private fun initObservers(viewModel: ProcesosViewModel) {
-        viewModel.procesoModel.observe(viewLifecycleOwner) {
-            list.clear()
-            list.addAll(it)
-            this.adapter.notifyDataSetChanged()
-
-        }
     }
 
     private fun initAdapter() {
         list = ArrayList()
-        adapter = ProcesosAdapter(list, viewModel, requireContext())
+        adapter = TablaDeConexionesTCPAdapter(list, viewModel, requireContext())
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
 
-    private fun createDivider(): View {
-        return View(requireContext()).apply {
-            layoutParams =
-                TableRow.LayoutParams(1.dp.value.toInt(), TableRow.LayoutParams.MATCH_PARENT)
-            setBackgroundColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    android.R.color.darker_gray
-                )
-            )
-        }
+    private fun initObservers(viewModel: TablaDeConexionesTCPViewModel) {
+    viewModel.tablaDeConexionesModel.observe(viewLifecycleOwner) {
+        list.clear()
+        list.addAll(it)
+        this.adapter.notifyDataSetChanged()
+        Log.d("TablaDeConexionesTCP", "initObservers: $list")
     }
+}
 
-    private fun initShowDatos(viewModel: ProcesosViewModel) {
+    private fun initShowDatos(viewModel: TablaDeConexionesTCPViewModel) {
         viewModel.showDatos.observe(viewLifecycleOwner) {
             if (it) {
                 binding.tableLayout.visibility = View.VISIBLE
 
             } else {
                 binding.tableLayout.visibility = View.GONE
+
             }
         }
     }
 
-    private fun initBarraProgreso(viewModel: ProcesosViewModel) {
-        //todo
+    private fun initBarraProgreso(viewModel: TablaDeConexionesTCPViewModel) {
         viewModel.barraProgreso.observe(viewLifecycleOwner) {
             if (it) {
                 binding.linearProgressIndicator.visibility = View.VISIBLE
@@ -137,21 +107,21 @@ class ProcesosFragment : Fragment() {
         }
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null // Evita fugas de memoria
-
-    }
-
     private fun initFactory() {
         val repository = HostRepository(requireContext())
 
-        val viewModelFactory = ProcesosViewModelFactory(repository, requireContext())
+        val viewModelFactory =
+            TablaDeConexionesTCPViewModelFactory(repository, requireContext())
         viewModel =
             ViewModelProvider(
                 this,
                 viewModelFactory
-            )[ProcesosViewModel::class.java]
+            )[TablaDeConexionesTCPViewModel::class.java]
+    }
+
+    override fun onDestroyView() {
+        _binding = null // Evita fugas de memoria
+        super.onDestroyView()
     }
 
     companion object {
@@ -161,12 +131,12 @@ class ProcesosFragment : Fragment() {
          *
          * @param param1 Parameter 1.
          * @param param2 Parameter 2.
-         * @return A new instance of fragment ProcesosFragment.
+         * @return A new instance of fragment TablaDeConexionesFragment.
          */
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            ProcesosFragment().apply {
+            TablaDeConexionesTCPFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

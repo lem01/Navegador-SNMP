@@ -175,7 +175,6 @@ class AlmacenamientoFragment : Fragment() {
     }
 
     private fun initBarraProgreso(viewModel: AlmacenamientoViewModel) {
-        //todo
         viewModel.barraProgreso.observe(viewLifecycleOwner) {
             if (it) {
                 binding.linearProgressIndicator.visibility = View.VISIBLE

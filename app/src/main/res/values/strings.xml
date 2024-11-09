@@ -70,5 +70,9 @@
     <string name="icmp_entrada">ICMP Entrada</string>
     <string name="icmp_salida">ICMP Salida</string>
     <string name="tabla_de_conexiones_fragment">Tabla de conexiones</string>
+    <string name="datos_tcp">Datos TCP</string>
+    <string name="direccion_ip_local">IP Local</string>
+    <string name="direccion_ip_remota">IP Remota</string>
+    <string name="puerto_remoto">Puerto Remoto</string>
 
 </resources>

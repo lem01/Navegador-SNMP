@@ -109,6 +109,34 @@ class CommonOids {
         }
     }
 
+    object TCP {
+        const val TCP_RTO_ALGORITHM = ".1.3.6.1.2.1.6.1.0"
+        const val TCP_RTO_MIN = ".1.3.6.1.2.1.6.2.0"
+        const val TCP_RTO_MAX = ".1.3.6.1.2.1.6.3.0"
+        const val TCP_MAX_CONN = ".1.3.6.1.2.1.6.4.0"
+        const val TCP_ACTIVE_OPENS = ".1.3.6.1.2.1.6.5.0"
+        const val TCP_PASSIVE_OPENS = ".1.3.6.1.2.1.6.6.0"
+        const val TCP_ATTEMPT_FAILS = ".1.3.6.1.2.1.6.7.0"
+        const val TCP_ESTAB_RESETS = ".1.3.6.1.2.1.6.8.0"
+        const val TCP_CURR_ESTAB = ".1.3.6.1.2.1.6.9.0"
+        const val TCP_IN_SEGS = ".1.3.6.1.2.1.6.10.0"
+        const val TCP_OUT_SEGS = ".1.3.6.1.2.1.6.11.0"
+        const val TCP_RETRANS_SEGS = ".1.3.6.1.2.1.6.12.0"
+
+        // Tabla de conexiones TCP (TCP Connection Table)
+        object TCP_CONN_TABLE {
+            const val TCP_CONN_STATE = ".1.3.6.1.2.1.6.13.1.1"
+            const val TCP_CONN_LOCAL_ADDRESS = ".1.3.6.1.2.1.6.13.1.2"
+            const val TCP_CONN_LOCAL_PORT = ".1.3.6.1.2.1.6.13.1.3"
+            const val TCP_CONN_REM_ADDRESS = ".1.3.6.1.2.1.6.13.1.4"
+            const val TCP_CONN_REM_PORT = ".1.3.6.1.2.1.6.13.1.5"
+        }
+
+        const val TCP_IN_ERRS = ".1.3.6.1.2.1.6.14.0"
+        const val TCP_OUT_RSTS = ".1.3.6.1.2.1.6.15.0"
+    }
+
+
     private val additionalOids = mutableMapOf<String, String>()
 
     fun getOid(name: String): String? {
