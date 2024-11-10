@@ -59,7 +59,7 @@ class IpManualActivity : AppCompatActivity() {
             finish()
         }
 
-        binding.include.btnFormulario.setOnClickListener() {
+        binding.include.btnFormulario.setOnClickListener {
             if (!valitateFields())
                 return@setOnClickListener
 

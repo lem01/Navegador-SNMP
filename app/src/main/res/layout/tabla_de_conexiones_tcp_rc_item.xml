@@ -30,7 +30,7 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
+ />
 
         <TextView
             android:id="@+id/tv_direccion_ip_local"
@@ -45,7 +45,7 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
+ />
 
         <TextView
             android:id="@+id/tv_puerto_local"
@@ -60,7 +60,7 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
+ />
 
 
         <TextView
@@ -76,7 +76,7 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
+ />
 
         <TextView
             android:id="@+id/tv_puerto_remoto"
@@ -91,6 +91,6 @@
             android:textAlignment="center"
             android:textColor="@color/black"
             android:textSize="@dimen/text_size_medium"
-            android:textStyle="bold" />
+ />
     </TableRow>
 </androidx.constraintlayout.widget.ConstraintLayout>

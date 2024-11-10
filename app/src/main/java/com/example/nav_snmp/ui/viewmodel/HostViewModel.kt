@@ -36,8 +36,11 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
 
     fun snmpV1Test(hostModel: HostModel, context: Context) {
         if (isvalidIp(hostModel.direccionIP)) {
-            val snmpManagerV1 = SnmpManagerV1()
-            snmpManagerV1.snmpTest(hostModel, context)
+            val handler = android.os.Handler()
+            handler.postDelayed({
+                val snmpManagerV1 = SnmpManagerV1()
+                snmpManagerV1.snmpTest(hostModel, context)
+            }, 3000)
         }
 
     }

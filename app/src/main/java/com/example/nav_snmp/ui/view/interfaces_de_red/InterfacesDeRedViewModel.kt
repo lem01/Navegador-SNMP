@@ -1,26 +1,31 @@
-package com.example.nav_snmp.ui.view.tcp.fragments.tabla_de_conexiones_fragment
+package com.example.nav_snmp.ui.view.interfaces_de_red
 
 import android.content.Context
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.nav_snmp.data.model.HostModel
+import com.example.nav_snmp.data.model.InterfacesDeRedModel
 import com.example.nav_snmp.data.model.TablaDeConexionesTCPModel
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.utils.CommonOids
+import com.example.nav_snmp.utils.Convertidor
 import com.example.nav_snmp.utils.Preferencias
 import com.example.nav_snmp.utils.SnmpManagerV1
 import com.example.nav_snmp.utils.VersionSnmp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 
-class TablaDeConexionesTCPViewModel(
+class InterfacesDeRedViewModel(
     private val repository: HostRepository,
     private val context: Context
 ) : ViewModel() {
     private val TAG = "TablaDeConexionesViewModel"
 
-    private val _tablaDeConexionesTCPModel = MutableLiveData<List<TablaDeConexionesTCPModel>>()
-    val tablaDeConexionesTCPModel: MutableLiveData<List<TablaDeConexionesTCPModel>>
-        get() = _tablaDeConexionesTCPModel
+    private val _interfacesDeRedModel = MutableLiveData<List<InterfacesDeRedModel>>()
+    val interfacesDeRedModel: MutableLiveData<List<InterfacesDeRedModel>>
+        get() = _interfacesDeRedModel
 
     private val _showDatos = MutableLiveData<Boolean>()
     val showDatos: MutableLiveData<Boolean> get() = _showDatos
@@ -53,56 +58,86 @@ class TablaDeConexionesTCPViewModel(
         when (host.versionSNMP) {
             VersionSnmp.V1.name -> {
                 val snmpManagerV1 = SnmpManagerV1()
-                var estadoActual = snmpManagerV1.walk(
+                var descripcion = snmpManagerV1.walk(
                     host,
-                    CommonOids.TCP.TCP_CONN_TABLE.TCP_CONN_STATE,
+                    CommonOids.INTERFACE.IF_DESCR,
                     context,
                     false
                 )
 
-                /*
-                Estos valores representan la unidad de asignación de almacenamiento en bytes,
-                es decir, cuántos bytes corresponden a una unidad de almacenamiento.
-                Ejemplo :
-                Para el primer almacenamiento, la unidad de asignación es 4096 bytes (4 KB)
-                asignacion de 65536 bytes (64 KB)
-                */
-                val direccionIpLocal = snmpManagerV1.walk(
+                var tipo = snmpManagerV1.walk(
                     host,
-                    CommonOids.TCP.TCP_CONN_TABLE.TCP_CONN_LOCAL_ADDRESS,
+                    CommonOids.INTERFACE.IF_TYPE,
                     context,
                     false
                 )
 
-                val puertoLocal = snmpManagerV1.walk(
+                var velocidad = snmpManagerV1.walk(
                     host,
-                    CommonOids.TCP.TCP_CONN_TABLE.TCP_CONN_LOCAL_PORT,
+                    CommonOids.INTERFACE.IF_SPEED,
+                    context,
+                    false
+                )
+                var direccionMac = snmpManagerV1.walk(
+                    host,
+                    CommonOids.INTERFACE.IF_PHYS_ADDRESS,
+                    context,
+                    false
+                )
+                var estadoOperativo = snmpManagerV1.walk(
+                    host,
+                    CommonOids.INTERFACE.IF_OPER_STATUS,
+                    context,
+                    false
+                )
+                var estadoAdministrativo = snmpManagerV1.walk(
+                    host,
+                    CommonOids.INTERFACE.IF_ADMIN_STATUS,
                     context,
                     false
                 )
 
-                val direccionIpRemota = snmpManagerV1.walk(
+                var numeroDeBytesRecividos = snmpManagerV1.walk(
                     host,
-                    CommonOids.TCP.TCP_CONN_TABLE.TCP_CONN_REM_ADDRESS,
+                    CommonOids.INTERFACE.IF_IN_OCTETS,
+                    context,
+                    false
+                )
+                var numeroDeBytesEnviados = snmpManagerV1.walk(
+                    host,
+                    CommonOids.INTERFACE.IF_OU_OCTETS,
                     context,
                     false
                 )
 
-                val puertoRemoto = snmpManagerV1.walk(
-                    host,
-                    CommonOids.TCP.TCP_CONN_TABLE.TCP_CONN_REM_PORT,
-                    context,
-                    false
-                )
+                descripcion = descripcion.map {
+                    Convertidor.getFormater(it, CommonOids.INTERFACE.IF_DESCR)
+                }
+                tipo = tipo.map {
+                    Convertidor.getFormater(it, CommonOids.INTERFACE.IF_TYPE)
+                }
 
-                estadoActual = agregarDescripcionEstadoActual(estadoActual)
+                estadoAdministrativo = estadoAdministrativo.map {
+                    Convertidor.getFormater(it, CommonOids.INTERFACE.IF_ADMIN_STATUS)
+                }
 
-                _tablaDeConexionesTCPModel.value = unirEnUnaSolaLista(
-                    estadoActual,
-                    direccionIpLocal,
-                    puertoLocal,
-                    direccionIpRemota,
-                    puertoRemoto
+                estadoOperativo = estadoOperativo.map {
+                    Convertidor.getFormater(it, CommonOids.INTERFACE.IF_OPER_STATUS)
+                }
+
+                withContext(Dispatchers.Main) {
+                    Log.d("descripcion", "${descripcion.map { "dato: $it" }}")
+                }
+
+                _interfacesDeRedModel.value = unirEnUnaSolaLista(
+                    descripcion,
+                    tipo,
+                    velocidad,
+                    direccionMac,
+                    estadoOperativo,
+                    estadoAdministrativo,
+                    numeroDeBytesRecividos,
+                    numeroDeBytesEnviados
                 )
             }
 
@@ -129,21 +164,27 @@ class TablaDeConexionesTCPViewModel(
     }
 
     private fun unirEnUnaSolaLista(
-        estadoActual: List<String>,
-        direccionIpLocal: List<String>,
-        puertoLocal: List<String>,
-        direccionIpRemota: List<String>,
-        puertoRemoto: List<String>
-    ): List<TablaDeConexionesTCPModel> {
-        val list = mutableListOf<TablaDeConexionesTCPModel>()
-        for (i in estadoActual.indices) {
+        descripcion: List<String>,
+        tipo: List<String>,
+        velocidad: List<String>,
+        direccionMac: List<String>,
+        estadoOperativo: List<String>,
+        estadoAdministrativo: List<String>,
+        numeroDeBytesRecividos: List<String>,
+        numeroDeBytesEnviados: List<String>
+    ): List<InterfacesDeRedModel> {
+        val list = mutableListOf<InterfacesDeRedModel>()
+        for (i in descripcion.indices) {
             list.add(
-                TablaDeConexionesTCPModel(
-                    estadoActual[i],
-                    direccionIpLocal[i],
-                    puertoLocal[i],
-                    direccionIpRemota[i],
-                    puertoRemoto[i]
+                InterfacesDeRedModel(
+                    descripcion[i],
+                    tipo[i],
+                    velocidad[i],
+                    direccionMac[i],
+                    estadoOperativo[i],
+                    estadoAdministrativo[i],
+                    numeroDeBytesRecividos[i],
+                    numeroDeBytesEnviados[i]
                 )
             )
         }
@@ -169,15 +210,15 @@ class TablaDeConexionesTCPViewModel(
     }
 }
 
-class TablaDeConexionesTCPViewModelFactory(
+class InterfacesDeRedViewModelFactory(
     private val repository: HostRepository,
     private val context: Context
 ) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TablaDeConexionesTCPViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(InterfacesDeRedViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return TablaDeConexionesTCPViewModel(repository, context) as T
+            return InterfacesDeRedViewModel(repository, context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -17,6 +17,13 @@
         android:theme="@style/Theme.Snmp"
         tools:targetApi="31">
         <activity
+            android:screenOrientation="landscape"
+            android:name=".ui.view.interfaces_de_red.InterfacesDeRedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.udp.UdpActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.tcp.TcpActivity"
             android:exported="false" />
         <activity

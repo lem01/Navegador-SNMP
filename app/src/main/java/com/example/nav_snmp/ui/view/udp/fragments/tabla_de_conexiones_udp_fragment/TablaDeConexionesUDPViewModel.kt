@@ -1,26 +1,26 @@
-package com.example.nav_snmp.ui.view.tcp.fragments.tabla_de_conexiones_fragment
+package com.example.nav_snmp.ui.view.udp.fragments.tabla_de_conexiones_udp_fragment
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.nav_snmp.data.model.HostModel
-import com.example.nav_snmp.data.model.TablaDeConexionesTCPModel
+import com.example.nav_snmp.data.model.TablaDeconexionesUDPModel
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.utils.CommonOids
 import com.example.nav_snmp.utils.Preferencias
 import com.example.nav_snmp.utils.SnmpManagerV1
 import com.example.nav_snmp.utils.VersionSnmp
 
-class TablaDeConexionesTCPViewModel(
+class TablaDeConexionesUDPViewModel(
     private val repository: HostRepository,
     private val context: Context
 ) : ViewModel() {
-    private val TAG = "TablaDeConexionesViewModel"
+    private val TAG = "TablaDeConexionesUDPViewModel"
 
-    private val _tablaDeConexionesTCPModel = MutableLiveData<List<TablaDeConexionesTCPModel>>()
-    val tablaDeConexionesTCPModel: MutableLiveData<List<TablaDeConexionesTCPModel>>
-        get() = _tablaDeConexionesTCPModel
+    private val _tablaDeConexionesUDPModel = MutableLiveData<List<TablaDeconexionesUDPModel>>()
+    val tablaDeConexionesUDPModel: MutableLiveData<List<TablaDeconexionesUDPModel>>
+        get() = _tablaDeConexionesUDPModel
 
     private val _showDatos = MutableLiveData<Boolean>()
     val showDatos: MutableLiveData<Boolean> get() = _showDatos
@@ -53,56 +53,26 @@ class TablaDeConexionesTCPViewModel(
         when (host.versionSNMP) {
             VersionSnmp.V1.name -> {
                 val snmpManagerV1 = SnmpManagerV1()
-                var estadoActual = snmpManagerV1.walk(
+                var direccionIpLocal = snmpManagerV1.walk(
                     host,
-                    CommonOids.TCP.TCP_CONN_TABLE.TCP_CONN_STATE,
+                    CommonOids.UDP.UDP_TABLE.UDP_LOCAL_ADDRESS,
                     context,
                     false
                 )
 
-                /*
-                Estos valores representan la unidad de asignación de almacenamiento en bytes,
-                es decir, cuántos bytes corresponden a una unidad de almacenamiento.
-                Ejemplo :
-                Para el primer almacenamiento, la unidad de asignación es 4096 bytes (4 KB)
-                asignacion de 65536 bytes (64 KB)
-                */
-                val direccionIpLocal = snmpManagerV1.walk(
+                var puertoLocal = snmpManagerV1.walk(
                     host,
-                    CommonOids.TCP.TCP_CONN_TABLE.TCP_CONN_LOCAL_ADDRESS,
+                    CommonOids.UDP.UDP_TABLE.UDP_LOCAL_PORT,
                     context,
                     false
                 )
 
-                val puertoLocal = snmpManagerV1.walk(
-                    host,
-                    CommonOids.TCP.TCP_CONN_TABLE.TCP_CONN_LOCAL_PORT,
-                    context,
-                    false
-                )
 
-                val direccionIpRemota = snmpManagerV1.walk(
-                    host,
-                    CommonOids.TCP.TCP_CONN_TABLE.TCP_CONN_REM_ADDRESS,
-                    context,
-                    false
-                )
+//                estadoActual = agregarDescripcionEstadoActual(estadoActual)
 
-                val puertoRemoto = snmpManagerV1.walk(
-                    host,
-                    CommonOids.TCP.TCP_CONN_TABLE.TCP_CONN_REM_PORT,
-                    context,
-                    false
-                )
-
-                estadoActual = agregarDescripcionEstadoActual(estadoActual)
-
-                _tablaDeConexionesTCPModel.value = unirEnUnaSolaLista(
-                    estadoActual,
+                _tablaDeConexionesUDPModel.value = unirEnUnaSolaLista(
                     direccionIpLocal,
-                    puertoLocal,
-                    direccionIpRemota,
-                    puertoRemoto
+                    puertoLocal
                 )
             }
 
@@ -128,22 +98,13 @@ class TablaDeConexionesTCPViewModel(
         }
     }
 
-    private fun unirEnUnaSolaLista(
-        estadoActual: List<String>,
-        direccionIpLocal: List<String>,
-        puertoLocal: List<String>,
-        direccionIpRemota: List<String>,
-        puertoRemoto: List<String>
-    ): List<TablaDeConexionesTCPModel> {
-        val list = mutableListOf<TablaDeConexionesTCPModel>()
-        for (i in estadoActual.indices) {
+    private fun unirEnUnaSolaLista(direccionIpLocal: List<String>, puertoLocal: List<String>): List<TablaDeconexionesUDPModel> {
+        val list = mutableListOf<TablaDeconexionesUDPModel>()
+        for (i in direccionIpLocal.indices) {
             list.add(
-                TablaDeConexionesTCPModel(
-                    estadoActual[i],
+                TablaDeconexionesUDPModel(
                     direccionIpLocal[i],
                     puertoLocal[i],
-                    direccionIpRemota[i],
-                    puertoRemoto[i]
                 )
             )
         }
@@ -169,15 +130,15 @@ class TablaDeConexionesTCPViewModel(
     }
 }
 
-class TablaDeConexionesTCPViewModelFactory(
+class TablaDeConexionesUDPViewModelFactory(
     private val repository: HostRepository,
     private val context: Context
 ) :
     ViewModelProvider.Factory {
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(TablaDeConexionesTCPViewModel::class.java)) {
+        if (modelClass.isAssignableFrom(TablaDeConexionesUDPViewModel::class.java)) {
             @Suppress("UNCHECKED_CAST")
-            return TablaDeConexionesTCPViewModel(repository, context) as T
+            return TablaDeConexionesUDPViewModel(repository, context) as T
         }
         throw IllegalArgumentException("Unknown ViewModel class")
     }

@@ -9,8 +9,10 @@ import androidx.core.view.WindowInsetsCompat
 import com.example.nav_snmp.R
 import com.example.nav_snmp.databinding.ActivityHerramientasBinding
 import com.example.nav_snmp.ui.view.icmp.IcmpActivity
+import com.example.nav_snmp.ui.view.interfaces_de_red.InterfacesDeRedActivity
 import com.example.nav_snmp.ui.view.sistema.SistemaActivity
 import com.example.nav_snmp.ui.view.tcp.TcpActivity
+import com.example.nav_snmp.ui.view.udp.UdpActivity
 
 class HerramientasActivity : AppCompatActivity() {
     private lateinit var binding: ActivityHerramientasBinding
@@ -27,7 +29,7 @@ class HerramientasActivity : AppCompatActivity() {
             insets
         }
 
-        binding.toolbar.setNavigationOnClickListener{
+        binding.toolbar.setNavigationOnClickListener {
             onBackPressedDispatcher.onBackPressed()
         }
 
@@ -36,13 +38,23 @@ class HerramientasActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        binding.cardViewIcmp.setOnClickListener{
+        binding.cardViewIcmp.setOnClickListener {
             val intent = Intent(this, IcmpActivity::class.java)
             startActivity(intent)
         }
 
-        binding.cardViewTcp.setOnClickListener{
+        binding.cardViewTcp.setOnClickListener {
             val intent = Intent(this, TcpActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.cardViewUdp.setOnClickListener {
+            val intent = Intent(this, UdpActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.cardViewInterfacesDeRed.setOnClickListener {
+            val intent = Intent(this, InterfacesDeRedActivity::class.java)
             startActivity(intent)
         }
     }

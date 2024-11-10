@@ -1,35 +1,20 @@
 package com.example.nav_snmp.ui.view.sistema.fragments.procesos_fragment
 
-import android.graphics.Typeface
 import android.os.Bundle
-import android.os.Handler
-import android.os.Looper
-import android.util.Log
-import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.ViewTreeObserver
-import android.widget.FrameLayout
-import android.widget.ScrollView
-import android.widget.TableLayout
 import android.widget.TableRow
-import android.widget.TextView
-import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.nav_snmp.R
 import com.example.nav_snmp.data.model.ProcesosModel
-import com.example.nav_snmp.data.model.TablaDeConexionesModel
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.databinding.FragmentProcesosBinding
 import com.example.nav_snmp.ui.adapters.ProcesosAdapter
-import com.example.nav_snmp.ui.adapters.TablaDeConexionesTCPAdapter
-import com.example.nav_snmp.ui.view.sistema.fragments.almacenamiento_fragment.AlmacenamientoViewModel
 import kotlinx.coroutines.launch
 import java.util.ArrayList
 

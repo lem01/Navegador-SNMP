@@ -1,6 +1,8 @@
 package com.example.nav_snmp.ui.view.icmp.fragments.icmp_entrada_fragment
 
 import android.content.Context
+import android.util.Log
+import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -14,6 +16,7 @@ import com.example.nav_snmp.utils.TipoOperacion
 import com.example.nav_snmp.utils.VersionSnmp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import org.snmp4j.log.ConsoleLogAdapter
 
 class IcmpEntradaViewModel(
     private val repository: HostRepository,
@@ -54,97 +57,103 @@ class IcmpEntradaViewModel(
         }
 
 
-        when (host.versionSNMP) {
-            VersionSnmp.V1.name -> {
-                val snmpManagerV1 = SnmpManagerV1()
+        try {
+            when (host.versionSNMP) {
+                VersionSnmp.V1.name -> {
+                    val snmpManagerV1 = SnmpManagerV1()
 
-                val smsRecibidos = snmpManagerV1.get(
-                    host,
-                    CommonOids.ICMP.ICMP_IN_MSGS,
-                    TipoOperacion.GET,
-                    context,
-                    false
-                )
+                    val smsRecibidos = snmpManagerV1.get(
+                        host,
+                        CommonOids.ICMP.ICMP_IN_MSGS,
+                        TipoOperacion.GET,
+                        context,
+                        false
+                    )
 
-                var smpConError = snmpManagerV1.get(
-                    host,
-                    CommonOids.ICMP.ICMP_IN_ERRORS,
-                    TipoOperacion.GET,
-                    context,
-                    false
-                )
+                    var smpConError = snmpManagerV1.get(
+                        host,
+                        CommonOids.ICMP.ICMP_IN_ERRORS,
+                        TipoOperacion.GET,
+                        context,
+                        false
+                    )
 
-                val smpDestinoNoAlcanzable = snmpManagerV1.get(
-                    host,
-                    CommonOids.ICMP.ICMP_IN_DEST_UNREACH,
-                    TipoOperacion.GET,
-                    context,
-                    false
-                )
+                    val smpDestinoNoAlcanzable = snmpManagerV1.get(
+                        host,
+                        CommonOids.ICMP.ICMP_IN_DEST_UNREACH,
+                        TipoOperacion.GET,
+                        context,
+                        false
+                    )
 
-                val smpTiempoExcedente = snmpManagerV1.get(
-                    host,
-                    CommonOids.ICMP.ICMP_IN_TIME_EXCDS,
-                    TipoOperacion.GET,
-                    context,
-                    false
-                )
+                    val smpTiempoExcedente = snmpManagerV1.get(
+                        host,
+                        CommonOids.ICMP.ICMP_IN_TIME_EXCDS,
+                        TipoOperacion.GET,
+                        context,
+                        false
+                    )
 
-                val smpProblemasDeParametros = snmpManagerV1.get(
-                    host,
-                    CommonOids.ICMP.ICMP_IN_PROBS,
-                    TipoOperacion.GET,
-                    context,
-                    false
-                )
+                    val smpProblemasDeParametros = snmpManagerV1.get(
+                        host,
+                        CommonOids.ICMP.ICMP_IN_PROBS,
+                        TipoOperacion.GET,
+                        context,
+                        false
+                    )
 
-                var controlDeFlujo = snmpManagerV1.get(
-                    host,
-                    CommonOids.ICMP.ICMP_IN_SRC_QENCHS,
-                    TipoOperacion.GET,
-                    context,
-                    false
-                )
+                    var controlDeFlujo = snmpManagerV1.get(
+                        host,
+                        CommonOids.ICMP.ICMP_IN_SRC_QENCHS,
+                        TipoOperacion.GET,
+                        context,
+                        false
+                    )
 
-                var smsDeRedireccion = snmpManagerV1.get(
-                    host,
-                    CommonOids.ICMP.ICMP_IN_REDIRECTS,
-                    TipoOperacion.GET,
-                    context,
-                    false
-                )
+                    var smsDeRedireccion = snmpManagerV1.get(
+                        host,
+                        CommonOids.ICMP.ICMP_IN_REDIRECTS,
+                        TipoOperacion.GET,
+                        context,
+                        false
+                    )
 
-                var smpEco = snmpManagerV1.get(
-                    host,
-                    CommonOids.ICMP.ICMP_IN_ECHOS,
-                    TipoOperacion.GET,
-                    context,
-                    false
-                )
+                    var smpEco = snmpManagerV1.get(
+                        host,
+                        CommonOids.ICMP.ICMP_IN_ECHOS,
+                        TipoOperacion.GET,
+                        context,
+                        false
+                    )
 
-                var smsMarcaDeTiempo = snmpManagerV1.get(
-                    host,
-                    CommonOids.ICMP.ICMP_IN_TIMESTAMPS,
-                    TipoOperacion.GET,
-                    context,
-                    false
-                )
-                //todo
-                _icmpModel.value = IcmpEntradaModel(
-                    smsRecibidos,
-                    smpConError,
-                    smpDestinoNoAlcanzable,
-                    smpTiempoExcedente,
-                    smpProblemasDeParametros,
-                    controlDeFlujo,
-                    smsDeRedireccion,
-                    smpEco,
-                    smsMarcaDeTiempo
-                )
+                    var smsMarcaDeTiempo = snmpManagerV1.get(
+                        host,
+                        CommonOids.ICMP.ICMP_IN_TIMESTAMPS,
+                        TipoOperacion.GET,
+                        context,
+                        false
+                    )
+                    //todo
+                    _icmpModel.value = IcmpEntradaModel(
+                        smsRecibidos,
+                        smpConError,
+                        smpDestinoNoAlcanzable,
+                        smpTiempoExcedente,
+                        smpProblemasDeParametros,
+                        controlDeFlujo,
+                        smsDeRedireccion,
+                        smpEco,
+                        smsMarcaDeTiempo
+                    )
 
-                withContext(Dispatchers.Main) {
+                    withContext(Dispatchers.Main) {
 //                    Toast.makeText(context, "Datos cargados ${_icmpModel.map {  " ${it.}" }}", Toast.LENGTH_SHORT).show()
+                    }
                 }
+            }
+        } catch (e: Exception) {
+            withContext(Dispatchers.Main) {
+                Log.e(TAG, "Error al cargar los datos del sistema: ${e.message}")
             }
         }
     }

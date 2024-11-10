@@ -38,12 +38,92 @@ object Convertidor {
                 convertirOctetStringAFecha(s)
             }
 
+            CommonOids.INTERFACE.IF_DESCR -> {
+                octetStringToReadableString(s)
+            }
+
+            CommonOids.INTERFACE.IF_TYPE -> {
+                getInterfaceDescriptionType(s.toInt())
+            }
+
+            CommonOids.INTERFACE.IF_OPER_STATUS -> {
+                getInterfacesDescriptionStatusOper(s.toInt())
+            }
+
+            CommonOids.INTERFACE.IF_ADMIN_STATUS -> {
+                getInterfacesDescriptionAdminStatus(s.toInt())
+            }
+
             else -> {
                 s
             }
         }
 
         return formater
+    }
+
+    private fun getInterfacesDescriptionAdminStatus(toInt: Int): String {
+        return when (toInt) {
+            1 -> "Up ($toInt)"               // La interfaz está habilitada y activa
+            2 -> "Down ($toInt)"             // La interfaz está administrativamente deshabilitada
+            3 -> "Testing ($toInt)"          // La interfaz está en estado de prueba
+            4 -> "Unknown ($toInt)"          // Estado desconocido o no disponible
+            5 -> "Dormant ($toInt)"          // La interfaz está inactiva pero no completamente apagada
+            6 -> "Not Present ($toInt)"      // La interfaz no está físicamente presente
+            7 -> "Lower Layer Down ($toInt)" // Capa inferior inactiva
+            else -> "Unknown Status ($toInt)" // Estado no reconocido
+        }
+    }
+
+    private fun getInterfacesDescriptionStatusOper(toInt: Int): String {
+        return when (toInt) {
+            1 -> "Up ($toInt)"               // La interfaz está operativa
+            2 -> "Down ($toInt)"             // La interfaz está inactiva
+            3 -> "Testing ($toInt)"          // La interfaz está en estado de prueba
+            4 -> "Unknown ($toInt)"          // Estado operativo desconocido
+            5 -> "Dormant ($toInt)"          // La interfaz está inactiva pero puede activarse
+            6 -> "Not Present ($toInt)"      // La interfaz no está físicamente presente en el dispositivo
+            7 -> "Lower Layer Down ($toInt)" // Capa inferior de la interfaz está inactiva
+            else -> "Unknown Status ($toInt)" // Estado no reconocido
+        }
+
+    }
+
+    fun getInterfaceDescriptionType(ifType: Int): String {
+        return when (ifType) {
+            1 -> "Other ($ifType)"                           // Otro tipo no especificado
+            6 -> "Ethernet CSMACD ($ifType)"                 // Ethernet CSMACD (Carrier Sense Multiple Access with Collision Detection)
+            24 -> "Software Loopback ($ifType)"              // Software Loopback (para pruebas internas)
+            53 -> "Prop Point to Point Serial ($ifType)"     // Serial punto a punto
+            23 -> "PPP ($ifType)"                            // Point-to-Point Protocol (PPP)
+            62 -> "ISDN ($ifType)"                           // ISDN (Integrated Services Digital Network)
+            71 -> "Ieee80211 ($ifType)"
+            117 -> "Gigabit Ethernet ($ifType)"              // Ethernet a 1 Gbps
+            131 -> "Tunnel ($ifType)"                        // Tunnel (interfaz de túnel)
+            150 -> "DSL ($ifType)"                           // Digital Subscriber Line
+            161 -> "ATM ($ifType)"                           // Asynchronous Transfer Mode (ATM)
+            166 -> "Ethernet 3Mbps ($ifType)"                // Ethernet a 3 Mbps
+            170 -> "Fast Ethernet (100BaseT) ($ifType)"      // Fast Ethernet a 100 Mbps
+            176 -> "DOCSIS Cable MacLayer ($ifType)"         // Cable Modem DOCSIS
+            177 -> "DOCSIS Cable Upstream ($ifType)"         // Upstream de Cable Modem DOCSIS
+            180 -> "ATM (logical) ($ifType)"                 // ATM Lógica
+            181 -> "DOCSIS Cable Downstream ($ifType)"       // Downstream de Cable Modem DOCSIS
+            209 -> "ATM Virtual ($ifType)"                   // ATM Virtual
+            210 -> "MPLS ($ifType)"                          // Multiprotocol Label Switching (MPLS)
+            226 -> "Stacked VLAN ($ifType)"                  // VLAN apilada (Stacked)
+            237 -> "VPLS ($ifType)"                          // Virtual Private LAN Service (VPLS)
+            253 -> "HyperSCSI ($ifType)"                     // HyperSCSI
+            255 -> "Other Network Interface ($ifType)"       // Otra interfaz de red
+            else -> "Unknown ($ifType)"                       // Tipo desconocido
+        }
+    }
+
+    fun octetStringToReadableString(octetString: String): String {
+        // Convertimos cada par hexadecimal a un byte y los almacenamos en un array de bytes
+        val bytes = octetString.split(":").map { it.toInt(16).toByte() }.toByteArray()
+
+        // Convertimos el array de bytes a una cadena UTF-8
+        return String(bytes, Charsets.UTF_8)
     }
 
     fun convertToGigabytes(unidadesAsignacion: String, tamanios: String): Double {

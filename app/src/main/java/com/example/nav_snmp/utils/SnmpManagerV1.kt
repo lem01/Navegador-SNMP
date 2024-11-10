@@ -45,7 +45,6 @@ class SnmpManagerV1 : SnmpManagerInterface {
                 customProgressDialog =
                     CustomProgressDialog(context, "Conectando", "Conectando con el dispositivo")
                 customProgressDialog.show()
-
             }
 
             delay(500)
@@ -77,18 +76,22 @@ class SnmpManagerV1 : SnmpManagerInterface {
                 if (response?.response == null)
                     throw Exception("No respuesta recibida, la solicitud agotó el tiempo.")
 
-                if (response.response.errorStatus == PDU.noError) {
-
-                    mensajeAlert(context, "Correcto", "Conexión exitosa V1", IonAlert.SUCCESS_TYPE)
-
-                    println("Respuesta: ${response.response.get(0)}")
-
-                    customProgressDialog.dismiss()
-
+                if (response.response.errorStatus != PDU.noError) {
+                    val errorStatusText = response.response.errorStatusText
+//                    continuation.resumeWithException(Exception("Error en la respuesta SNMP: $errorStatusText"))
+                    throw Exception(errorStatusText)
                 }
+
+                mensajeAlert(context, "Correcto", "Conexión exitosa V1", IonAlert.SUCCESS_TYPE)
+
+                println("Respuesta: ${response.response.get(0)}")
+
+                customProgressDialog.dismiss()
+
                 close()
             } catch (e: Exception) {
-                customProgressDialog.dismiss()
+                if (customProgressDialog.isShowing)
+                    customProgressDialog.dismiss()
 
                 e.printStackTrace()
                 mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
@@ -163,7 +166,9 @@ class SnmpManagerV1 : SnmpManagerInterface {
                             throw Exception("No respuesta recibida, la solicitud agotó el tiempo.")
 
                         if (response.response.errorStatus != PDU.noError) {
-                            continuation.resumeWithException(Exception("Error en la respuesta SNMP"))
+                            val errorStatusText = response.response.errorStatusText
+//                            continuation.resumeWithException(Exception("Error en la respuesta SNMP: $errorStatusText"))
+                            throw Exception(errorStatusText)
                         }
 
                         val respuesta = response.response.get(0).variable.toString()
@@ -172,12 +177,12 @@ class SnmpManagerV1 : SnmpManagerInterface {
                         continuation.resume(respuesta)
                         close()
                     } catch (e: Exception) {
-                        customProgressDialog.dismiss()
+                        if (customProgressDialog.isShowing)
+                            customProgressDialog.dismiss()
                         e.printStackTrace()
                         mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
                         close()
-//                    continuation.resumeWithException(e)
-                        continuation.resume("")
+//                        continuation.resumeWithException(e)
                     }
                 }
             }
@@ -217,15 +222,14 @@ class SnmpManagerV1 : SnmpManagerInterface {
                         throw Exception("No respuesta recibida, la solicitud agotó el tiempo.")
 
 
-                    if (response.response.errorStatus == PDU.noError) {
-//                        println("Respuesta: ${response.response.get(0)}")
-
-                        val respuesta = response.response.get(0).variable.toString()
-                        continuation.resume(respuesta)
-
-                    } else {
-                        continuation.resumeWithException(Exception("Error en la respuesta SNMP"))
+                    if (response.response.errorStatus != PDU.noError) {
+                        val errorStatusText = response.response.errorStatusText
+                        throw Exception(errorStatusText)
                     }
+
+                    val respuesta = response.response.get(0).variable.toString()
+                    continuation.resume(respuesta)
+
                     close()
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -281,7 +285,7 @@ class SnmpManagerV1 : SnmpManagerInterface {
                     }
 
                     val pdu = PDU().apply {
-                            type = PDU.GETNEXT
+                        type = PDU.GETNEXT
                         add(VariableBinding(OID(oid)))
                     }
 
@@ -314,7 +318,8 @@ class SnmpManagerV1 : SnmpManagerInterface {
                     close()
                 } catch (e: Exception) {
                     if (isShowProgress) {
-                        customProgressDialog.dismiss()
+                        if (customProgressDialog.isShowing)
+                            customProgressDialog.dismiss()
                     }
                     e.printStackTrace()
                     mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)

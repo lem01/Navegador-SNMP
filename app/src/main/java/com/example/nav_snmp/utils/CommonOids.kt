@@ -12,18 +12,6 @@ class CommonOids {
         const val SYS_SERVICES = "1.3.6.1.2.1.1.7.0"
     }
 
-    object INTERFACES {
-        const val IF_INDEX = ".1.3.6.1.2.1.2.2.1.1"
-        const val IF_DESCR = ".1.3.6.1.2.1.2.2.1.2"
-        const val IF_TYPE = ".1.3.6.1.2.1.2.2.1.3"
-        const val IF_MTU = ".1.3.6.1.2.1.2.2.1.4"
-        const val IF_SPEED = ".1.3.6.1.2.1.2.2.1.5"
-        const val IF_PHYS_ADDRESS = ".1.3.6.1.2.1.2.2.1.6"
-        const val IF_ADMIN_STATUS = ".1.3.6.1.2.1.2.2.1.7"
-        const val IF_OPER_STATUS = ".1.3.6.1.2.1.2.2.1.7"
-        const val IF_LAST_CHANGE = ".1.3.6.1.2.1.2.2.1.9"
-    }
-
     //TODO: QUITARLA SI NP SE IDENTIFICA
     object NETWORK_ADDRESSES {
         const val IF_TABLE = "1.3.6.1.2.1.3.1"
@@ -136,6 +124,28 @@ class CommonOids {
         const val TCP_OUT_RSTS = ".1.3.6.1.2.1.6.15.0"
     }
 
+    object UDP {
+        const val UDP_IN_DATAGRAMS = ".1.3.6.1.2.1.7.1.0"
+        const val UDP_NO_PORTS = ".1.3.6.1.2.1.7.2.0"
+        const val UDP_IN_ERRORS = ".1.3.6.1.2.1.7.3.0"
+        const val UDP_OUT_DATAGRAMS = ".1.3.6.1.2.1.7.4.0"
+
+        object UDP_TABLE {
+            const val UDP_LOCAL_ADDRESS = ".1.3.6.1.2.1.7.5.1.1"
+            const val UDP_LOCAL_PORT = ".1.3.6.1.2.1.7.5.1.2"
+        }
+    }
+
+    object INTERFACE {
+        const val IF_DESCR = ".1.3.6.1.2.1.2.2.1.2"
+        const val IF_TYPE = ".1.3.6.1.2.1.2.2.1.3"
+        const val IF_SPEED = ".1.3.6.1.2.1.2.2.1.5"
+        const val IF_PHYS_ADDRESS = ".1.3.6.1.2.1.2.2.1.6"
+        const val IF_ADMIN_STATUS = ".1.3.6.1.2.1.2.2.1.7"
+        const val IF_OPER_STATUS = ".1.3.6.1.2.1.2.2.1.8"
+        const val IF_IN_OCTETS = ".1.3.6.1.2.1.2.2.1.10"
+        const val IF_OU_OCTETS = ".1.3.6.1.2.1.2.2.1.16"
+    }
 
     private val additionalOids = mutableMapOf<String, String>()
 

@@ -74,5 +74,7 @@
     <string name="direccion_ip_local">IP Local</string>
     <string name="direccion_ip_remota">IP Remota</string>
     <string name="puerto_remoto">Puerto Remoto</string>
+    <string name="datos_udp">Datos UDP</string>
+    <string name="interaces_de_red">Interfaces de Red</string>
 
 </resources>

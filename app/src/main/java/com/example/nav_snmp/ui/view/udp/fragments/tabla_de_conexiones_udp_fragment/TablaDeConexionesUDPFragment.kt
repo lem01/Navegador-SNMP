@@ -1,4 +1,4 @@
-package com.example.nav_snmp.ui.view.tcp.fragments.tabla_de_conexiones_fragment
+package com.example.nav_snmp.ui.view.udp.fragments.tabla_de_conexiones_udp_fragment
 
 import android.os.Bundle
 import android.util.Log
@@ -10,9 +10,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nav_snmp.data.model.TablaDeConexionesTCPModel
+import com.example.nav_snmp.data.model.TablaDeconexionesUDPModel
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.databinding.FragmentTablaDeConexionesTcpBinding
-import com.example.nav_snmp.ui.adapters.TablaDeConexionesTCPAdapter
+import com.example.nav_snmp.databinding.FragmentTablaDeConexionesUdpBinding
+import com.example.nav_snmp.ui.adapters.TablaDeConexionesUDPAdapter
 import kotlinx.coroutines.launch
 
 // TODO: Rename parameter arguments, choose names that match
@@ -22,18 +24,18 @@ private const val ARG_PARAM2 = "param2"
 
 /**
  * A simple [Fragment] subclass.
- * Use the [TablaDeConexionesTCPFragment.newInstance] factory method to
+ * Use the [TablaDeConexionesUDPFragment.newInstance] factory method to
  * create an instance of this fragment.
  */
-class TablaDeConexionesTCPFragment : Fragment() {
+class TablaDeConexionesUDPFragment : Fragment() {
     // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
-    lateinit var adapter: TablaDeConexionesTCPAdapter
-    lateinit var list: ArrayList<TablaDeConexionesTCPModel>
+    lateinit var adapter: TablaDeConexionesUDPAdapter
+    lateinit var list: ArrayList<TablaDeconexionesUDPModel>
 
-    private lateinit var viewModel: TablaDeConexionesTCPViewModel
-    private var _binding: FragmentTablaDeConexionesTcpBinding? = null
+    private lateinit var viewModel: TablaDeConexionesUDPViewModel
+    private var _binding: FragmentTablaDeConexionesUdpBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -51,7 +53,7 @@ class TablaDeConexionesTCPFragment : Fragment() {
 
         initFactory()
 
-        _binding = FragmentTablaDeConexionesTcpBinding.inflate(layoutInflater)
+        _binding = FragmentTablaDeConexionesUdpBinding.inflate(layoutInflater)
         val root: View = binding.root
         return root
     }
@@ -71,13 +73,13 @@ class TablaDeConexionesTCPFragment : Fragment() {
 
     private fun initAdapter() {
         list = ArrayList()
-        adapter = TablaDeConexionesTCPAdapter(list, viewModel, requireContext())
+        adapter = TablaDeConexionesUDPAdapter(list, viewModel, requireContext())
         binding.recyclerView.layoutManager = LinearLayoutManager(requireContext())
         binding.recyclerView.adapter = adapter
     }
 
-    private fun initObservers(viewModel: TablaDeConexionesTCPViewModel) {
-    viewModel.tablaDeConexionesTCPModel.observe(viewLifecycleOwner) {
+    private fun initObservers(viewModel: TablaDeConexionesUDPViewModel) {
+    viewModel.tablaDeConexionesUDPModel.observe(viewLifecycleOwner) {
         list.clear()
         list.addAll(it)
         this.adapter.notifyDataSetChanged()
@@ -85,7 +87,7 @@ class TablaDeConexionesTCPFragment : Fragment() {
     }
 }
 
-    private fun initShowDatos(viewModel: TablaDeConexionesTCPViewModel) {
+    private fun initShowDatos(viewModel: TablaDeConexionesUDPViewModel) {
         viewModel.showDatos.observe(viewLifecycleOwner) {
             if (it) {
                 binding.tableLayout.visibility = View.VISIBLE
@@ -97,7 +99,7 @@ class TablaDeConexionesTCPFragment : Fragment() {
         }
     }
 
-    private fun initBarraProgreso(viewModel: TablaDeConexionesTCPViewModel) {
+    private fun initBarraProgreso(viewModel: TablaDeConexionesUDPViewModel) {
         viewModel.barraProgreso.observe(viewLifecycleOwner) {
             if (it) {
                 binding.linearProgressIndicator.visibility = View.VISIBLE
@@ -111,12 +113,12 @@ class TablaDeConexionesTCPFragment : Fragment() {
         val repository = HostRepository(requireContext())
 
         val viewModelFactory =
-            TablaDeConexionesTCPViewModelFactory(repository, requireContext())
+            TablaDeConexionesUDPViewModelFactory(repository, requireContext())
         viewModel =
             ViewModelProvider(
                 this,
                 viewModelFactory
-            )[TablaDeConexionesTCPViewModel::class.java]
+            )[TablaDeConexionesUDPViewModel::class.java]
     }
 
     override fun onDestroyView() {
@@ -136,7 +138,7 @@ class TablaDeConexionesTCPFragment : Fragment() {
         // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
-            TablaDeConexionesTCPFragment().apply {
+            TablaDeConexionesUDPFragment().apply {
                 arguments = Bundle().apply {
                     putString(ARG_PARAM1, param1)
                     putString(ARG_PARAM2, param2)

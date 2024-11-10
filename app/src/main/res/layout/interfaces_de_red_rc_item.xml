@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TableRow
+        android:id="@+id/tableRow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/black"
+        android:showDividers="middle|end|beginning"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tv_descripcion"
+            android:layout_width="220dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:padding="5dp"
+            android:paddingBottom="8dp"
+            android:text="Descripción"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+/>
+
+        <TextView
+            android:id="@+id/tv_tipo"
+            android:layout_width="120dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:padding="5dp"
+            android:paddingBottom="8dp"
+            android:text="Tipo"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+/>
+
+        <TextView
+            android:id="@+id/tv_velcidad"
+            android:layout_width="120dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:padding="5dp"
+            android:paddingBottom="8dp"
+            android:text="Velocidad"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+/>
+
+
+        <TextView
+            android:id="@+id/tv_direccion_mac"
+            android:layout_width="120dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:padding="5dp"
+            android:paddingBottom="8dp"
+            android:text="Dirección Física"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+/>
+
+        <TextView
+            android:id="@+id/tv_estado_operativo"
+            android:layout_width="120dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:padding="5dp"
+            android:paddingBottom="8dp"
+            android:text="Estado Operativo"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+/>
+
+        <TextView
+            android:id="@+id/tv_estado_adrministrativo"
+            android:layout_width="120dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:padding="5dp"
+            android:paddingBottom="8dp"
+            android:text="Estado Administrativo"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+/>
+        <TextView
+            android:id="@+id/tv_numero_de_bytes_recibidos"
+            android:layout_width="120dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:padding="5dp"
+            android:paddingBottom="8dp"
+            android:text="Bytes Recibidos"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+/>
+
+        <TextView
+            android:id="@+id/tv_numero_de_bytes_enviados"
+            android:layout_width="120dp"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textAlignment="center"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:padding="5dp"
+            android:paddingBottom="8dp"
+            android:text="Bytes Enviados"
+            android:textColor="@color/black"
+            android:textSize="@dimen/text_size_medium"
+/>
+    </TableRow>
+</androidx.constraintlayout.widget.ConstraintLayout>

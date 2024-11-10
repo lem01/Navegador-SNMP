@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/udp_navegacion"
+    app:startDestination="@id/datagramasUdpFragment">
+
+    <fragment
+        android:id="@+id/datagramasUdpFragment"
+        android:name="com.example.nav_snmp.ui.view.udp.fragments.datagramas_udp_fragment.DatagramasUdpFragment"
+        android:label="fragment_datagramas_udp"
+        tools:layout="@layout/fragment_datagramas_udp" />
+    <fragment
+        android:id="@+id/tablaDeConexionesUDPFragment"
+        android:name="com.example.nav_snmp.ui.view.udp.fragments.tabla_de_conexiones_udp_fragment.TablaDeConexionesUDPFragment"
+        android:label="fragment_tabla_de_conexiones_udp"
+        tools:layout="@layout/fragment_tabla_de_conexiones_udp" />
+</navigation>

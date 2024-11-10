@@ -467,7 +467,6 @@
         </LinearLayout>
     </ScrollView>
 
-
     <include
         android:id="@+id/include"
         layout="@layout/no_se_pudo_obtener_informacion"
