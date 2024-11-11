@@ -14,6 +14,7 @@ import com.example.nav_snmp.utils.SnmpManagerV2c
 import kotlinx.coroutines.launch
 
 import androidx.lifecycle.ViewModel
+import com.example.nav_snmp.data.model.OperacionModel
 import com.example.nav_snmp.utils.CommonOids
 import com.example.nav_snmp.utils.Convertidor
 import com.example.nav_snmp.utils.TipoOperacion
@@ -21,8 +22,11 @@ import com.example.nav_snmp.utils.TipoOperacion
 
 class HostViewModel(private val repository: HostRepository) : ViewModel() {
 
-    private val _respuestaOperacionSnmp = MutableLiveData<String>()
-    val respuestaOperacion: LiveData<String> get() = _respuestaOperacionSnmp
+    private val _operacionModel = MutableLiveData<OperacionModel>()
+    val operacionModel: LiveData<OperacionModel> get() = _operacionModel
+
+//    private val _respuestaOperacionSnmp = MutableLiveData<String>()
+//    val respuestaOperacion: LiveData<String> get() = _respuestaOperacionSnmp
 
     private val _allHosts = MutableLiveData<List<HostModel>>()
     val allHosts: LiveData<List<HostModel>> get() = _allHosts
@@ -98,18 +102,49 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
     ) {
         if (isvalidIp(hostModel.direccionIP)) {
             val snmpManagerV1 = SnmpManagerV1()
-            var respuesta = snmpManagerV1.get(hostModel, oid, tipoOperacion, context)
+//            snmpManagerV1.operacionSnmp(hostModel, oid, tipoOperacion, context)
 
-            if (oid == CommonOids.HOST.HR_SYSTEM_DATE) {
-                val fecha =
-                    Convertidor.convertirOctetStringAFecha(respuesta)
-                respuesta = fecha
+            when (tipoOperacion) {
+                TipoOperacion.GET -> {
+                    var respuesta = snmpManagerV1.get(hostModel, oid, tipoOperacion, context)
+                    respuesta = Convertidor.getFormater2(respuesta, oid)
+
+                    _operacionModel.postValue(
+                        OperacionModel(
+                            respuesta,
+                            oid,
+                        )
+                    )
+                    println("Respuesta: $respuesta")
+//                    _respuestaOperacionSnmp.postValue(respuesta)
+                    Toast.makeText(context, respuesta, Toast.LENGTH_SHORT).show()
+                }
+
+                TipoOperacion.GET_NEXT -> {
+                    val respuesta =
+                        snmpManagerV1.getNext(
+                            hostModel,
+                            oid,
+                            tipoOperacion,
+                            context,
+                            true
+                        ) as HashMap<*, *>
+//                    respuesta = Convertidor.getFormater(respuesta.toString(), oid) as HashMap<String, String>
+
+                    (respuesta as HashMap<String, String>)["valor"] =
+                        Convertidor.getFormater2(
+                            respuesta["valor"] ?: "", respuesta["oid"] ?: ""
+                        )
+                    _operacionModel.postValue(
+                        OperacionModel(
+                            respuesta["valor"].toString(),
+                            respuesta["oid"].toString()
+                        )
+                    )
+
+                }
             }
 
-            println("Respuesta: $respuesta")
-
-            _respuestaOperacionSnmp.postValue(respuesta)
-            Toast.makeText(context, respuesta, Toast.LENGTH_SHORT).show()
         }
     }
 }

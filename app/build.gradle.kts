@@ -113,4 +113,7 @@ dependencies {
 
     // optional - Paging 3 Integration
     implementation("androidx.room:room-paging:$room_version")
+
+    //hacer ping
+    implementation("com.marsounjan:icmp4a:1.0.0")
 }

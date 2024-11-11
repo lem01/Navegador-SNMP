@@ -1,5 +1,6 @@
 package com.example.nav_snmp.utils
 
+import android.util.Log
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
 import java.time.LocalDateTime
@@ -60,6 +61,34 @@ object Convertidor {
         }
 
         return formater
+    }
+
+    fun getFormater2(s: String, oid: String): String {
+//        Log.d("Recibido: ", "Recibido OID: $oid") // Para ver cada OID que se procesa
+//        Log.d(
+//            "Esperado prefijo",
+//            "Esperado prefijo: ${CommonOids.INTERFACE.IF_DESCR}"
+//        ) // Para verificar el prefijo
+
+        val oidNormalizer = if (oid.startsWith(".")) oid else ".$oid"
+        return when {
+            oidNormalizer.startsWith(CommonOids.INTERFACE.IF_DESCR) -> {
+                octetStringToReadableString(s)
+            }
+            oidNormalizer == CommonOids.INTERFACE.IF_DESCR -> octetStringToReadableString(s)
+
+            oidNormalizer == CommonOids.HOST.HR_SYSTEM_DATE -> convertirOctetStringAFecha(s)
+            oidNormalizer == CommonOids.INTERFACE.IF_TYPE -> getInterfaceDescriptionType(s.toInt())
+            oidNormalizer == CommonOids.INTERFACE.IF_OPER_STATUS -> getInterfacesDescriptionStatusOper(
+                s.toInt()
+            )
+
+            oidNormalizer == CommonOids.INTERFACE.IF_ADMIN_STATUS -> getInterfacesDescriptionAdminStatus(
+                s.toInt()
+            )
+
+            else -> s
+        }
     }
 
     private fun getInterfacesDescriptionAdminStatus(toInt: Int): String {

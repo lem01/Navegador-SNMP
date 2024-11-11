@@ -11,6 +11,8 @@ import com.example.nav_snmp.R
 import com.example.nav_snmp.databinding.ActivityDescubrirHostsBinding
 import com.example.nav_snmp.ui.view.descubrir_host_detalles.DescubrirHostDetalles
 import com.example.nav_snmp.utils.Constantes
+import com.example.nav_snmp.utils.Preferencias
+import com.example.nav_snmp.utils.TipoDeBusqueda
 import com.example.nav_snmp.utils.TipoDispositivo
 import com.example.nav_snmp.utils.VersionSnmp
 
@@ -20,11 +22,9 @@ class DescubrirHostsActivity : AppCompatActivity() {
     lateinit var preferences: SharedPreferences;
     lateinit var editor: SharedPreferences.Editor;
 
-    enum class tipoDeBusqueda {
-        SNMP, ICMP
-    }
 
-    var tipoBusqueda = tipoDeBusqueda.SNMP
+
+    var tipoBusqueda = TipoDeBusqueda.SNMP
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -67,6 +67,12 @@ class DescubrirHostsActivity : AppCompatActivity() {
             )
             editor.apply()
 
+            val sharedPreferences =
+                getSharedPreferences("configuracion", android.content.Context.MODE_PRIVATE)
+            val editor = sharedPreferences.edit()
+            editor.putString(Preferencias.TIPO_DE_BUSQUEDA, tipoBusqueda.name)
+            editor.apply()
+
             val intent = android.content.Intent(this, DescubrirHostDetalles::class.java)
             startActivity(intent)
         }
@@ -95,12 +101,12 @@ class DescubrirHostsActivity : AppCompatActivity() {
                 when (checkedId) {
                     R.id.button1 -> {
                         cambiarVisivilidadComponentes(true)
-                        tipoBusqueda = tipoDeBusqueda.SNMP
+                        tipoBusqueda = TipoDeBusqueda.SNMP
                     }
 
                     R.id.button2 -> {
                         cambiarVisivilidadComponentes(false)
-                        tipoBusqueda = tipoDeBusqueda.ICMP
+                        tipoBusqueda = TipoDeBusqueda.ICMP
                     }
                 }
             }

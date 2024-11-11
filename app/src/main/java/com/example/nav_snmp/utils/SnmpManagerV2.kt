@@ -100,6 +100,10 @@ class SnmpManagerV2c : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
+    override suspend fun operacionSnmp(vararg args: Any): Any {
+        TODO("Not yet implemented")
+    }
+
     override suspend fun get(
         hostModel: HostModel,
         oid: String,
@@ -110,7 +114,7 @@ class SnmpManagerV2c : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
-    override fun getNext(hostModel: HostModel, context: Context) {
+    override suspend fun getNext(vararg args: Any): Any {
         TODO("Not yet implemented")
     }
 

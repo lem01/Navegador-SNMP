@@ -1,30 +1,34 @@
 package com.example.nav_snmp.ui.viewmodel
 
 import android.content.Context
-import android.content.Intent
 import android.content.SharedPreferences
-import androidx.appcompat.widget.SearchView.SearchAutoComplete
+import android.util.Log
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
 import com.example.nav_snmp.data.model.HostModel
 import com.example.nav_snmp.data.model.HostModelClass
 import com.example.nav_snmp.data.repository.HostRepository
-import com.example.nav_snmp.ui.view.MainActivity
 import com.example.nav_snmp.utils.Constantes
+import com.example.nav_snmp.utils.IcmpManager
+import com.example.nav_snmp.utils.Preferencias
 import com.example.nav_snmp.utils.SnmpManagerV1
+import com.example.nav_snmp.utils.TipoDeBusqueda
 import com.example.nav_snmp.utils.TipoDispositivo
 import com.example.nav_snmp.utils.VersionSnmp
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.awaitAll
+import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.text.SimpleDateFormat
 import java.util.Date
 import java.util.Locale
 import java.util.TimeZone
+import java.util.concurrent.atomic.AtomicInteger
 
 class DescubrirHostViewModel(
     private val repository: HostRepository,
@@ -107,8 +111,16 @@ class DescubrirHostViewModel(
             fecha = null,
         )
         if (VersionSnmp.V1.name == versionSnmp) {
-            val snmpManagerV1 = SnmpManagerV1()
-            return snmpManagerV1.descubrirHost(hostModel, context)
+//            editor.putString(Preferencias.TIPO_DE_BUSQUEDA, tipoBusqueda.name)
+            val tipoDeBusqueda = preferences.getString(Preferencias.TIPO_DE_BUSQUEDA, "")
+
+            if (tipoDeBusqueda == TipoDeBusqueda.SNMP.name) {
+                val snmpManagerV1 = SnmpManagerV1()
+                return snmpManagerV1.descubrirHost(hostModel, context)
+            }
+
+            val icmpManager = IcmpManager()
+            return icmpManager.descubrirHost(hostModel, context)
         }
 
         if (VersionSnmp.V2c.name == versionSnmp) {
@@ -117,6 +129,7 @@ class DescubrirHostViewModel(
 
         return emptyList()
     }
+
 
     private fun loadHostDescubiertos(): List<HostModelClass> {
         return List(30) { i ->

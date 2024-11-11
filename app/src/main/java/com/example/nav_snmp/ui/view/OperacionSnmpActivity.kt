@@ -39,11 +39,13 @@ class OperacionSnmpActivity : AppCompatActivity() {
         initFactory()
         initSpinner()
 //todo: quitar luego
-        binding.include.etOid.setText("1.3.6.1.2.1.25.1.2")
-        hostViewModel.respuestaOperacion.observe(
-            this, Observer { respuesta ->
-                binding.include.edDescripcion.setText(respuesta)
-            })
+        binding.include.etOid.setText("1.3.6.1.2.1.1.1.0")
+//        hostViewModel.respuestaOperacion.observe(
+//            this, Observer { respuesta ->
+//                binding.include.edDescripcion.setText(respuesta)
+//            })
+
+        initObservers()
 
         ocultarComponentes()
         mostrarComponentes()
@@ -55,6 +57,13 @@ class OperacionSnmpActivity : AppCompatActivity() {
                 operacionSnmp()
             }
         }
+    }
+
+    private fun initObservers() {
+        hostViewModel.operacionModel.observe(this, Observer {
+            binding.include.edDescripcion.setText(it.valor)
+            binding.include.etOid.setText(it.oid)
+        })
     }
 
     private suspend fun operacionSnmp() {
@@ -78,7 +87,8 @@ class OperacionSnmpActivity : AppCompatActivity() {
             VersionSnmp.V1.name -> {
                 hostViewModel.operacionSnmp(
                     hostModel, oid,
-                    tipoOperacion, this
+                    tipoOperacion,
+                    this
                 )
             }
 
