@@ -143,6 +143,8 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
                     )
 
                 }
+
+                TipoOperacion.SET -> TODO()
             }
 
         }

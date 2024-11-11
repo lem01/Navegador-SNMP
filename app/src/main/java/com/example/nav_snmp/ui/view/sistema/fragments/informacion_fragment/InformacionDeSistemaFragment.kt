@@ -1,21 +1,18 @@
 package com.example.nav_snmp.ui.view.sistema.fragments.informacion_fragment
 
-import android.content.Context
-import android.content.SharedPreferences
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.example.nav_snmp.R
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.databinding.FragmentInformacionDeSitemaBinding
-import com.example.nav_snmp.ui.viewmodel.DescubrirHostViewModel
-import com.example.nav_snmp.ui.viewmodel.DescubrirHostViewModelFactory
-import com.example.nav_snmp.utils.Preferencias
+import com.example.nav_snmp.utils.CommonOids
 import kotlinx.coroutines.launch
 
 /**
@@ -89,11 +86,65 @@ class InformacionDeSistemaFragment : Fragment() {
             binding.tvNoProcesos.text = sistemaModel?.numeroDeProcesos
             binding.tvMaxProcesos.text = sistemaModel?.maximoNumeroDeProcesos
             binding.tvNombre.text = sistemaModel?.nombre
+            binding.tvDescripcion.text = sistemaModel?.descripcion
+            binding.tvLocalizacion.text = sistemaModel?.localizacion
+            binding.tvContacto.text = sistemaModel?.contacto
         }
 
         initBarraProgreso(viewModel)
-
         initShowDatos(viewModel)
+        editables()
+    }
+
+    private fun editables() {
+        binding.lyEditNombre.setOnClickListener {
+            dialogoEditarNombre(
+                "Editar Nombre",
+                CommonOids.SYSTEM.SYS_NAME,
+                viewModel.sistemaModel.value?.nombre
+            )
+        }
+        binding.lyEditContacto.setOnClickListener {
+            dialogoEditarNombre(
+                "Editar Contacto",
+                CommonOids.SYSTEM.SYS_CONTACT,
+                viewModel.sistemaModel.value?.contacto
+            )
+        }
+        binding.lyEditLocalizacion.setOnClickListener {
+            dialogoEditarNombre(
+                "Editar Localización",
+                CommonOids.SYSTEM.SYS_LOCATION,
+                viewModel.sistemaModel.value?.localizacion
+            )
+        }
+
+    }
+
+    private fun dialogoEditarNombre(s: String, oid: String, valor: String?) {
+        val dialog = Dialog(requireContext())
+        dialog.setContentView(R.layout.dialog_editar_datos_simples)
+        dialog.setCancelable(true)
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
+
+        val etDialog = dialog.findViewById<TextView>(R.id.et_dialogo)
+        etDialog.text = valor
+
+        dialog.findViewById<View>(R.id.btn_cancelar).setOnClickListener {
+            dialog.dismiss()
+        }
+        dialog.findViewById<View>(R.id.btn_aceptar).setOnClickListener {
+            val valorNuevo = etDialog.text.toString()
+
+            lifecycleScope.launch {
+                viewModel.editarDatos(oid, valorNuevo)
+                dialog.dismiss()
+            }
+        }
+
+        dialog.findViewById<TextView>(R.id.txt_tittle).text = s
+
     }
 
     private fun initShowDatos(viewModel: InformacionSistemaViewModel) {

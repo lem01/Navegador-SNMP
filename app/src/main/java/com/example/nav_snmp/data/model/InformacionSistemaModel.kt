@@ -6,5 +6,8 @@ data class InformacionSistemaModel(
     val numeroDeUsuarios: String,
     val numeroDeProcesos: String,
     val maximoNumeroDeProcesos: String,
-    val nombre: String,
+    var nombre: String,
+    val descripcion: String,
+    val localizacion: String,
+    val contacto: String,
 )

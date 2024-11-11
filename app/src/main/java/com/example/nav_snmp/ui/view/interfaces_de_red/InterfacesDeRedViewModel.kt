@@ -13,6 +13,7 @@ import com.example.nav_snmp.utils.CommonOids
 import com.example.nav_snmp.utils.Convertidor
 import com.example.nav_snmp.utils.Preferencias
 import com.example.nav_snmp.utils.SnmpManagerV1
+import com.example.nav_snmp.utils.TipoVariableSnmp
 import com.example.nav_snmp.utils.VersionSnmp
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -207,6 +208,26 @@ class InterfacesDeRedViewModel(
 
     suspend fun getHostById(idHost: Int): HostModel {
         return repository.getHostById(idHost)
+    }
+
+    suspend fun setEstadoAdministrativo(item: InterfacesDeRedModel, i: Int): InterfacesDeRedModel {
+        val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
+        val id = preferences.getInt(Preferencias.ID_HOST, 0)
+        val host: HostModel = getHostById(id)
+        val snmpManagerV1 = SnmpManagerV1()
+
+        val result = snmpManagerV1.set(
+            host,
+            CommonOids.INTERFACE.IF_ADMIN_STATUS,
+            i,
+            TipoVariableSnmp.INTEGER,  //INTEGER32, OCTETSTRING, TIMETICKS, IPADDRESS, COUNTER32, GAUGE32, COUNTER64, OID
+            context
+        )
+
+
+        Log.d(TAG, "setEstadoAdministrativo: $result")
+        return item.copy(estadoAdministrativo = result.toString())
+
     }
 }
 

@@ -96,9 +96,6 @@ class SnmpManagerV2c : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
-    override fun setOid() {
-        TODO("Not yet implemented")
-    }
 
     override suspend fun operacionSnmp(vararg args: Any): Any {
         TODO("Not yet implemented")
@@ -118,7 +115,7 @@ class SnmpManagerV2c : SnmpManagerInterface {
         TODO("Not yet implemented")
     }
 
-    override fun set(hostModel: HostModel, context: Context) {
+    override suspend fun set(vararg args: Any): Any {
         TODO("Not yet implemented")
     }
 

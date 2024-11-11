@@ -131,20 +131,65 @@
                     android:textSize="@dimen/text_size_medium"
                     android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/tv_estado_adrministrativo"
+
+                <androidx.constraintlayout.widget.ConstraintLayout
                     android:layout_width="120dp"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="16dp"
-                    android:ellipsize="end"
-                    android:maxLines="3"
-                    android:padding="5dp"
-                    android:paddingBottom="8dp"
-                    android:text="Estado Administrativo"
-                    android:textAlignment="center"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_size_medium"
-                    android:textStyle="bold" />
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:visibility="invisible"
+                        android:id="@+id/ly_edit_contacto"
+                        android:layout_width="20dp"
+                        android:layout_height="20dp"
+                        android:layout_marginTop="4dp"
+                        android:layout_marginEnd="4dp"
+                        app:layout_constraintEnd_toEndOf="@+id/btn_estado_adrministrativo"
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <ImageView
+                            android:id="@+id/img_edit_contacto"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="1"
+                            android:contentDescription="settings"
+                            android:foregroundGravity="center"
+                            android:src="@drawable/edit4"
+                            app:tint="@color/transparent" />
+                    </LinearLayout>
+
+                    <Button
+                        android:clickable="false"
+                        android:id="@+id/btn_estado_adrministrativo"
+                        style="@style/Widget.Material3.Button.TextButton"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:ellipsize="end"
+                        android:maxLines="3"
+                        android:padding="5dp"
+                        android:paddingBottom="8dp"
+                        android:text="Estado Administrativo"
+                        android:textAlignment="center"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_size_medium"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
+<!--                <TextView-->
+<!--                    android:id="@+id/tv_estado_adrministrativo"-->
+<!--                    android:layout_width="120dp"-->
+<!--                    android:layout_height="wrap_content"-->
+<!--                    android:layout_marginEnd="16dp"-->
+<!--                    android:ellipsize="end"-->
+<!--                    android:maxLines="3"-->
+<!--                    android:padding="5dp"-->
+<!--                    android:paddingBottom="8dp"-->
+<!--                    android:text="Estado Administrativo"-->
+<!--                    android:textAlignment="center"-->
+<!--                    android:textColor="@color/black"-->
+<!--                    android:textSize="@dimen/text_size_medium"-->
+<!--                    android:textStyle="bold" />-->
 
                 <TextView
                     android:id="@+id/tv_numero_de_bytes_recibidos"

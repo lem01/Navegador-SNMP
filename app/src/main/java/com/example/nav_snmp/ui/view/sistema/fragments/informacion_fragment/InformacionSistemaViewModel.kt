@@ -1,7 +1,7 @@
 package com.example.nav_snmp.ui.view.sistema.fragments.informacion_fragment
 
 import android.content.Context
-import android.widget.Toast
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -13,9 +13,8 @@ import com.example.nav_snmp.utils.Convertidor
 import com.example.nav_snmp.utils.Preferencias
 import com.example.nav_snmp.utils.SnmpManagerV1
 import com.example.nav_snmp.utils.TipoOperacion
+import com.example.nav_snmp.utils.TipoVariableSnmp
 import com.example.nav_snmp.utils.VersionSnmp
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.withContext
 
 class InformacionSistemaViewModel(
     private val repository: HostRepository,
@@ -108,13 +107,40 @@ class InformacionSistemaViewModel(
                 )
                 nombre = nombre.ifEmpty { "Genérico" }
 
+                val descripcion = snmpManagerV1.get(
+                    host,
+                    CommonOids.SYSTEM.SYS_DESCR,
+                    TipoOperacion.GET,
+                    context,
+                    false
+                )
+
+                val localizacion = snmpManagerV1.get(
+                    host,
+                    CommonOids.SYSTEM.SYS_LOCATION,
+                    TipoOperacion.GET,
+                    context,
+                    false
+                )
+
+                val contacto = snmpManagerV1.get(
+                    host,
+                    CommonOids.SYSTEM.SYS_CONTACT,
+                    TipoOperacion.GET,
+                    context,
+                    false
+                )
+
                 _sistemaModel.value = InformacionSistemaModel(
                     tiempoDeFuncionaiento,
                     fecha,
                     numeroDeUsuarios,
                     numeroDeProcesos,
                     maximoNumeroDeProcesos,
-                    nombre
+                    nombre,
+                    descripcion,
+                    localizacion,
+                    contacto
                 )
             }
         }
@@ -136,6 +162,48 @@ class InformacionSistemaViewModel(
 
     suspend fun getHostById(idHost: Int): HostModel {
         return repository.getHostById(idHost)
+    }
+
+    suspend fun editarDatos(oid: String, valorNuevo: String) {
+
+        when (oid) {
+            CommonOids.SYSTEM.SYS_NAME -> {
+                val result = operacionSet(oid, valorNuevo, TipoVariableSnmp.OCTETSTRING)
+                _sistemaModel.value = _sistemaModel.value?.copy(nombre = result)
+            }
+
+            CommonOids.SYSTEM.SYS_CONTACT -> {
+                val result = operacionSet(oid, valorNuevo, TipoVariableSnmp.OCTETSTRING)
+                _sistemaModel.value = _sistemaModel.value?.copy(contacto = result)
+            }
+
+            CommonOids.SYSTEM.SYS_LOCATION -> {
+                val result = operacionSet(oid, valorNuevo, TipoVariableSnmp.OCTETSTRING)
+                _sistemaModel.value = _sistemaModel.value?.copy(localizacion = result)
+            }
+        }
+    }
+
+    private suspend fun operacionSet(
+        oid: String,
+        valorNuevo: String,
+        tipoVariableSnmp: String
+    ): String {
+        val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
+        val id = preferences.getInt(Preferencias.ID_HOST, 0)
+        val host: HostModel = getHostById(id)
+        val snmpManagerV1 = SnmpManagerV1()
+
+        val result = snmpManagerV1.set(
+            host,
+            oid,
+            valorNuevo,
+            tipoVariableSnmp,  //INTEGER32, OCTETSTRING, TIMETICKS, IPADDRESS, COUNTER32, GAUGE32, COUNTER64, OID
+            context
+        )
+
+        Log.d("InformacionSistemaViewModel", "operacionSet: $result")
+        return result as String
     }
 
 }

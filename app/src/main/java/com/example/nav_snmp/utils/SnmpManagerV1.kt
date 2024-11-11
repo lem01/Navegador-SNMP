@@ -24,7 +24,9 @@ import org.snmp4j.TransportMapping
 import org.snmp4j.event.ResponseEvent
 import org.snmp4j.mp.SnmpConstants
 import org.snmp4j.smi.Address
+import org.snmp4j.smi.Counter32
 import org.snmp4j.smi.GenericAddress
+import org.snmp4j.smi.Integer32
 import org.snmp4j.smi.OID
 import org.snmp4j.smi.OctetString
 import org.snmp4j.smi.VariableBinding
@@ -111,10 +113,6 @@ class SnmpManagerV1 : SnmpManagerInterface {
     }
 
     override fun getOid() {
-        TODO("Not yet implemented")
-    }
-
-    override fun setOid() {
         TODO("Not yet implemented")
     }
 
@@ -386,10 +384,84 @@ class SnmpManagerV1 : SnmpManagerInterface {
         }
     }
 
+    override suspend fun set(vararg args: Any): Any {
+        val hostModel = args[0] as HostModel
+        val oid = args[1] as String
+        val valorNuevo = args[2]
+        val tipoVariable = args[3] as String
+        val context = args[4] as Context
 
-    override fun set(hostModel: HostModel, context: Context) {
-        TODO("Not yet implemented")
+        return suspendCoroutine { continuation ->
+            val mensaje = ""
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(200)
+                try {
+                    val transport: TransportMapping<*> = DefaultUdpTransportMapping()
+                    snmp = Snmp(transport)
+                    snmp?.listen()
+
+                    val targetAddress: Address =
+                        GenericAddress.parse("udp:${hostModel.direccionIP}/${hostModel.puertoSNMP}")
+
+                    val communityTarget = CommunityTarget<Address>().apply {
+                        address = targetAddress
+                        community = OctetString(hostModel.comunidadSNMP)
+                        version = SnmpConstants.version1
+                        retries = 2
+                        timeout = 500
+                    }
+
+                    val pdu = PDU().apply {
+                        type = PDU.SET
+                        add(getVariableBinding(tipoVariable, valorNuevo, oid))
+                    }
+
+                    val response = snmp?.send(pdu, communityTarget)
+
+                    if (response?.response == null)
+                        throw Exception("No respuesta recibida, la solicitud agotó el tiempo.")
+
+
+                    if (response.response.errorStatus != PDU.noError) {
+                        val errorStatusText = response.response.errorStatusText
+                        throw Exception(errorStatusText)
+                    }
+
+                    val respuesta = response.response.get(0).variable.toString()
+                    continuation.resume(respuesta)
+
+                    close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+                    mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
+                    close()
+//                    continuation.resumeWithException(e)
+                    continuation.resume("")
+                }
+            }
+        }
     }
+
+    private fun getVariableBinding(
+        tipoVariable: String,
+        valorNuevo: Any,
+        oid: String
+    ): VariableBinding {
+        return when (tipoVariable) {
+            TipoVariableSnmp.OCTETSTRING -> VariableBinding(
+                OID(oid),
+                OctetString(valorNuevo as String)
+            )
+
+            TipoVariableSnmp.INTEGER -> {
+                VariableBinding(OID(oid), Integer32(valorNuevo as Int))
+            }
+
+            else -> VariableBinding(OID(oid), OctetString(valorNuevo as String))
+        }
+
+    }
+
 
     override suspend fun walk(
         hostModel: HostModel,
@@ -520,6 +592,7 @@ class SnmpManagerV1 : SnmpManagerInterface {
                 .show()
         }
     }
+
 
     fun generarDireccionesPosibles(hostModel: HostModelClass): List<String> {
         val rangoIp = InetAddress.getByName(hostModel.direccionIP) // Usar la IP de hostModel
