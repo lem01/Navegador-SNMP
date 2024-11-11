@@ -34,6 +34,7 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
     fun saveHost(host: HostModel) {
         viewModelScope.launch {
             repository.saveHost(host)
+            loadAllHosts()
         }
 
     }

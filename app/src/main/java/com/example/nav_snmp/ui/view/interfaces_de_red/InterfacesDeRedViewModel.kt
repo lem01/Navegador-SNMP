@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.nav_snmp.data.model.HostModel
 import com.example.nav_snmp.data.model.InterfacesDeRedModel
-import com.example.nav_snmp.data.model.TablaDeConexionesTCPModel
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.utils.CommonOids
 import com.example.nav_snmp.utils.Convertidor
@@ -229,18 +228,28 @@ class InterfacesDeRedViewModel(
         return item.copy(estadoAdministrativo = result.toString())
 
     }
-}
 
-class InterfacesDeRedViewModelFactory(
-    private val repository: HostRepository,
-    private val context: Context
-) :
-    ViewModelProvider.Factory {
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        if (modelClass.isAssignableFrom(InterfacesDeRedViewModel::class.java)) {
-            @Suppress("UNCHECKED_CAST")
-            return InterfacesDeRedViewModel(repository, context) as T
+    fun setEstadoAdministrativo2(value: Int, adapterPosition: Int) {
+
+        _interfacesDeRedModel.value?.let {
+            val updatedItem = it[adapterPosition].copy(estadoAdministrativo = value.toString())
+            _interfacesDeRedModel.value =
+                it.toMutableList().apply { this[adapterPosition] = updatedItem }
         }
-        throw IllegalArgumentException("Unknown ViewModel class")
+    }
+
+
+    class InterfacesDeRedViewModelFactory(
+        private val repository: HostRepository,
+        private val context: Context
+    ) :
+        ViewModelProvider.Factory {
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            if (modelClass.isAssignableFrom(InterfacesDeRedViewModel::class.java)) {
+                @Suppress("UNCHECKED_CAST")
+                return InterfacesDeRedViewModel(repository, context) as T
+            }
+            throw IllegalArgumentException("Unknown ViewModel class")
+        }
     }
 }

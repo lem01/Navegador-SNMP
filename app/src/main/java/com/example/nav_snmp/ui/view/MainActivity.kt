@@ -4,15 +4,18 @@ import android.content.Intent
 import android.graphics.PorterDuff
 import android.icu.text.DateFormat.getDateInstance
 import android.os.Bundle
+import android.os.StrictMode
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.activity.result.ActivityResultLauncher
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.nav_snmp.R
 import com.example.nav_snmp.ui.adapters.HostAdapter
@@ -21,11 +24,16 @@ import com.example.nav_snmp.data.model.HostModel
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.ui.viewmodel.HostViewModel
 import com.example.nav_snmp.ui.viewmodel.HostViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import java.io.IOException
+import java.net.InetAddress
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var hostViewModel: HostViewModel
+    private lateinit var viewModel: HostViewModel
 
-    private lateinit var addHostLauncher: ActivityResultLauncher<Intent>
     private lateinit var binding: ActivityMainBinding
     lateinit var adapter: HostAdapter
     lateinit var hostList: ArrayList<HostModel>
@@ -44,37 +52,58 @@ class MainActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
 
         initFactory()
-        hostList = ArrayList()
-        initAdapter()
-        initComponents()
 
-        hostViewModel.allHosts.observe(this) { hosts ->
+//        lifecycleScope.launch {
+//        }
+
+        initAdapter()
+        initObservers()
+
+        binding.fab.setOnClickListener {
+            lifecycleScope.launch {
+                val isReachable = withContext(Dispatchers.IO) { ping("192.168.1.101") }
+
+                withContext(Dispatchers.Main) {
+                    // Show the result in a Toast on the main thread
+                    if (isReachable) {
+                        Log.d("MainActivity", "The host is reachable.")
+                        Toast.makeText(
+                            applicationContext,
+                            "The host is reachable.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    } else {
+                        Log.d("MainActivity", "The host is not responding.")
+                        Toast.makeText(
+                            applicationContext,
+                            "The host is not responding.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            }
+        }
+    }
+
+    private fun ping(ipAddress: String): Boolean {
+        return try {
+            val inetAddress = InetAddress.getByName(ipAddress) // Usar la IP pasada como argumento
+            inetAddress.isReachable(3000) // Establecer el timeout de 5 segundos
+
+        } catch (e: IOException) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    private fun initObservers() {
+
+        viewModel.allHosts.observe(this) { hosts ->
             hosts?.let {
                 hostList.clear()
                 hostList.addAll(it)
                 adapter.notifyItemChanged(hostList.size - 1) // Notificar al adaptador para que actualice toda la lista
             }
-        }
-
-        binding.fab.setOnClickListener {
-            val formatter = getDateInstance()
-            val dateString = formatter.format(java.util.Date())
-
-            hostViewModel.saveHost(
-                HostModel(
-                    0,
-                    "Lennox",
-                    "192.168.1.1",
-                    "tipoDeDispositivo",
-                    "V1",
-                    161,
-                    "public",
-                    true,
-                    dateString
-                )
-            )
-
-            hostViewModel.loadAllHosts()
         }
     }
 
@@ -84,14 +113,13 @@ class MainActivity : AppCompatActivity() {
 
         // Create the ViewModel using the ViewModelProvider with the custom Factory
         val viewModelFactory = HostViewModelFactory(repository)
-        hostViewModel = ViewModelProvider(this, viewModelFactory)[HostViewModel::class.java]
+        viewModel = ViewModelProvider(this, viewModelFactory)[HostViewModel::class.java]
     }
 
-    private fun initComponents() {
-    }
 
     private fun initAdapter() {
-        adapter = HostAdapter(hostList, hostViewModel, this)
+        hostList = ArrayList()
+        adapter = HostAdapter(hostList, viewModel, this)
         binding.rcHost.layoutManager = LinearLayoutManager(this)
         binding.rcHost.adapter = adapter
 
@@ -171,7 +199,9 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-        hostViewModel.loadAllHosts()
+//        viewModel.loadAllHosts()
+        viewModel.loadAllHosts()
+
     }
 
 }

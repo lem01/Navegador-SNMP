@@ -92,6 +92,17 @@ class InterfacesDeRedActivity : AppCompatActivity() {
         }
     }
 
+    private fun initFactory() {
+        val repository = HostRepository(applicationContext)
+
+        val viewModelFactory =
+            InterfacesDeRedViewModel.InterfacesDeRedViewModelFactory(repository, applicationContext)
+        viewModel =
+            ViewModelProvider(
+                this,
+                viewModelFactory
+            )[InterfacesDeRedViewModel::class.java]
+    }
 
     private fun initBarraProgreso(viewModel: InterfacesDeRedViewModel) {
         viewModel.barraProgreso.observe(this) {
@@ -103,15 +114,4 @@ class InterfacesDeRedActivity : AppCompatActivity() {
         }
     }
 
-    private fun initFactory() {
-        val repository = HostRepository(applicationContext)
-
-        val viewModelFactory =
-            InterfacesDeRedViewModelFactory(repository, applicationContext)
-        viewModel =
-            ViewModelProvider(
-                this,
-                viewModelFactory
-            )[InterfacesDeRedViewModel::class.java]
-    }
 }

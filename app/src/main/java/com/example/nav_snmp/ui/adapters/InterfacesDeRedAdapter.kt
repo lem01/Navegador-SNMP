@@ -95,14 +95,15 @@ class InterfacesDeRedAdapter(
             when (it.itemId) {
                 1 -> {
                     viewModel.viewModelScope.launch {
-                        val estadoOperativo = viewModel.setEstadoAdministrativo(item, 1)
-                        holder.estadoAdministrativo.text = estadoOperativo.estadoAdministrativo
+//                        val estadoOperativo = viewModel.setEstadoAdministrativo(item, 1)
+//                        holder.estadoAdministrativo.text = estadoOperativo.estadoAdministrativo
+                        viewModel.setEstadoAdministrativo2(1, holder.adapterPosition)
                     }
                 }
 
                 2 -> {
                     viewModel.viewModelScope.launch {
-                        viewModel.setEstadoAdministrativo(item, 2)
+                        viewModel.setEstadoAdministrativo2(2, holder.adapterPosition)
                     }
                 }
 
