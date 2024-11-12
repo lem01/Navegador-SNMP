@@ -209,23 +209,37 @@ class InterfacesDeRedViewModel(
         return repository.getHostById(idHost)
     }
 
-    suspend fun setEstadoAdministrativo(item: InterfacesDeRedModel, i: Int): InterfacesDeRedModel {
+    suspend fun setEstadoAdministrativo(value: Int, position: Int) {
         val preferences = context.getSharedPreferences("preferences", Context.MODE_PRIVATE)
         val id = preferences.getInt(Preferencias.ID_HOST, 0)
         val host: HostModel = getHostById(id)
         val snmpManagerV1 = SnmpManagerV1()
 
-        val result = snmpManagerV1.set(
+        val oid = CommonOids.INTERFACE.IF_ADMIN_STATUS + ".${position + 1}"
+
+        var result = snmpManagerV1.set(
             host,
-            CommonOids.INTERFACE.IF_ADMIN_STATUS,
-            i,
+            oid,
+            value,
             TipoVariableSnmp.INTEGER,  //INTEGER32, OCTETSTRING, TIMETICKS, IPADDRESS, COUNTER32, GAUGE32, COUNTER64, OID
             context
         )
 
+        result =
+            if (result.toString() == "1") "Up (1) " else if (result.toString() == "2") "Down (2)"
+            else if (result.toString() == "3") "Testing (3)"
+            else ""
 
+        if (result == "") return
+
+
+        _interfacesDeRedModel.value?.let {
+            val updatedItem = it[position].copy(estadoAdministrativo = result.toString())
+            _interfacesDeRedModel.value =
+                it.toMutableList().apply { this[position] = updatedItem }
+        }
         Log.d(TAG, "setEstadoAdministrativo: $result")
-        return item.copy(estadoAdministrativo = result.toString())
+//        return item.copy(estadoAdministrativo = result.toString())
 
     }
 

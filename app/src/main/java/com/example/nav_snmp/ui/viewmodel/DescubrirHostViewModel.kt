@@ -71,6 +71,9 @@ class DescubrirHostViewModel(
         try {
             val listHost = buscarHost()
             println("listHost  aaaa ${listHost.size}")
+            //convertilo a un json para verlos
+
+
 
             _hostIntentados = hostIntentados.hostIntentados
             println("host intentados ${_hostIntentados}")

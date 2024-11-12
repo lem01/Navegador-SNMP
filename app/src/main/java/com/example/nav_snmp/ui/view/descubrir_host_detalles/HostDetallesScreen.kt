@@ -146,14 +146,14 @@ fun BotonFlotante(descubrirHostDetalles: DescubrirHostDetalles) {
                     return@ExtendedFloatingActionButton
                 }
 
-                val listaHosts = mutableListOf<HostModelClass>()
+                val listaHostsLocal = mutableListOf<HostModelClass>()
 
                 DescubrirHostViewModel.descubrirHost.hostDescubiertos.forEach { host ->
                     if (host.checked) {
-                        listaHosts.add(host)
+                        listaHostsLocal.add(host)
                     }
                 }
-                DescubrirHostViewModel.descubrirHost.saveAllHosts(listaHosts) {
+                DescubrirHostViewModel.descubrirHost.saveAllHosts(listaHostsLocal) {
                     val intent =
                         Intent(descubrirHostDetalles.context, MainActivity::class.java).apply {
                             flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK
@@ -242,7 +242,7 @@ fun ListaHost(
 ) {
 
     LazyColumn(modifier = Modifier.padding(horizontal = 8.dp)) {
-        items(items = listaHost, key = { host -> host.id.hashCode() }) { host ->
+        items(items = listaHost, key = { host -> host.id }) { host ->
             DescubrirHostItem(
                 hostModel = host,
                 modifier = Modifier.fillMaxWidth(),

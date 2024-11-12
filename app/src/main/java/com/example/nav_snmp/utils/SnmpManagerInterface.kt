@@ -14,7 +14,7 @@ enum class TipoDeBusqueda {
 interface SnmpManagerInterface {
     fun snmpTest(hostModel: HostModel, context: Context)
     fun close()
-    fun getOid()
+    suspend fun getOid(vararg args: Any): String
 
     suspend fun operacionSnmp(vararg args: Any): Any
     suspend fun get(

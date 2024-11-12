@@ -1,6 +1,8 @@
 package com.example.nav_snmp.utils
 
 import CustomProgressDialog
+import android.app.Activity
+import android.app.AlertDialog
 import android.content.Context
 import kotlinx.coroutines.*
 import android.util.Log
@@ -112,8 +114,65 @@ class SnmpManagerV1 : SnmpManagerInterface {
         }
     }
 
-    override fun getOid() {
-        TODO("Not yet implemented")
+
+    override suspend fun getOid(vararg args: Any): String {
+        val hostModel = args[0] as HostModel
+        val oid = args[1] as String
+
+        return suspendCoroutine { continuation ->
+            val mensaje = ""
+            CoroutineScope(Dispatchers.IO).launch {
+                delay(200)
+                try {
+                    val transport: TransportMapping<*> = DefaultUdpTransportMapping()
+                    snmp = Snmp(transport)
+                    snmp?.listen()
+
+                    val targetAddress: Address =
+                        GenericAddress.parse("udp:${hostModel.direccionIP}/${hostModel.puertoSNMP}")
+
+                    val communityTarget = CommunityTarget<Address>().apply {
+                        address = targetAddress
+                        community = OctetString(hostModel.comunidadSNMP)
+                        version = SnmpConstants.version1
+                        retries = 2
+                        timeout = 500
+                    }
+
+                    val pduType: Int = RecursoPdu().obtenerRecurso(TipoOperacion.GET)
+
+                    val pdu = PDU().apply {
+                        type = pduType
+                        add(
+                            VariableBinding(OID(oid))
+                        )
+                    }
+
+                    val response = snmp?.send(pdu, communityTarget)
+
+                    if (response?.response == null)
+                        throw Exception("No respuesta recibida, la solicitud agotó el tiempo.")
+
+
+                    if (response.response.errorStatus != PDU.noError) {
+                        val errorStatusText = response.response.errorStatusText
+                        throw Exception(errorStatusText)
+                    }
+
+                    val respuesta = response.response.get(0).oid.toString()
+                    continuation.resume(respuesta)
+
+                    close()
+                } catch (e: Exception) {
+                    e.printStackTrace()
+//                    mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
+                    Log.e("SNMP Error", "Error en getOid: ${e.message}", e)
+                    close()
+//                    continuation.resumeWithException(e)
+                    continuation.resume("")
+                }
+            }
+        }
     }
 
     override suspend fun operacionSnmp(vararg args: Any): Any {
@@ -433,7 +492,10 @@ class SnmpManagerV1 : SnmpManagerInterface {
                     close()
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
+                    CoroutineScope(Dispatchers.Main).launch {
+                        showAlert(context, "Advertencia", "${e.message}")
+                    }
+//                    mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
                     close()
 //                    continuation.resumeWithException(e)
                     continuation.resume("")
@@ -543,9 +605,23 @@ class SnmpManagerV1 : SnmpManagerInterface {
         }
     }
 
+    fun showAlert(context: Context, title: String, message: String) {
+        // Asegúrate de que el contexto sea de una actividad y que la actividad no se haya destruido
+        if (context is Activity && !context.isFinishing) {
+            val builder = AlertDialog.Builder(context)
+            builder.setTitle(title)
+            builder.setMessage(message)
+            builder.setPositiveButton("OK") { dialog, _ -> dialog.dismiss() }
+
+            // Crear y mostrar el diálogo
+            val alertDialog = builder.create()
+            alertDialog.show()
+        }
+    }
+
     suspend fun descubrirHost(hostModel: HostModelClass, context: Context): List<HostModelClass> {
         val direccionesIp = generarDireccionesPosibles(hostModel)
-        val direccionesAlcanzables = realizarPing(direccionesIp)
+//        val direccionesAlcanzables = realizarPing(direccionesIp)
 
         DescubrirHostViewModel.hostIntentados.hostIntentados = direccionesIp.size
 

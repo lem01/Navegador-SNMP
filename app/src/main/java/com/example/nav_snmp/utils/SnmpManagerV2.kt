@@ -92,10 +92,9 @@ class SnmpManagerV2c : SnmpManagerInterface {
         }
     }
 
-    override fun getOid() {
+    override suspend fun getOid(vararg args: Any): String {
         TODO("Not yet implemented")
     }
-
 
     override suspend fun operacionSnmp(vararg args: Any): Any {
         TODO("Not yet implemented")

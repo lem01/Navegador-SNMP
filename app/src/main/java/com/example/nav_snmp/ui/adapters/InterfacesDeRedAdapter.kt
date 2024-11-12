@@ -2,6 +2,7 @@ package com.example.nav_snmp.ui.adapters
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.Menu
 import android.view.View
@@ -79,6 +80,7 @@ class InterfacesDeRedAdapter(
         holder.numeroDeBytesEnviados.text = item.numeroDeBytesEnviados
 
         holder.estadoAdministrativo.setOnClickListener {
+            Log.d("TAG", "poisition: ${holder.adapterPosition}")
             showPopup(holder, item)
         }
 
@@ -89,7 +91,7 @@ class InterfacesDeRedAdapter(
 
         popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "Up (1)")
         popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "Down (2)")
-        popupMenu.menu.add(Menu.NONE, 3, Menu.NONE, "Testing (3)")
+//        popupMenu.menu.add(Menu.NONE, 3, Menu.NONE, "Testing (3)")
 
         popupMenu.setOnMenuItemClickListener {
             when (it.itemId) {
@@ -97,19 +99,19 @@ class InterfacesDeRedAdapter(
                     viewModel.viewModelScope.launch {
 //                        val estadoOperativo = viewModel.setEstadoAdministrativo(item, 1)
 //                        holder.estadoAdministrativo.text = estadoOperativo.estadoAdministrativo
-                        viewModel.setEstadoAdministrativo2(1, holder.adapterPosition)
+                        viewModel.setEstadoAdministrativo(1, holder.adapterPosition)
                     }
                 }
 
                 2 -> {
                     viewModel.viewModelScope.launch {
-                        viewModel.setEstadoAdministrativo2(2, holder.adapterPosition)
+                        viewModel.setEstadoAdministrativo(2, holder.adapterPosition)
                     }
                 }
 
                 3 -> {
                     viewModel.viewModelScope.launch {
-                        viewModel.setEstadoAdministrativo(item, 3)
+                        viewModel.setEstadoAdministrativo(3, holder.adapterPosition)
                     }
                 }
             }

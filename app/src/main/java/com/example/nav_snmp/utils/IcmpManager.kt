@@ -3,8 +3,7 @@ package com.example.nav_snmp.utils
 import android.content.Context
 import android.util.Log
 import com.example.nav_snmp.data.model.HostModelClass
-import com.marsounjan.icmp4a.Icmp
-import com.marsounjan.icmp4a.Icmp4a
+
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.awaitAll
@@ -38,7 +37,7 @@ class IcmpManager {
         return false
     }
 
-    suspend fun isHostReachable(addr: String, openPort: Int, timeOutMillis: Int): Boolean {
+    private suspend fun isHostReachable(addr: String, openPort: Int, timeOutMillis: Int): Boolean {
         return withContext(Dispatchers.IO) {
             try {
                 Socket().use { socket ->
@@ -46,7 +45,7 @@ class IcmpManager {
                 }
                 true
             } catch (ex: IOException) {
-                false // Si ocurre una excepción (p. ej., tiempo de espera), retorna false
+                false
             }
         }
     }
@@ -58,12 +57,10 @@ class IcmpManager {
     ): HashMap<String, HostModelClass> = coroutineScope {
         val timeOutMillis = 500
         val hostsAlcanzables = hashMapOf<String, HostModelClass>()
-        var contador = 100
 
         val deferredResults = direccionesIp.map { ip ->
             async(Dispatchers.IO) {
                 try {
-                    // Dirección IP del dispositivo que quieres probar
 
                     val isReachable = isNetworkDeviceReachable(ip, timeOutMillis)
 
@@ -72,7 +69,7 @@ class IcmpManager {
                             "ICMP",
                             "El dispositivo en $ip es alcanzable en uno de los puertos de administración o servicio."
                         )
-                        hostsAlcanzables[ip] = hostModel.copy(direccionIP = ip, id = contador++)
+                        hostsAlcanzables[ip] = hostModel.copy(direccionIP = ip)
                     } else {
                         Log.d(
                             "ICMP",
@@ -94,67 +91,18 @@ class IcmpManager {
         hostsAlcanzables
     }
 
-    suspend fun pruebaConexionPing(
-        direccionesIp: List<String>,
-        hostModel: HostModelClass,
-        intervaloMillis: Long = 1000L, // Intervalo por defecto de 1 segundo
-        count: Int = 5 // Número de intentos por dirección IP
-    ): HashMap<String, HostModelClass> = coroutineScope {
-        val hostsAlcanzables = hashMapOf<String, HostModelClass>()
-
-        val icmp = Icmp4a() // Instancia del objeto Icmp4a
-
-        // Mapeamos cada IP en la lista de direcciones para hacer ping
-        val deferredResults = direccionesIp.map { ip ->
-            async(Dispatchers.IO) {
-                try {
-                    // Realizamos el ping con intervalo
-                    for (i in 1..count) {
-                        val status = icmp.ping(ip)
-                        val result = status.result
-
-                        when (result) {
-                            is Icmp.PingResult.Success -> {
-                                // Si el ping fue exitoso, añadir la IP al HashMap
-                                hostsAlcanzables[ip] = hostModel.copy(direccionIP = ip)
-                                Log.d("ICMP", "Ping exitoso a $ip, intento $i: ${result.ms} ms")
-                            }
-
-                            is Icmp.PingResult.Failed -> {
-                                // Si el ping falló, registrar el error
-                                Log.e(
-                                    "ICMP Error",
-                                    "Error en intento $i con $ip: ${result.message}"
-                                )
-                            }
-                        }
-
-                        // Esperamos el intervalo entre intentos
-                        delay(intervaloMillis)
-                    }
-                } catch (error: Icmp.Error.UnknownHost) {
-                    Log.d("ICMP", "Unknown host $ip")
-                }
-            }
-        }
-
-        // Esperamos a que todos los resultados asíncronos terminen
-        deferredResults.awaitAll()
-
-        // Retornamos la lista de hosts alcanzables
-        hostsAlcanzables
-    }
 
     suspend fun descubrirHost(
         hostModel: HostModelClass,
         context: Context
     ): List<HostModelClass> {
         val direccionesIp = generarDireccionesPosibles(hostModel)
-//        Log.d("ICMP", "Direcciones IP generadas: $direccionesIp")
-//        val direcciones = pruebaConexionPing(direccionesIp, hostModel)
+        var count = 1
         val direccionesAlcanzables = pruebaConexion(direccionesIp, hostModel).keys.toList()
         return direccionesAlcanzables.map { ip ->
+            count += 1
             hostModel.copy(
+                id = count,
                 direccionIP = ip,
                 nombreHost = "Génerico",
                 tipoDeDispositivo = TipoDispositivo.OTRO.name,
