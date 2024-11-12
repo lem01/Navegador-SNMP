@@ -242,7 +242,7 @@ fun ListaHost(
 ) {
 
     LazyColumn(modifier = Modifier.padding(horizontal = 8.dp)) {
-        items(items = listaHost, key = { host -> host.id }) { host ->
+        items(items = listaHost, key = { host -> host.id.hashCode() }) { host ->
             DescubrirHostItem(
                 hostModel = host,
                 modifier = Modifier.fillMaxWidth(),

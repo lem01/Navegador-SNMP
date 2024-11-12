@@ -24,12 +24,17 @@ import com.example.nav_snmp.data.model.HostModel
 import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.ui.viewmodel.HostViewModel
 import com.example.nav_snmp.ui.viewmodel.HostViewModelFactory
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.io.BufferedReader
 import java.io.IOException
+import java.io.InputStreamReader
 import java.net.InetAddress
+import java.net.InetSocketAddress
+import java.net.Socket
 
 class MainActivity : AppCompatActivity() {
     private lateinit var viewModel: HostViewModel
@@ -60,41 +65,22 @@ class MainActivity : AppCompatActivity() {
         initObservers()
 
         binding.fab.setOnClickListener {
-            lifecycleScope.launch {
-                val isReachable = withContext(Dispatchers.IO) { ping("192.168.1.101") }
+//            CoroutineScope(Dispatchers.Main).launch {
+//                val host = "192.168.1.91"  // Dirección IP del dispositivo que quieres probar
+//                val timeOutMillis = 500  // Tiempo de espera en milisegundos
+//
+//                val isReachable = isNetworkDeviceReachable(host, timeOutMillis)
+//                if (isReachable) {
+//                    println("El dispositivo en $host es alcanzable en uno de los puertos de administración o servicio.")
+//                } else {
+//                    println("Error: El dispositivo en $host no es accesible en los puertos comunes.")
+//                }
+//            }
 
-                withContext(Dispatchers.Main) {
-                    // Show the result in a Toast on the main thread
-                    if (isReachable) {
-                        Log.d("MainActivity", "The host is reachable.")
-                        Toast.makeText(
-                            applicationContext,
-                            "The host is reachable.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    } else {
-                        Log.d("MainActivity", "The host is not responding.")
-                        Toast.makeText(
-                            applicationContext,
-                            "The host is not responding.",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                    }
-                }
-            }
         }
     }
 
-    private fun ping(ipAddress: String): Boolean {
-        return try {
-            val inetAddress = InetAddress.getByName(ipAddress) // Usar la IP pasada como argumento
-            inetAddress.isReachable(3000) // Establecer el timeout de 5 segundos
 
-        } catch (e: IOException) {
-            e.printStackTrace()
-            false
-        }
-    }
 
     private fun initObservers() {
 
