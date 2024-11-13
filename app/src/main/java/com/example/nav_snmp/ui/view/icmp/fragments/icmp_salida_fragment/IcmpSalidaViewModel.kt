@@ -63,7 +63,8 @@ class IcmpSalidaViewModel(
                     CommonOids.ICMP.ICMP_OUT_MSGS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 var smpConError = snmpManagerV1.get(
@@ -71,7 +72,8 @@ class IcmpSalidaViewModel(
                     CommonOids.ICMP.ICMP_OUT_ERRORS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 val smpDestinoNoAlcanzable = snmpManagerV1.get(
@@ -79,7 +81,8 @@ class IcmpSalidaViewModel(
                     CommonOids.ICMP.ICMP_OUT_DEST_UNREACH,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 val smpTiempoExcedente = snmpManagerV1.get(
@@ -87,7 +90,8 @@ class IcmpSalidaViewModel(
                     CommonOids.ICMP.ICMP_OUT_TIME_EXCDS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 val smpProblemasDeParametros = snmpManagerV1.get(
@@ -95,7 +99,8 @@ class IcmpSalidaViewModel(
                     CommonOids.ICMP.ICMP_OUT_PROBS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 var controlDeFlujo = snmpManagerV1.get(
@@ -103,7 +108,8 @@ class IcmpSalidaViewModel(
                     CommonOids.ICMP.ICMP_OUT_SRC_QENCHS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 var smsDeRedireccion = snmpManagerV1.get(
@@ -111,7 +117,8 @@ class IcmpSalidaViewModel(
                     CommonOids.ICMP.ICMP_OUT_REDIRECTS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 var smpEco = snmpManagerV1.get(
@@ -119,7 +126,8 @@ class IcmpSalidaViewModel(
                     CommonOids.ICMP.ICMP_OUT_ECHOS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 var smsMarcaDeTiempo = snmpManagerV1.get(
@@ -127,7 +135,8 @@ class IcmpSalidaViewModel(
                     CommonOids.ICMP.ICMP_OUT_TIMESTAMPS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 _icmpModel.value = IcmpSalidaModel(

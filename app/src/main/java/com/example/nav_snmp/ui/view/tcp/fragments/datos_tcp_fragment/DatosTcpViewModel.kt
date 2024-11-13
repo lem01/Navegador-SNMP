@@ -65,7 +65,8 @@ class DatosTcpViewModel(
                     CommonOids.TCP.TCP_RTO_MIN,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 var tiempoMaximoDeReTransmision = snmpManagerV1.get(
@@ -73,14 +74,16 @@ class DatosTcpViewModel(
                     CommonOids.TCP.TCP_RTO_MAX,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
                 var maximoDeConexiones = snmpManagerV1.get(
                     host,
                     CommonOids.TCP.TCP_MAX_CONN,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
 
@@ -91,7 +94,8 @@ class DatosTcpViewModel(
                     CommonOids.TCP.TCP_ACTIVE_OPENS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 var conexionesPasivasEstablecidas =
@@ -100,7 +104,8 @@ class DatosTcpViewModel(
                         CommonOids.TCP.TCP_PASSIVE_OPENS,
                         TipoOperacion.GET,
                         context,
-                        false
+                        false,
+                        showMensajeAdvertencia = false
                     )
 
                 //todo sumar tambien tcpEstabResets
@@ -109,7 +114,8 @@ class DatosTcpViewModel(
                     CommonOids.TCP.TCP_ATTEMPT_FAILS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 var reinciosDeConexiones = snmpManagerV1.get(  //numero de intentos fallidos
@@ -117,7 +123,8 @@ class DatosTcpViewModel(
                     CommonOids.TCP.TCP_ESTAB_RESETS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 ////////
@@ -127,7 +134,8 @@ class DatosTcpViewModel(
                     CommonOids.TCP.TCP_CURR_ESTAB,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 var segmentosRecividios = snmpManagerV1.get(
@@ -135,7 +143,8 @@ class DatosTcpViewModel(
                     CommonOids.TCP.TCP_IN_SEGS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 var segmentosEnviados = snmpManagerV1.get(
@@ -143,7 +152,8 @@ class DatosTcpViewModel(
                     CommonOids.TCP.TCP_OUT_SEGS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
 
@@ -152,7 +162,8 @@ class DatosTcpViewModel(
                     CommonOids.TCP.TCP_RETRANS_SEGS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
 

@@ -63,6 +63,13 @@ class DatagramasUdpFragment : Fragment() {
             binding.tvErroresDeEntrada.text = it.erroresDeEntrada
             binding.tvDatagramasEnviados.text = it.datagramasEnviados
 
+            if (it.datagramasEnviados.isEmpty()) binding.cardDatagramasEnviados.visibility =
+                View.GONE
+            if (it.erroresDeEntrada.isEmpty()) binding.cardErroresDeEntrada.visibility = View.GONE
+            if (it.puertosNoDisponibles.isEmpty()) binding.cardPuertosNoDisponibles.visibility =
+                View.GONE
+            if (it.datagramasRecibidos.isEmpty()) binding.cardDatagramasRecibidos.visibility =
+                View.GONE
         }
     }
 

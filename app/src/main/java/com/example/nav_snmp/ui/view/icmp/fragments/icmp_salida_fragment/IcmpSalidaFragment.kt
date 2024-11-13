@@ -69,6 +69,24 @@ class IcmpSalidaFragment : Fragment() {
             binding.tvNumeroDePaquetesDeRedireccion.text = it.numeroDePaquetesDeRedireccion
             binding.tvNumeroDePaquetesEco.text = it.numeroDePaqueteEco
             binding.tvNumeroDePaquetesDeMarcaDeTiempo.text = it.numeroDePaquetesMarcaTiempo
+
+            if (it.numeroDePaquetesEnviados.isEmpty()) binding.cardMensajesEnviados.visibility =
+                View.GONE
+            if (it.numeroDePaquetesConError.isEmpty()) binding.cardRecibidosConError.visibility =
+                View.GONE
+            if (it.mensajeConDestinoInalcanzable.isEmpty()) binding.cardMensajesConDestinoInalcanzable.visibility =
+                View.GONE
+            if (it.numeroDePaquetesConTiempoExcedido.isEmpty()) binding.cardMensajesConTiempoExedido.visibility =
+                View.GONE
+            if (it.numeroDePaquetesDeProblemasDeParametros.isEmpty()) binding.cardMensajesConProblemasDeParametros.visibility =
+                View.GONE
+            if (it.controlDeFlujo.isEmpty()) binding.cardControlDeFlujo.visibility = View.GONE
+            if (it.numeroDePaquetesDeRedireccion.isEmpty()) binding.cardNumeroDePaquetesDeRedireccion.visibility =
+                View.GONE
+            if (it.numeroDePaqueteEco.isEmpty()) binding.cardNumeroDePaquetesEco.visibility =
+                View.GONE
+            if (it.numeroDePaquetesMarcaTiempo.isEmpty()) binding.cardNumeroDePaquetesDeMarcaDeTiempo.visibility =
+                View.GONE
         }
     }
 

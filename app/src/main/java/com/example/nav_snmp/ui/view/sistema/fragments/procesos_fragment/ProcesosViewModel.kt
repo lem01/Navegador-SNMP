@@ -78,6 +78,14 @@ class ProcesosViewModel(
 //                    ).show()
 
                     Log.d(
+                        TAG, "procesos: ${
+                            listaNombre.map {
+                                "$it   "
+                            }
+                        }"
+                    )
+
+                    Log.d(
                         TAG, "estados: ${
                             listaEstado.map {
                                 "$it   "

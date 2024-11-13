@@ -198,7 +198,8 @@ class SnmpManagerV1 : SnmpManagerInterface {
         oid: String,
         tipoOperacion: TipoOperacion,
         context: Context,
-        isShowPgrogress: Boolean
+        isShowPgrogress: Boolean,
+        showMensajeAdvertencia: Boolean
     ): String {
         if (isShowPgrogress)
             return suspendCoroutine { continuation ->
@@ -256,9 +257,15 @@ class SnmpManagerV1 : SnmpManagerInterface {
                         if (customProgressDialog.isShowing)
                             customProgressDialog.dismiss()
                         e.printStackTrace()
-                        mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
+                        if (showMensajeAdvertencia)
+                            mensajeAlert(
+                                context,
+                                "Advertencia",
+                                "${e.message}",
+                                IonAlert.WARNING_TYPE
+                            )
+                        continuation.resume("")
                         close()
-//                        continuation.resumeWithException(e)
                     }
                 }
             }
@@ -309,10 +316,12 @@ class SnmpManagerV1 : SnmpManagerInterface {
                     close()
                 } catch (e: Exception) {
                     e.printStackTrace()
-                    mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
-                    close()
+                    if (showMensajeAdvertencia)
+                        mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
 //                    continuation.resumeWithException(e)
                     continuation.resume("")
+                    close()
+
                 }
             }
         }
@@ -529,7 +538,8 @@ class SnmpManagerV1 : SnmpManagerInterface {
         hostModel: HostModel,
         oid: String,
         context: Context,
-        isShowProgress: Boolean
+        isShowProgress: Boolean,
+        showMensajeAdvertencia: Boolean
     ): List<String> {
         return suspendCoroutine { continuation ->
             val resultList = mutableListOf<String>()
@@ -597,7 +607,8 @@ class SnmpManagerV1 : SnmpManagerInterface {
                             customProgressDialog.dismiss()
                     }
                     e.printStackTrace()
-                    mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
+                    if (showMensajeAdvertencia)
+                        mensajeAlert(context, "Advertencia", "${e.message}", IonAlert.WARNING_TYPE)
                     close()
                     continuation.resume(emptyList())
                 }

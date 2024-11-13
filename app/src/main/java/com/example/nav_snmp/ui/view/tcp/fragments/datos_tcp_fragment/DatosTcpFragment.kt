@@ -64,6 +64,28 @@ class DatosTcpFragment : Fragment() {
             binding.tvSegmentosRecibidos.text = it.segmentosRecividios
             binding.tvSegmentosEnviados.text = it.segmentosEnviados
             binding.tvSegmentosRetransmitidos.text = it.segmentosReTransmitidos
+
+            if (it.tiempoMinimoDeReTransmision.isEmpty()) binding.cardTiempoMinimoDeRetransmision.visibility =
+                View.GONE
+            if (it.tiempoMaximoDeReTransmision.isEmpty()) binding.cardTiempoMaximoDeRetransmision.visibility =
+                View.GONE
+            if (it.maximoDeConexiones.isEmpty()) binding.cardMaximoDeConexionesTcp.visibility =
+                View.GONE
+            if (it.conexionesActivasIniciadas.isEmpty()) binding.cardConexionesActivasTcp.visibility =
+                View.GONE
+            if (it.conexionesPasivasEstablecidas.isEmpty()) binding.cardConexionesPasivasTcp.visibility =
+                View.GONE
+            if (it.intentosDeConexionesFallidos.isEmpty()) binding.cardIntentosFallidosDeConexion.visibility =
+                View.GONE
+            if (it.reinciosDeConexiones.isEmpty()) binding.cardResetConexionesEstablecidas.visibility =
+                View.GONE
+            if (it.conexionesEstablecidasActuales.isEmpty()) binding.cardConexionesActualmenteEstablecidas.visibility =
+                View.GONE
+            if (it.segmentosRecividios.isEmpty()) binding.cardSegmentosRecibidos.visibility =
+                View.GONE
+            if (it.segmentosEnviados.isEmpty()) binding.cardSegmentosEnviados.visibility = View.GONE
+            if (it.segmentosReTransmitidos.isEmpty()) binding.cardSegmentosRetransmitidos.visibility =
+                View.GONE
         }
     }
 

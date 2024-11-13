@@ -58,28 +58,9 @@ class MainActivity : AppCompatActivity() {
 
         initFactory()
 
-//        lifecycleScope.launch {
-//        }
-
         initAdapter()
         initObservers()
-
-        binding.fab.setOnClickListener {
-//            CoroutineScope(Dispatchers.Main).launch {
-//                val host = "192.168.1.91"  // Dirección IP del dispositivo que quieres probar
-//                val timeOutMillis = 500  // Tiempo de espera en milisegundos
-//
-//                val isReachable = isNetworkDeviceReachable(host, timeOutMillis)
-//                if (isReachable) {
-//                    println("El dispositivo en $host es alcanzable en uno de los puertos de administración o servicio.")
-//                } else {
-//                    println("Error: El dispositivo en $host no es accesible en los puertos comunes.")
-//                }
-//            }
-
-        }
     }
-
 
 
     private fun initObservers() {

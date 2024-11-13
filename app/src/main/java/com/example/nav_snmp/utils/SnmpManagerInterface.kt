@@ -23,6 +23,7 @@ interface SnmpManagerInterface {
         tipoOperacion: TipoOperacion,
         context: Context,
         isShowPgrogress: Boolean = true,
+        showMensajeAdvertencia : Boolean = true
     ): Any
 
     suspend fun getNext(vararg args: Any): Any
@@ -31,7 +32,8 @@ interface SnmpManagerInterface {
         hostModel: HostModel,
         oid: String,
         context: Context,
-        isShowProgress: Boolean
+        isShowProgress: Boolean,
+        showMensajeAdvertencia : Boolean = true
     ): List<String>
 
     abstract fun mensajeAlert(context: Context, s: String, s1: String, successType: Int)

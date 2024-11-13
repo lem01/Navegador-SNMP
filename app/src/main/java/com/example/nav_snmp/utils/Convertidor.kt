@@ -12,6 +12,11 @@ object Convertidor {
     //funcion que convierte un string a un entero
 
     fun convertirOctetStringAFecha(octetString: String): String {
+
+        if (!octetString.contains(":")) {
+            return octetString
+        }
+
         // Separar el valor en bytes
         val bytes = octetString.split(":").map { it.toInt(16) }
 
@@ -75,6 +80,7 @@ object Convertidor {
             oidNormalizer.startsWith(CommonOids.INTERFACE.IF_DESCR) -> {
                 octetStringToReadableString(s)
             }
+
             oidNormalizer == CommonOids.INTERFACE.IF_DESCR -> octetStringToReadableString(s)
 
             oidNormalizer == CommonOids.HOST.HR_SYSTEM_DATE -> convertirOctetStringAFecha(s)
@@ -148,11 +154,19 @@ object Convertidor {
     }
 
     fun octetStringToReadableString(octetString: String): String {
-        // Convertimos cada par hexadecimal a un byte y los almacenamos en un array de bytes
-        val bytes = octetString.split(":").map { it.toInt(16).toByte() }.toByteArray()
+        try {
+            if (!octetString.contains(":")) {
+                return octetString
+            }
 
-        // Convertimos el array de bytes a una cadena UTF-8
-        return String(bytes, Charsets.UTF_8)
+            // Convertimos cada par hexadecimal a un byte y los almacenamos en un array de bytes
+            val bytes = octetString.split(":").map { it.toInt(16).toByte() }.toByteArray()
+
+            // Convertimos el array de bytes a una cadena UTF-8
+            return String(bytes, Charsets.UTF_8)
+        } catch (e: Exception) {
+            return octetString
+        }
     }
 
     fun convertToGigabytes(unidadesAsignacion: String, tamanios: String): Double {

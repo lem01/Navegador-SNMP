@@ -105,10 +105,12 @@ class SnmpManagerV2c : SnmpManagerInterface {
         oid: String,
         tipoOperacion: TipoOperacion,
         context: Context,
-        isShowPgrogress: Boolean
+        isShowPgrogress: Boolean,
+        showMensajeAdvertencia: Boolean
     ): Any {
         TODO("Not yet implemented")
     }
+
 
     override suspend fun getNext(vararg args: Any): Any {
         TODO("Not yet implemented")
@@ -122,11 +124,11 @@ class SnmpManagerV2c : SnmpManagerInterface {
         hostModel: HostModel,
         oid: String,
         context: Context,
-        isShowProgress: Boolean
+        isShowProgress: Boolean,
+        showMensajeAdvertencia: Boolean
     ): List<String> {
         TODO("Not yet implemented")
     }
-
 
     override fun mensajeAlert(context: Context, s: String, s1: String, successType: Int) {
         CoroutineScope(Dispatchers.Main).launch {

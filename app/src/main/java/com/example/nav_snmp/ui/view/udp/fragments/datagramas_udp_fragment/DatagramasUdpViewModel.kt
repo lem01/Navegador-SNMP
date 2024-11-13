@@ -71,28 +71,32 @@ class DatagramasUdpViewModel(
                     CommonOids.UDP.UDP_IN_DATAGRAMS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
                 val puertosNoDisponibles = snmpManagerV1.get(
                     host,
                     CommonOids.UDP.UDP_NO_PORTS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
                 val erroresDeEntrada = snmpManagerV1.get(
                     host,
                     CommonOids.UDP.UDP_IN_ERRORS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
                 val datagramasEnviados = snmpManagerV1.get(
                     host,
                     CommonOids.UDP.UDP_OUT_DATAGRAMS,
                     TipoOperacion.GET,
                     context,
-                    false
+                    false,
+                    showMensajeAdvertencia = false
                 )
 
                 _datagramasUdpModel.value =

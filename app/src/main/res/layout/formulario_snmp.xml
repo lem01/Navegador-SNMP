@@ -97,16 +97,16 @@
     </LinearLayout>
 
     <LinearLayout
-        android:visibility="invisible"
         android:id="@+id/ly_oid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="8dp"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="16dp"
         android:orientation="horizontal"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ly_comunidad">
+        app:layout_constraintTop_toBottomOf="@+id/ly_puerto">
 
         <TextView
             android:id="@+id/tv_oid"
