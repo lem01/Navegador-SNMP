@@ -6,6 +6,8 @@
 
 - [ ] Quitar el retraso en buscar host manual
 - [ ] Quitar todos
+- [ ] Que no se muestre mensaje de advetencia en informacion de sistema
+
 
 # En proceso
 
