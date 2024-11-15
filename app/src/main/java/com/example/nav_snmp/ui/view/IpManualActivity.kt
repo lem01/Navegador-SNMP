@@ -228,7 +228,8 @@ class IpManualActivity : AppCompatActivity() {
 
         val versionSnmp = ArrayList<String>()
         versionSnmp.add(VersionSnmp.V1.name)
-        versionSnmp.add(VersionSnmp.V2c.name)
+        //todo: quitar cuando este listo snmp v2c
+//        versionSnmp.add(VersionSnmp.V2c.name)
         val adapterVersion =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, versionSnmp)
         adapterVersion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

@@ -57,6 +57,7 @@ class TablaDeConexionesUDPViewModel(
                     host,
                     CommonOids.UDP.UDP_TABLE.UDP_LOCAL_ADDRESS,
                     context,
+                    false,
                     false
                 )
 
@@ -64,11 +65,9 @@ class TablaDeConexionesUDPViewModel(
                     host,
                     CommonOids.UDP.UDP_TABLE.UDP_LOCAL_PORT,
                     context,
+                    false,
                     false
                 )
-
-
-//                estadoActual = agregarDescripcionEstadoActual(estadoActual)
 
                 _tablaDeConexionesUDPModel.value = unirEnUnaSolaLista(
                     direccionIpLocal,
@@ -98,7 +97,10 @@ class TablaDeConexionesUDPViewModel(
         }
     }
 
-    private fun unirEnUnaSolaLista(direccionIpLocal: List<String>, puertoLocal: List<String>): List<TablaDeconexionesUDPModel> {
+    private fun unirEnUnaSolaLista(
+        direccionIpLocal: List<String>,
+        puertoLocal: List<String>
+    ): List<TablaDeconexionesUDPModel> {
         val list = mutableListOf<TablaDeconexionesUDPModel>()
         for (i in direccionIpLocal.indices) {
             list.add(

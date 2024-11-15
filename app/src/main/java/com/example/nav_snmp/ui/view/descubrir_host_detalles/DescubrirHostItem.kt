@@ -81,7 +81,7 @@ fun DescubrirHostItem(
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.weight(1f) // Hacer que esta fila ocupe todo el espacio disponible
+                modifier = Modifier.weight(1f)
             ) {
                 Image(
                     modifier = Modifier.size(33.dp),

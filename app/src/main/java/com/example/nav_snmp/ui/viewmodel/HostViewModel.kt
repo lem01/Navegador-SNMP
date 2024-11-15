@@ -41,13 +41,9 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
 
     fun snmpV1Test(hostModel: HostModel, context: Context) {
         if (isvalidIp(hostModel.direccionIP)) {
-            val handler = android.os.Handler()
-            handler.postDelayed({
-                val snmpManagerV1 = SnmpManagerV1()
-                snmpManagerV1.snmpTest(hostModel, context)
-            }, 3000)
+            val snmpManagerV1 = SnmpManagerV1()
+            snmpManagerV1.snmpTest(hostModel, context)
         }
-
     }
 
     fun snmpV2cTest(hostModel: HostModel, context: Context) {
@@ -118,7 +114,6 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
                     )
                     println("Respuesta: $respuesta")
 //                    _respuestaOperacionSnmp.postValue(respuesta)
-                    Toast.makeText(context, respuesta, Toast.LENGTH_SHORT).show()
                 }
 
                 TipoOperacion.GET_NEXT -> {

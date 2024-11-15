@@ -114,7 +114,7 @@
                 app:layout_constraintTop_toTopOf="parent">
 
                 <ImageView
-                    android:id="@+id/img_edit_contacto"
+                    android:id="@+id/img_edit_estado_administrativo"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"

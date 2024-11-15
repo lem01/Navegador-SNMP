@@ -31,7 +31,6 @@ class ProcesosFragment : Fragment() {
     private var _binding: FragmentProcesosBinding? = null
     private val binding get() = _binding!!
 
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private val ARG_PARAM1 = "param1"
@@ -112,7 +111,6 @@ class ProcesosFragment : Fragment() {
     }
 
     private fun initBarraProgreso(viewModel: ProcesosViewModel) {
-        //todo
         viewModel.barraProgreso.observe(viewLifecycleOwner) {
             if (it) {
                 binding.linearProgressIndicator.visibility = View.VISIBLE
@@ -148,7 +146,6 @@ class ProcesosFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment ProcesosFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             ProcesosFragment().apply {

@@ -12,34 +12,10 @@ class CommonOids {
         const val SYS_SERVICES = "1.3.6.1.2.1.1.7.0"
     }
 
-    //TODO: QUITARLA SI NP SE IDENTIFICA
-    object NETWORK_ADDRESSES {
-        const val IF_TABLE = "1.3.6.1.2.1.3.1"
-        const val IF_XTABLE = "1.3.6.1.2.1.3.2"
-        const val AT_TABLE = "1.3.6.1.2.1.3.3"
-        const val IP_NET_TO_MEDIA_TABBLE = "1.3.6.1.2.1.3.4"
-        const val IP_ROUTING_TABLE = "1.3.6.1.2.1.3.5"
-        const val TCP_CONN_TABLE = "1.3.6.1.2.1.3.6"
-        const val UDP_TABLE = "1.3.6.1.2.1.3.7"
-    }
-
     object IP {
         const val IP_FORWARDING = ".1.3.6.1.2.1.4.1.0"
         const val IP_DEFAULT_TTL = ".1.3.6.1.2.1.4.2.0"
         const val IP_IN_RECEIVES = ".1.3.6.1.2.1.4.3.0"
-    }
-
-    //todo eliminar si no se usa
-    object IP_ROUTE_TABLE {
-        const val VALUE_DESTINATION_NETWORK = "1.3.6.1.2.1.4.21.1.1"
-        const val VALUE_MASK_DESTINATION_NETWORK = "1.3.6.1.2.1.4.21.1.2"
-        const val NEXT_HOP_ADDRESS = "1.3.6.1.2.1.4.21.1.7"
-        const val TYPE_ROUTING = "1.3.6.1.2.1.4.21.1.8"
-        const val NUMERIC_VALUE_OF_ROUTE = "1.3.6.1.2.1.4.21.1.11"
-        const val EXPIRATION_TIME_ROUTE = "1.3.6.1.2.1.4.21.1.13"
-        const val TYPE_PROTOCOL_ROUTE = "1.3.6.1.2.1.4.21.1.14"
-        const val LAST_MODIFICATION_TIME_ROUTING_TABLE_ENTRY = "1.3.6.1.2.1.4.21.1.15"
-        const val STARTING_TIME_ROUTING_TABLE_ENTRY = "1.3.6.1.2.1.4.21.1.18"
     }
 
     object ICMP {

@@ -28,7 +28,6 @@ class AlmacenamientoFragment : Fragment() {
     private var _binding: FragmentAlmacenamientoBinding? = null
     private val binding get() = _binding!!
 
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
 
@@ -81,7 +80,8 @@ class AlmacenamientoFragment : Fragment() {
                 headers.forEach { header ->
                     addView(TextView(requireContext()).apply {
                         text = header
-                        layoutParams = TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
+                        layoutParams =
+                            TableRow.LayoutParams(0, TableRow.LayoutParams.WRAP_CONTENT, 1f)
                         gravity = Gravity.CENTER
                         setPadding(
                             5.dp.value.toInt(),
@@ -153,10 +153,10 @@ class AlmacenamientoFragment : Fragment() {
                     )
                 }
 
-                tableRow.addView(textView)
-                tableRow.addView(textView2)
-                tableRow.addView(textView3)
-                tableRow.addView(textView4)
+                if (textView.text.isNotEmpty()) tableRow.addView(textView)
+                if (textView2.text.isNotEmpty()) tableRow.addView(textView2)
+                if (textView3.text.isNotEmpty()) tableRow.addView(textView3)
+                if (textView4.text.isNotEmpty()) tableRow.addView(textView4)
                 binding.tableLayout.addView(tableRow)
             }
 
@@ -210,7 +210,6 @@ class AlmacenamientoFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment AlmacenamientoFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             AlmacenamientoFragment().apply {

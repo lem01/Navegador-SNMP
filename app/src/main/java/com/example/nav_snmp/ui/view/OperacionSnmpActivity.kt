@@ -38,12 +38,6 @@ class OperacionSnmpActivity : AppCompatActivity() {
         setSupportActionBar(findViewById(R.id.toolbar))
         initFactory()
         initSpinner()
-//todo: quitar luego
-        binding.include.etOid.setText("1.3.6.1.2.1.1.1.0")
-//        hostViewModel.respuestaOperacion.observe(
-//            this, Observer { respuesta ->
-//                binding.include.edDescripcion.setText(respuesta)
-//            })
 
         initObservers()
 
@@ -139,7 +133,8 @@ class OperacionSnmpActivity : AppCompatActivity() {
 
         val versionSnmp = ArrayList<String>()
         versionSnmp.add(VersionSnmp.V1.name)
-        versionSnmp.add(VersionSnmp.V2c.name)
+        //todo: quitar cuando este listo snmp v2c
+//        versionSnmp.add(VersionSnmp.V2c.name)
         val adapterVersion =
             ArrayAdapter(this, android.R.layout.simple_spinner_item, versionSnmp)
         adapterVersion.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)

@@ -61,6 +61,7 @@ class AlmacenamientoViewModel(
                     host,
                     CommonOids.HOST.HRSTORAGE.HR_STORAGE_DESCR,
                     context,
+                    false,
                     false
                 )
 
@@ -75,6 +76,7 @@ class AlmacenamientoViewModel(
                     host,
                     CommonOids.HOST.HRSTORAGE.HR_STORAGE_ALLOCATION_UNITS,
                     context,
+                    false,
                     false
                 )
 
@@ -82,6 +84,7 @@ class AlmacenamientoViewModel(
                     host,
                     CommonOids.HOST.HRSTORAGE.HR_STORAGE_SIZE,
                     context,
+                    false,
                     false
                 )
 
@@ -89,6 +92,7 @@ class AlmacenamientoViewModel(
                     host,
                     CommonOids.HOST.HRSTORAGE.HR_STORAGE_USED,
                     context,
+                    false,
                     false
                 )
 

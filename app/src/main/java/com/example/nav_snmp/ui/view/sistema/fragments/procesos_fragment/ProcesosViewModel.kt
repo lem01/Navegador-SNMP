@@ -161,7 +161,6 @@ class ProcesosViewModel(
         return repository.getHostById(idHost)
     }
 
-    //todo terminar
     private fun getListaProcesosModel(
         listaNombres: List<String>,
         listaEstado: List<String>,

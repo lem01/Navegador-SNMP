@@ -108,7 +108,6 @@ class DatosTcpViewModel(
                         showMensajeAdvertencia = false
                     )
 
-                //todo sumar tambien tcpEstabResets
                 var intentosDeConexionesFallidos = snmpManagerV1.get(  //numero de intentos fallidos
                     host,
                     CommonOids.TCP.TCP_ATTEMPT_FAILS,

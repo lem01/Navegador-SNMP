@@ -62,6 +62,7 @@ class InformacionSistemaViewModel(
                     CommonOids.SYSTEM.SYS_UP_TIME,
                     TipoOperacion.GET,
                     context,
+                    false,
                     false
                 )
 
@@ -70,6 +71,7 @@ class InformacionSistemaViewModel(
                     CommonOids.HOST.HR_SYSTEM_DATE,
                     TipoOperacion.GET,
                     context,
+                    false,
                     false
                 )
                 fecha = Convertidor.getFormater(fecha, CommonOids.HOST.HR_SYSTEM_DATE)
@@ -79,6 +81,7 @@ class InformacionSistemaViewModel(
                     CommonOids.HOST.HR_SYSTEM_NUM_USERS,
                     TipoOperacion.GET,
                     context,
+                    false,
                     false
                 )
 
@@ -87,6 +90,7 @@ class InformacionSistemaViewModel(
                     CommonOids.HOST.HR_SYSTEM_PROCESSES,
                     TipoOperacion.GET,
                     context,
+                    false,
                     false
                 )
 
@@ -95,6 +99,7 @@ class InformacionSistemaViewModel(
                     CommonOids.HOST.HR_SYSTEM_MAX_PROCESSES,
                     TipoOperacion.GET,
                     context,
+                    false,
                     false
                 )
 
@@ -103,6 +108,7 @@ class InformacionSistemaViewModel(
                     CommonOids.SYSTEM.SYS_NAME,
                     TipoOperacion.GET,
                     context,
+                    false,
                     false
                 )
                 nombre = nombre.ifEmpty { "Genérico" }
@@ -112,6 +118,7 @@ class InformacionSistemaViewModel(
                     CommonOids.SYSTEM.SYS_DESCR,
                     TipoOperacion.GET,
                     context,
+                    false,
                     false
                 )
 
@@ -120,6 +127,7 @@ class InformacionSistemaViewModel(
                     CommonOids.SYSTEM.SYS_LOCATION,
                     TipoOperacion.GET,
                     context,
+                    false,
                     false
                 )
 
@@ -128,6 +136,7 @@ class InformacionSistemaViewModel(
                     CommonOids.SYSTEM.SYS_CONTACT,
                     TipoOperacion.GET,
                     context,
+                    false,
                     false
                 )
 

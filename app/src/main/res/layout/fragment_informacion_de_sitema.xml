@@ -50,6 +50,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
 
 
                     android:paddingHorizontal="16dp"
@@ -96,9 +99,6 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
-                    android:clickable="true"
-                    android:focusable="true"
-                    android:foreground="?attr/selectableItemBackground"
                     app:layout_constraintEnd_toEndOf="@+id/card_nombre"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -131,6 +131,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
 
 
                     android:paddingHorizontal="16dp"
@@ -177,13 +180,11 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
                     app:layout_constraintEnd_toEndOf="@+id/card_cotacto"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <ImageView
-                        android:id="@+id/img_edit_contacto"
+                        android:id="@+id/img_edit_estado_administrativo"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center"
@@ -196,11 +197,11 @@
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
+
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="7dp">
-
 
 
                 <com.google.android.material.card.MaterialCardView
@@ -251,7 +252,6 @@
                 </com.google.android.material.card.MaterialCardView>
 
                 <LinearLayout
-                    android:visibility="invisible"
                     android:id="@+id/ly_edit_descripcion"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
@@ -259,6 +259,7 @@
                     android:layout_marginEnd="4dp"
                     android:clickable="true"
                     android:foreground="?attr/selectableItemBackground"
+                    android:visibility="invisible"
                     app:layout_constraintEnd_toEndOf="@+id/card_descripcion"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -282,7 +283,6 @@
                 android:layout_height="wrap_content"
                 android:layout_marginVertical="7dp">
 
-
                 <com.google.android.material.card.MaterialCardView
                     android:id="@+id/card_localizacion"
                     style="@style/Widget.Material3.CardView.Outlined"
@@ -290,8 +290,9 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
                     android:layout_marginEnd="10dp"
-
-
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:foreground="?attr/selectableItemBackground"
                     android:paddingHorizontal="16dp"
                     app:cardCornerRadius="8dp"
                     app:layout_constraintBottom_toBottomOf="parent"
@@ -336,8 +337,6 @@
                     android:layout_height="30dp"
                     android:layout_marginTop="4dp"
                     android:layout_marginEnd="4dp"
-                    android:clickable="true"
-                    android:foreground="?attr/selectableItemBackground"
                     app:layout_constraintEnd_toEndOf="@+id/card_localizacion"
                     app:layout_constraintTop_toTopOf="parent">
 
@@ -358,11 +357,11 @@
 
             <com.google.android.material.card.MaterialCardView
 
-                android:layout_marginVertical="7dp"
                 android:id="@+id/card_tiempo_funcionamiento"
                 style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="7dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"
@@ -402,11 +401,11 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_marginVertical="7dp"
                 android:id="@+id/card_fecha"
                 style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="7dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"
@@ -445,11 +444,11 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_marginVertical="7dp"
                 android:id="@+id/card_no_usuarios"
                 style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="7dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"
@@ -489,11 +488,11 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_marginVertical="7dp"
                 android:id="@+id/card_no_procesos"
                 style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="7dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"
@@ -532,11 +531,11 @@
             </com.google.android.material.card.MaterialCardView>
 
             <com.google.android.material.card.MaterialCardView
-                android:layout_marginVertical="7dp"
                 android:id="@+id/card_max_procesos"
                 style="@style/Widget.Material3.CardView.Outlined"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginVertical="7dp"
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="10dp"

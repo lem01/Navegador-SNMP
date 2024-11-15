@@ -25,7 +25,6 @@ class InformacionDeSistemaFragment : Fragment() {
     private var _binding: FragmentInformacionDeSitemaBinding? = null
     private val binding get() = _binding!!
 
-    // TODO: Rename and change types of parameters
     private var param1: String? = null
     private var param2: String? = null
     private val ARG_PARAM1 = "param1"
@@ -61,7 +60,6 @@ class InformacionDeSistemaFragment : Fragment() {
          * @param param2 Parameter 2.
          * @return A new instance of fragment InformacionDeSitemaFragment.
          */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             InformacionDeSistemaFragment().apply {
@@ -89,6 +87,16 @@ class InformacionDeSistemaFragment : Fragment() {
             binding.tvDescripcion.text = sistemaModel?.descripcion
             binding.tvLocalizacion.text = sistemaModel?.localizacion
             binding.tvContacto.text = sistemaModel?.contacto
+
+            if (sistemaModel.fecha == "") binding.lyFecha.visibility = View.GONE
+            if (sistemaModel.numeroDeUsuarios == "") binding.lyNoUsuarios.visibility = View.GONE
+            if (sistemaModel.numeroDeProcesos == "") binding.lyNoProcesos.visibility = View.GONE
+            if (sistemaModel.maximoNumeroDeProcesos == "") binding.lyMaxProcesos.visibility =
+                View.GONE
+            if (sistemaModel.descripcion == "") binding.lyDescripcion.visibility = View.GONE
+            if (sistemaModel.tiempoDeFuncionamiento == "") binding.lyTiempoFuncionamiento.visibility =
+                View.GONE
+
         }
 
         initBarraProgreso(viewModel)

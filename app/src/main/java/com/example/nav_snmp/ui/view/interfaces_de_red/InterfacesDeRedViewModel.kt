@@ -62,54 +62,54 @@ class InterfacesDeRedViewModel(
                     host,
                     CommonOids.INTERFACE.IF_DESCR,
                     context,
-                    false
+                    false, false
                 )
 
                 var tipo = snmpManagerV1.walk(
                     host,
                     CommonOids.INTERFACE.IF_TYPE,
                     context,
-                    false
+                    false, false
                 )
 
                 var velocidad = snmpManagerV1.walk(
                     host,
                     CommonOids.INTERFACE.IF_SPEED,
                     context,
-                    false
+                    false, false
                 )
                 var direccionMac = snmpManagerV1.walk(
                     host,
                     CommonOids.INTERFACE.IF_PHYS_ADDRESS,
                     context,
-                    false
+                    false, false
                 )
+
                 var estadoOperativo = snmpManagerV1.walk(
                     host,
                     CommonOids.INTERFACE.IF_OPER_STATUS,
                     context,
-                    false
+                    false, false
                 )
                 var estadoAdministrativo = snmpManagerV1.walk(
                     host,
                     CommonOids.INTERFACE.IF_ADMIN_STATUS,
                     context,
-                    false
+                    false, false
                 )
 
                 var numeroDeBytesRecividos = snmpManagerV1.walk(
                     host,
                     CommonOids.INTERFACE.IF_IN_OCTETS,
                     context,
-                    false
+                    false, false
                 )
                 var numeroDeBytesEnviados = snmpManagerV1.walk(
                     host,
                     CommonOids.INTERFACE.IF_OU_OCTETS,
                     context,
-                    false
+                    false, false
                 )
-
                 descripcion = descripcion.map {
                     Convertidor.getFormater(it, CommonOids.INTERFACE.IF_DESCR)
                 }

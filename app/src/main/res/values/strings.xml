@@ -60,7 +60,6 @@
         vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim.
     </string>
     <string name="informacion_de_sistema">Información del Sistema</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Almacenamiento</string>
     <string name="almacenamiento">Almacenamiento</string>
     <string name="icmp">icmp</string>

@@ -3,18 +3,17 @@
 - [ ] Hacer snmp v2c
 - [ ] Hacer snmp getbulk
 
-
-- [ ] Quitar el retraso en buscar host manual
-- [ ] Quitar todos
-- [ ] Que no se muestre mensaje de advetencia en informacion de sistema
-
-
 # En proceso
-
-- [ ] Quitar los toast en operacion snmp
 
 # Hecho
 
+- [ ] Esconder información si no se recoge los datos en modulo se sistema , modulo udp , modulo tpc
+- [ ] Hacer los botones que tiene el icono lapiz clicleables todo el layout
+- [ ] quitar los todos que no se usan
+- [ ] Quitar rastros en la vista de snmp v2c
+- [ ] Quitar el retraso en buscar host manual
+- [ ] Que no se muestre mensaje de advetencia en informacion de sistema
+- [ ] Quitar los toast en operacion snmp
 - [ ] Que cuando guarde un host que se actualize correctamente la lista de hosts
 - [ ] Cundo quiere descubrir los host no los esta logrando encontrar
 - [ ] Hacer snmp getwalk
