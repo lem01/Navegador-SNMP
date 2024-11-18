@@ -29,7 +29,7 @@
             android:layout_height="match_parent"
             android:divider="@android:color/black"
             android:showDividers="beginning|middle|end"
-            android:stretchColumns="1">
+          >
 
             <TableRow
                 android:id="@+id/tableRow"
