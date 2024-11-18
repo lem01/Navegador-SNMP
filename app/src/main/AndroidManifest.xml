@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Snmp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.view.snmp.SnmpActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.interfaces_de_red.InterfacesDeRedActivity"
             android:exported="false" />
         <activity
@@ -34,33 +37,27 @@
         <activity
             android:name=".ui.view.graficos.HerramientasActivity"
             android:exported="false"
-            android:parentActivityName=".ui.view.MainActivity"
- />
+            android:parentActivityName=".ui.view.MainActivity" />
         <activity
             android:name=".ui.view.OperacionSnmpActivity"
             android:exported="false"
-            android:parentActivityName=".ui.view.MainActivity"
- />
+            android:parentActivityName=".ui.view.MainActivity" />
         <activity
             android:name=".ui.view.descubrir_host_detalles.DescubrirHostDetalles"
             android:exported="false"
             android:label="@string/title_activity_descubrir_host_detalles"
-
             android:theme="@style/Theme.Snmp" />
         <activity
             android:name=".ui.view.DescubrirHostsActivity"
             android:exported="false"
-            android:parentActivityName=".ui.view.MainActivity"
- />
+            android:parentActivityName=".ui.view.MainActivity" />
         <activity
             android:name=".ui.view.IpManualActivity"
             android:exported="false"
-            android:parentActivityName=".ui.view.MainActivity"
- />
+            android:parentActivityName=".ui.view.MainActivity" />
         <activity
             android:name=".ui.view.MainActivity"
-            android:exported="true"
->
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

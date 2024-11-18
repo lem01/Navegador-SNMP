@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/snmp_navegacion"
+    app:startDestination="@id/snmpRecibidosFragment">
+
+    <fragment
+        android:id="@+id/snmpRecibidosFragment"
+        android:name="com.example.nav_snmp.ui.view.snmp.fragments.recibidos.SnmpRecibidosFragment"
+        android:label="fragment_snmp_recibidos"
+        tools:layout="@layout/fragment_snmp_recibidos" />
+    <fragment
+        android:id="@+id/snmpEnviadosFragment"
+        android:name="com.example.nav_snmp.ui.view.snmp.fragments.enviados.SnmpEnviadosFragment"
+        android:label="fragment_snmp_enviados"
+        tools:layout="@layout/fragment_snmp_enviados" />
+
+</navigation>

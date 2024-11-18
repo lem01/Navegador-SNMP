@@ -123,6 +123,40 @@ class CommonOids {
         const val IF_OU_OCTETS = ".1.3.6.1.2.1.2.2.1.16"
     }
 
+    object SNMP {
+        const val snmpInPkts = ".1.3.6.1.2.1.11.1.0"
+        const val snmpOutPkts = ".1.3.6.1.2.1.11.2.0"
+        const val snmpInBadVersions = ".1.3.6.1.2.1.11.3.0"
+        const val snmpInBadCommunityNames = ".1.3.6.1.2.1.11.4.0"
+        const val snmpInBadCommunityUses = ".1.3.6.1.2.1.11.5.0"
+        const val snmpInASNParseErrs = ".1.3.6.1.2.1.11.6.0"
+        const val snmpInTooBigs = ".1.3.6.1.2.1.11.8.0"
+        const val snmpInNoSuchNames = ".1.3.6.1.2.1.11.9.0"
+        const val snmpInBadValues = ".1.3.6.1.2.1.11.10.0"
+        const val snmpInReadOnlys = ".1.3.6.1.2.1.11.11.0"
+        const val snmpInGenErrs = ".1.3.6.1.2.1.11.12.0"
+        const val snmpInTotalReqVars = ".1.3.6.1.2.1.11.13.0"
+        const val snmpInTotalSetVars = ".1.3.6.1.2.1.11.14.0"
+        const val snmpInGetRequests = ".1.3.6.1.2.1.11.15.0"
+        const val snmpInGetNexts = ".1.3.6.1.2.1.11.16.0"
+        const val snmpInSetRequests = ".1.3.6.1.2.1.11.17.0"
+        const val snmpInGetResponses = ".1.3.6.1.2.1.11.18.0"
+        const val snmpInTraps = ".1.3.6.1.2.1.11.19.0"
+
+        ///////////////////////////////////////////////
+        const val snmpOutTooBigs = ".1.3.6.1.2.1.11.20.0"
+        const val snmpOutNoSuchNames = ".1.3.6.1.2.1.11.21.0"
+        const val snmpOutBadValues = ".1.3.6.1.2.1.11.22.0"
+        const val snmpOutGenErrs = ".1.3.6.1.2.1.11.24.0"
+        const val snmpOutGetRequests = ".1.3.6.1.2.1.11.25.0"
+        const val snmpOutGetNexts = ".1.3.6.1.2.1.11.26.0"
+        const val snmpOutSetRequests = ".1.3.6.1.2.1.11.27.0"
+        const val snmpOutGetResponses = ".1.3.6.1.2.1.11.28.0"
+        const val snmpOutTraps = ".1.3.6.1.2.1.11.29.0"
+        const val snmpEnableAuthenTraps = ".1.3.6.1.2.1.11.30.0"
+
+    }
+
     private val additionalOids = mutableMapOf<String, String>()
 
     fun getOid(name: String): String? {
