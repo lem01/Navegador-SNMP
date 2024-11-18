@@ -3,6 +3,7 @@ package com.example.nav_snmp.ui.view
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.ArrayAdapter
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
@@ -181,8 +182,11 @@ class IpManualActivity : AppCompatActivity() {
         binding.include.etHostIp.setText(host.direccionIP)
         binding.include.etPuerto.setText(host.puertoSNMP.toString())
         binding.include.etComunidad.setText(host.comunidadSNMP)
-        binding.include.spTipo.setSelection(TipoDispositivo.valueOf(host.tipoDeDispositivo).ordinal)
-        binding.include.spVersionSnmp.setSelection(VersionSnmp.valueOf(host.versionSNMP).ordinal)
+        val tipoEnum = TipoDispositivo.valueOf(host.tipoDeDispositivo).ordinal
+
+        binding.include.spTipo.setSelection(tipoEnum)
+        binding.include.spVersionSnmp.setSelection(VersionSnmp.valueOf(host.versionSNMP ).ordinal)
+
     }
 
     private fun snmpPuebaConexion() {
@@ -218,13 +222,9 @@ class IpManualActivity : AppCompatActivity() {
             items.add(tipo.name)
         }
 
-        items.remove(TipoDispositivo.HOST.name)
-        items.add(0, TipoDispositivo.HOST.name)
-
         val adapter = ArrayAdapter(this, android.R.layout.simple_spinner_item, items)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         binding.include.spTipo.adapter = adapter
-
 
         val versionSnmp = ArrayList<String>()
         versionSnmp.add(VersionSnmp.V1.name)

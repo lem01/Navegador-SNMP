@@ -10,6 +10,7 @@ import com.example.nav_snmp.R
 import com.example.nav_snmp.databinding.ActivityHerramientasBinding
 import com.example.nav_snmp.ui.view.icmp.IcmpActivity
 import com.example.nav_snmp.ui.view.interfaces_de_red.InterfacesDeRedActivity
+import com.example.nav_snmp.ui.view.ip.IpActivity
 import com.example.nav_snmp.ui.view.sistema.SistemaActivity
 import com.example.nav_snmp.ui.view.snmp.SnmpActivity
 import com.example.nav_snmp.ui.view.tcp.TcpActivity
@@ -55,9 +56,8 @@ class HerramientasActivity : AppCompatActivity() {
         }
 
         binding.cardViewIp.setOnClickListener {
-//            todo
-//            val intent = Intent(this, IpManualActivity::class.java)
-//            startActivity(intent)
+            val intent = Intent(this, IpActivity::class.java)
+            startActivity(intent)
         }
         binding.cardViewSnmp.setOnClickListener {
             val intent = Intent(this, SnmpActivity::class.java)

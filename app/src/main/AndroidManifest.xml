@@ -17,6 +17,9 @@
         android:theme="@style/Theme.Snmp"
         tools:targetApi="31">
         <activity
+            android:name=".ui.view.ip.IpActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.view.snmp.SnmpActivity"
             android:exported="false" />
         <activity

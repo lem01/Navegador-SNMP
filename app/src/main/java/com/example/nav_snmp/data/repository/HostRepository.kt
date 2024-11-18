@@ -56,4 +56,10 @@ class HostRepository(context: Context) {
             hostDao.insertAll(listaHosts)
         }
     }
+
+    suspend fun deleteAllHosts() {
+        withContext(Dispatchers.IO) {
+            hostDao.deleteAll()
+        }
+    }
 }

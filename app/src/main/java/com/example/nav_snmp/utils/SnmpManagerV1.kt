@@ -756,11 +756,11 @@ class SnmpManagerV1 : SnmpManagerInterface {
 
                 // Asignar nombre del host
                 hostModel.nombreHost = responseSysName.response.get(0).variable.toString()
-                if (hostModel.nombreHost.isBlank()) hostModel.nombreHost = "Genérico"
+                if (hostModel.nombreHost.isEmpty()) hostModel.nombreHost = "Genérico"
 
                 // Intento de obtener el estado de reenvío de IP
                 val responseIpForwarding =
-                    enviarMensajeSnmp(snmp!!, communityTarget, CommonOids.IP.IP_FORWARDING)
+                    enviarMensajeSnmp(snmp!!, communityTarget, CommonOids.IP.ipForwarding)
                 if (responseIpForwarding.response == null || responseIpForwarding.response.errorStatus != PDU.noError) {
                     Log.e(TAG, "Error en IP_FORWARDING: respuesta nula o estado de error")
                     return@withContext map.apply { put("estado", false) }

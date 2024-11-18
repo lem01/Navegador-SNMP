@@ -63,7 +63,7 @@
             android:hint="@string/escribe_la_ip_del_host"
             android:inputType="text"
             android:labelFor="@+id/tv_host_ip"
-            android:text="192.168.1.101" />
+           />
         </LinearLayout>
 
     <LinearLayout

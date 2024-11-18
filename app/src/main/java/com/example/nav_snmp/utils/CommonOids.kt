@@ -12,12 +12,6 @@ class CommonOids {
         const val SYS_SERVICES = "1.3.6.1.2.1.1.7.0"
     }
 
-    object IP {
-        const val IP_FORWARDING = ".1.3.6.1.2.1.4.1.0"
-        const val IP_DEFAULT_TTL = ".1.3.6.1.2.1.4.2.0"
-        const val IP_IN_RECEIVES = ".1.3.6.1.2.1.4.3.0"
-    }
-
     object ICMP {
         const val ICMP_IN_MSGS = ".1.3.6.1.2.1.5.1.0"
         const val ICMP_IN_ERRORS = ".1.3.6.1.2.1.5.2.0"
@@ -155,6 +149,38 @@ class CommonOids {
         const val snmpOutTraps = ".1.3.6.1.2.1.11.29.0"
         const val snmpEnableAuthenTraps = ".1.3.6.1.2.1.11.30.0"
 
+    }
+
+
+    object IP {
+        const val ipForwarding = ".1.3.6.1.2.1.4.1.0"
+        const val ipDefaultTTL = ".1.3.6.1.2.1.4.2.0"
+        const val ipInReceives = ".1.3.6.1.2.1.4.3.0"
+        const val ipInHdrErrors = ".1.3.6.1.2.1.4.4.0"
+        const val ipInAddrErrors = ".1.3.6.1.2.1.4.5.0"
+        const val ipForwDatagrams = ".1.3.6.1.2.1.4.6.0"
+        const val ipInUnknownProtos = ".1.3.6.1.2.1.4.7.0"
+        const val ipInDiscards = ".1.3.6.1.2.1.4.8.0"
+        const val ipInDelivers = ".1.3.6.1.2.1.4.9.0"
+        const val ipOutRequests = ".1.3.6.1.2.1.4.10.0"
+        const val ipOutDiscards = ".1.3.6.1.2.1.4.11.0"
+        const val ipOutNoRoutes = ".1.3.6.1.2.1.4.12.0"
+        const val ipReasmTimeout = ".1.3.6.1.2.1.4.13.0"
+        const val ipReasmReqds = ".1.3.6.1.2.1.4.14.0"
+        const val ipReasmOKs = ".1.3.6.1.2.1.4.15.0"
+        const val ipReasmFails = ".1.3.6.1.2.1.4.16.0"
+        const val ipFragOKs = ".1.3.6.1.2.1.4.17.0"
+        const val ipFragFails = ".1.3.6.1.2.1.4.18.0"
+        const val ipFragCreates = ".1.3.6.1.2.1.4.19.0"
+        const val ipRoutingDiscards = ".1.3.6.1.2.1.4.23.0"
+
+        object IP_TABLE {
+
+            const val ipAdEntAddr = ".1.3.6.1.2.1.4.20.1.1"
+            const val ipAdEntNetMask = ".1.3.6.1.2.1.4.20.1.3"
+            const val ipAdEntBcastAddr = ".1.3.6.1.2.1.4.20.1.4"
+            const val ipAdEntReasmMaxSize = ".1.3.6.1.2.1.4.20.1.5"
+        }
     }
 
     private val additionalOids = mutableMapOf<String, String>()

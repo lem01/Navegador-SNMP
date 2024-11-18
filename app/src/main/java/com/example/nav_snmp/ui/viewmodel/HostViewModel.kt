@@ -34,9 +34,7 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
     fun saveHost(host: HostModel) {
         viewModelScope.launch {
             repository.saveHost(host)
-            loadAllHosts()
         }
-
     }
 
     fun snmpV1Test(hostModel: HostModel, context: Context) {
@@ -64,6 +62,14 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
             val hosts = repository.getAllHosts()
             _allHosts.postValue(hosts)
         }
+    }
+
+    fun deleteAllHosts() {
+        viewModelScope.launch {
+            repository.deleteAllHosts()
+            _allHosts.postValue(arrayListOf())
+        }
+
     }
 
     suspend fun getHostById(idHost: Int): HostModel {
@@ -145,4 +151,6 @@ class HostViewModel(private val repository: HostRepository) : ViewModel() {
 
         }
     }
+
+
 }

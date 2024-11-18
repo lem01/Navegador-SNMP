@@ -1,5 +1,6 @@
 package com.example.nav_snmp.ui.view
 
+import android.content.Context
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.icu.text.DateFormat.getDateInstance
@@ -22,6 +23,7 @@ import com.example.nav_snmp.ui.adapters.HostAdapter
 import com.example.nav_snmp.databinding.ActivityMainBinding
 import com.example.nav_snmp.data.model.HostModel
 import com.example.nav_snmp.data.repository.HostRepository
+import com.example.nav_snmp.ui.adapters.HostAdapter.ViewHolder
 import com.example.nav_snmp.ui.viewmodel.HostViewModel
 import com.example.nav_snmp.ui.viewmodel.HostViewModelFactory
 import kotlinx.coroutines.CoroutineScope
@@ -69,7 +71,7 @@ class MainActivity : AppCompatActivity() {
             hosts?.let {
                 hostList.clear()
                 hostList.addAll(it)
-                adapter.notifyItemChanged(hostList.size - 1) // Notificar al adaptador para que actualice toda la lista
+                this.adapter.notifyDataSetChanged() // Notificar al adaptador para que actualice toda la lista
             }
         }
     }
@@ -128,9 +130,25 @@ class MainActivity : AppCompatActivity() {
                 true
             }
 
+            R.id.btn_tres -> {
+                dialogoConfirmacionEliminar(this)
+                true
+            }
+
             else -> super.onOptionsItemSelected(item)
         }
 
+    }
+
+    private fun dialogoConfirmacionEliminar(context: Context) {
+        val builder = android.app.AlertDialog.Builder(context)
+        builder.setTitle("Eliminar")
+        builder.setMessage("¿Está seguro de eliminar todos los hosts?")
+        builder.setPositiveButton("Si") { dialog, which ->
+            viewModel.deleteAllHosts()
+        }
+        builder.setNegativeButton("No") { dialog, which -> }
+        builder.show()
     }
 
     private fun showPoppedMenuProtocoloDeBusqueda() {
@@ -166,9 +184,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onResume() {
         super.onResume()
-//        viewModel.loadAllHosts()
         viewModel.loadAllHosts()
-
     }
 
 }

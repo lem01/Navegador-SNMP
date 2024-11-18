@@ -73,7 +73,7 @@ class HostAdapter(
             ///show popup
             val popupMenu = PopupMenu(holder.cardItem.context, holder.cardItem)
 
-            popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "Ver")
+//            popupMenu.menu.add(Menu.NONE, 1, Menu.NONE, "Ver")
             popupMenu.menu.add(Menu.NONE, 2, Menu.NONE, "Eliminar")
             popupMenu.menu.add(Menu.NONE, 3, Menu.NONE, "Editar")
             popupMenu.menu.add(Menu.NONE, 4, Menu.NONE, "Operación SNMP")
