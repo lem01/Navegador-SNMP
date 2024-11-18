@@ -93,7 +93,7 @@
                     android:maxLines="3"
                     android:padding="5dp"
                     android:paddingBottom="8dp"
-                    android:text="tamaño  máximo para reensamblaje"
+                    android:text="Tamaño  máximo para reensamblaje"
                     android:textAlignment="center"
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_size_medium" />
