@@ -182,8 +182,8 @@ class OperacionSnmpActivity : AppCompatActivity() {
         binding.include.etNombreHost.isEnabled = false
         binding.include.etHostIp.isEnabled = false
         binding.include.spTipo.isEnabled = false
-//        binding.include.edDescripcion.isEnabled = false
-//        binding.include.edDescripcion.isFocusable = false
+        binding.include.edDescripcion.isEnabled = false
+        binding.include.edDescripcion.isFocusable = false
 
         binding.include.btnFormulario.isEnabled = true
 
