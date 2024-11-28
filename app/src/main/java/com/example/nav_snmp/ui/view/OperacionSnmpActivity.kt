@@ -15,6 +15,7 @@ import com.example.nav_snmp.data.repository.HostRepository
 import com.example.nav_snmp.databinding.ActivityOperacionSnmpBinding
 import com.example.nav_snmp.ui.viewmodel.HostViewModel
 import com.example.nav_snmp.ui.viewmodel.HostViewModelFactory
+import com.example.nav_snmp.utils.CommonOids
 import com.example.nav_snmp.utils.TipoDispositivo
 import com.example.nav_snmp.utils.TipoOperacion
 import com.example.nav_snmp.utils.VersionSnmp
@@ -168,6 +169,7 @@ class OperacionSnmpActivity : AppCompatActivity() {
     }
 
     private fun llenarCampos(host: HostModel) {
+        binding.include.etOid.setText(CommonOids.SYSTEM.SYS_DESCR)
         binding.include.etNombreHost.setText(host.nombreHost)
         binding.include.etHostIp.setText(host.direccionIP)
         binding.include.etPuerto.setText(host.puertoSNMP.toString())

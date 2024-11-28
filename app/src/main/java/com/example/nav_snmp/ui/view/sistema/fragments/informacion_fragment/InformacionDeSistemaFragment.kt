@@ -105,21 +105,21 @@ class InformacionDeSistemaFragment : Fragment() {
     }
 
     private fun editables() {
-        binding.lyEditNombre.setOnClickListener {
+        binding.cardNombre.setOnClickListener {
             dialogoEditarNombre(
                 "Editar Nombre",
                 CommonOids.SYSTEM.SYS_NAME,
                 viewModel.sistemaModel.value?.nombre
             )
         }
-        binding.lyEditContacto.setOnClickListener {
+        binding.cardCotacto.setOnClickListener {
             dialogoEditarNombre(
                 "Editar Contacto",
                 CommonOids.SYSTEM.SYS_CONTACT,
                 viewModel.sistemaModel.value?.contacto
             )
         }
-        binding.lyEditLocalizacion.setOnClickListener {
+        binding.cardLocalizacion.setOnClickListener {
             dialogoEditarNombre(
                 "Editar Localización",
                 CommonOids.SYSTEM.SYS_LOCATION,
