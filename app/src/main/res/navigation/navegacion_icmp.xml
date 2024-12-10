@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navegacion_icmp"
+    app:startDestination="@id/icmpEntradaFragment">
+
+    <fragment
+        android:id="@+id/icmpEntradaFragment"
+        android:name="com.example.nav_snmp.ui.view.icmp.fragments.icmp_entrada_fragment.IcmpEntradaFragment"
+        android:label="fragment_icmp_entrada"
+        tools:layout="@layout/fragment_icmp_entrada" />
+    <fragment
+        android:id="@+id/icmpSalidaFragment"
+        android:name="com.example.nav_snmp.ui.view.icmp.fragments.icmp_salida_fragment.IcmpSalidaFragment"
+        android:label="fragment_icmp_salida"
+        tools:layout="@layout/fragment_icmp_salida" />
+</navigation>

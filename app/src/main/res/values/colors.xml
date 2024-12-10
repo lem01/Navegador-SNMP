@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="black_opacity">#94000000</color>
+    <color name="transparent">#00000000</color>
+    <color name="greencustom">#0C7A00</color>
+    <color name="redcustom">#FF0000</color>
 </resources>

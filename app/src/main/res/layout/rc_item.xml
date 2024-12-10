@@ -26,20 +26,36 @@
             android:orientation="horizontal">
 
             <ImageView
-                android:padding="2dp"
-                android:tint="@null"
-                android:layout_width="30dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/img_host"
+                android:layout_width="21dp"
+                android:layout_height="match_parent"
                 android:layout_marginEnd="16dp"
-                android:src="@drawable/host" />
+                android:padding="2dp"
+                android:src="@drawable/host"
+                android:tint="@null" />
 
-            <TextView
-                android:id="@+id/txt_direccion_ip"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/direccion_ip"
-                android:textColor="@color/black"
-                android:textSize="@dimen/text_size_medium" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/txt_nombre_host"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/nombre_del_host"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_medium" />
+
+                <TextView
+                    android:id="@+id/txt_direccion_ip"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/direccion_ip"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_size_small" />
+
+            </LinearLayout>
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 

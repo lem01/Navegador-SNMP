@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ip_navegacion"
+    app:startDestination="@id/datosIpFragment">
+
+    <fragment
+        android:id="@+id/datosIpFragment"
+        android:name="com.example.nav_snmp.ui.view.ip.fragments.datos_ip.DatosIpFragment"
+        android:label="fragment_datos_i_p"
+        tools:layout="@layout/fragment_datos_i_p" />
+    <fragment
+        android:id="@+id/tablaIpFragment"
+        android:name="com.example.nav_snmp.ui.view.ip.fragments.tabla_ip.TablaIpFragment"
+        android:label="fragment_tabla_ip"
+        tools:layout="@layout/fragment_tabla_ip" />
+</navigation>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/tcp_navegacion"
+    app:startDestination="@id/datosTcpFragment">
+
+    <fragment
+        android:id="@+id/datosTcpFragment"
+        android:name="com.example.nav_snmp.ui.view.tcp.fragments.datos_tcp_fragment.DatosTcpFragment"
+        android:label="fragment_datos_tcp"
+        tools:layout="@layout/fragment_datos_tcp" />
+    <fragment
+        android:id="@+id/tablaDeConexionesTCPFragment"
+        android:name="com.example.nav_snmp.ui.view.tcp.fragments.tabla_de_conexiones_fragment.TablaDeConexionesTCPFragment"
+        android:label="fragment_tabla_de_conexiones_tcp"
+        tools:layout="@layout/fragment_tabla_de_conexiones_tcp" />
+</navigation>

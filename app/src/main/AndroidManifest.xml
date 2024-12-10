@@ -2,20 +2,62 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Snmp"
         tools:targetApi="31">
         <activity
-            android:parentActivityName=".ui.view.MainActivity"
-            android:name=".ui.view.IpDetallesActivity"
+            android:name=".ui.view.ip.IpActivity"
             android:exported="false" />
+        <activity
+            android:name=".ui.view.snmp.SnmpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.interfaces_de_red.InterfacesDeRedActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.udp.UdpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.tcp.TcpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.icmp.IcmpActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.sistema.SistemaActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.view.graficos.HerramientasActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.view.MainActivity" />
+        <activity
+            android:name=".ui.view.OperacionSnmpActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.view.MainActivity" />
+        <activity
+            android:name=".ui.view.descubrir_host_detalles.DescubrirHostDetalles"
+            android:exported="false"
+            android:label="@string/title_activity_descubrir_host_detalles"
+            android:theme="@style/Theme.Snmp" />
+        <activity
+            android:name=".ui.view.DescubrirHostsActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.view.MainActivity" />
+        <activity
+            android:name=".ui.view.IpManualActivity"
+            android:exported="false"
+            android:parentActivityName=".ui.view.MainActivity" />
         <activity
             android:name=".ui.view.MainActivity"
             android:exported="true">

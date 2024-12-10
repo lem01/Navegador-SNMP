@@ -11,4 +11,8 @@
         android:id="@+id/btn_dos"
         android:icon="@drawable/baseline_add_24"
         android:title="@string/label_btn_dos" />
+    <item
+        android:id="@+id/btn_tres"
+        android:icon="@drawable/baseline_add_24"
+        android:title="Eliminar todos los hosts" />
 </menu>

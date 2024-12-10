@@ -2,12 +2,12 @@
     <!-- Base application theme. -->
     <style name="Base.Theme.Snmp" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
-<!--         <item name="colorPrimary">@color/</item>-->
+        <!--         <item name="colorPrimary">@color/</item>-->
         <item name="android:tint">@color/white</item>
     </style>
 
     <style name="Theme.Snmp" parent="Base.Theme.Snmp" />
-<!--    change color menu icon 3 dots puntos-->
+    <!--    change color menu icon 3 dots puntos-->
 
 
 </resources>
