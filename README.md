@@ -36,9 +36,6 @@ Sigue estos pasos para clonar y ejecutar el proyecto:
 2. Configura el entorno de desarrollo con:
    - **Gradle** correctamente instalado y configurado en Android Studio.
    - Permisos de red habilitados en el dispositivo o emulador.
-  
-
-   ## Capturas de pantalla
 
 ## Capturas de pantalla
 
