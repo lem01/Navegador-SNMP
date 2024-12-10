@@ -39,12 +39,17 @@ Sigue estos pasos para clonar y ejecutar el proyecto:
   
 
    ## Capturas de pantalla
-   
-![8](https://github.com/user-attachments/assets/3a04f2a9-68d5-4638-88a5-662b6c30bf1b)
-![7](https://github.com/user-attachments/assets/ee1cfa8e-f256-4f0c-9d31-20a8ba21d0d9)
-![6](https://github.com/user-attachments/assets/3a71b03e-3129-43dd-929f-9704dfa2f4f6)
-![5](https://github.com/user-attachments/assets/02dda1e6-9eef-454e-92ca-e609ff9145e3)
-![4](https://github.com/user-attachments/assets/545ca996-37ae-4e25-8c74-d2e2390d5659)
-![3](https://github.com/user-attachments/assets/2e4de718-a9bd-46af-a2df-413fa2a15a5f)
-![2](https://github.com/user-attachments/assets/da394a8e-7eb0-4bc2-abfa-501e34a44553)
-![1](https://github.com/user-attachments/assets/4c483dab-6251-490b-8e05-ed34d436a6b6)
+
+## Capturas de pantalla
+
+| ![Captura 8](https://github.com/user-attachments/assets/3a04f2a9-68d5-4638-88a5-662b6c30bf1b) | ![Captura 7](https://github.com/user-attachments/assets/ee1cfa8e-f256-4f0c-9d31-20a8ba21d0d9) | ![Captura 6](https://github.com/user-attachments/assets/3a71b03e-3129-43dd-929f-9704dfa2f4f6) |
+|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| Captura 8                                                                                       | Captura 7                                                                                      | Captura 6                                                                                      |
+
+| ![Captura 5](https://github.com/user-attachments/assets/02dda1e6-9eef-454e-92ca-e609ff9145e3) | ![Captura 4](https://github.com/user-attachments/assets/545ca996-37ae-4e25-8c74-d2e2390d5659) | ![Captura 3](https://github.com/user-attachments/assets/2e4de718-a9bd-46af-a2df-413fa2a15a5f) |
+|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| Captura 5                                                                                      | Captura 4                                                                                      | Captura 3                                                                                      |
+
+| ![Captura 2](https://github.com/user-attachments/assets/da394a8e-7eb0-4bc2-abfa-501e34a44553) | ![Captura 1](https://github.com/user-attachments/assets/4c483dab-6251-490b-8e05-ed34d436a6b6) |                                                                                              |
+|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| Captura 2                                                                                      | Captura 1                                                                                      |                                                                                              |
