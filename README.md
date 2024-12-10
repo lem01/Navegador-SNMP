@@ -1,75 +1,53 @@
-# snmp_lmx
-Repositorio de app SNMP 
+# SNMP Navigator para Android
 
+## Descripción
 
+**SNMP Navigator** es una aplicación móvil diseñada para explorar y monitorear redes utilizando el protocolo SNMP versión 1 (Simple Network Management Protocol). Desarrollada en **Kotlin**, utiliza tecnologías modernas como **Jetpack Compose**, XML para vistas adicionales, y un patrón **Repository** que integra **Room** y **SQLite** para la gestión de datos locales.
 
-comandos
-pc1:
+Además, implementa **ViewModel**, **Observers** y **LiveData**, lo que asegura una arquitectura reactiva, eficiente y fácil de mantener, permitiendo actualizaciones de datos en tiempo real en la interfaz de usuario.
 
-ip 192.168.56.2 255.255.255.0 192.168.56.1
-show ip
-save
+Con esta aplicación, puedes realizar tareas como:
 
-pc2:
-ip 192.168.57.2 255.255.255.0 192.168.57.1
+- Consultar información de dispositivos mediante SNMP.
+- Manejar versiones SNMP (V1).
+- Visualizar métricas de red con una interfaz amigable.
 
-R1:
-conf t
-int f0/0
-ip address 192.168.56.1 255.255.255.0
-no shut
-exit
+---
 
-int f0/1
-ip address 192.168.1.57.1 255.255.255.0
-no shut
-exit
-exit
+## Características principales
 
-copy running-config startup-config
-wr
+- **Compatibilidad con SNMP V1 y se puede extender a v2c y v3**
+- **Gestión local de datos** con Room y SQLite.
+- **Función de consultas SNMP.**
+- **Función de busqueda de host por rango IP y por ICMP**
+- **Función para agregar un host de manera manual**
+- **Otras caracteristicas**
+---
 
+## Instalación
 
-----configurar conexion con dispositivo fisico
+Sigue estos pasos para clonar y ejecutar el proyecto:
 
-https://www.youtube.com/watch?v=zVkN9SinvSk&ab_channel=NeriITNet
+### Prerrequisitos
+1. Asegúrate de tener instalados:
+   - Android Studio.
+   - Un dispositivo Android o un emulador configurado (API nivel 27 o superior).
 
-lectura escritura
-snmp-server community [comunidad] RW 1
+2. Configura el entorno de desarrollo con:
+   - **Gradle** correctamente instalado y configurado en Android Studio.
+   - Permisos de red habilitados en el dispositivo o emulador.
 
-snmp-server location "Sala de servidores"
-snmp-server contact "admin@empresa.com"
+## Capturas de pantalla
 
-verificar configuracion
-show running-config | include snmp
+| ![Captura 8](https://github.com/user-attachments/assets/3a04f2a9-68d5-4638-88a5-662b6c30bf1b) | ![Captura 7](https://github.com/user-attachments/assets/ee1cfa8e-f256-4f0c-9d31-20a8ba21d0d9) | ![Captura 6](https://github.com/user-attachments/assets/3a71b03e-3129-43dd-929f-9704dfa2f4f6) |
+|--------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| Captura 8                                                                                       | Captura 7                                                                                      | Captura 6                                                                                      |
 
-verificar traps
-show snmp trap
+| ![Captura 5](https://github.com/user-attachments/assets/02dda1e6-9eef-454e-92ca-e609ff9145e3) | ![Captura 4](https://github.com/user-attachments/assets/545ca996-37ae-4e25-8c74-d2e2390d5659) | ![Captura 3](https://github.com/user-attachments/assets/2e4de718-a9bd-46af-a2df-413fa2a15a5f) |
+|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| Captura 5                                                                                      | Captura 4                                                                                      | Captura 3                                                                                      |
 
+| ![Captura 2](https://github.com/user-attachments/assets/da394a8e-7eb0-4bc2-abfa-501e34a44553) | ![Captura 1](https://github.com/user-attachments/assets/4c483dab-6251-490b-8e05-ed34d436a6b6) |                                                                                              |
+|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------|
+| Captura 2                                                                                      | Captura 1                                                                                      |                                                                                              |
 
-
-Router# configure terminal
-Router(config)# snmp-server community public RO
-Router(config)# snmp-server community public RW
-Router(config)# snmp-server location "Sala de servidores"
-Router(config)# snmp-server contact "admin@empresa.com"
-Router(config)# snmp-server host 192.168.1.100 public version 2c
-Router(config)# end
-
-
---instalar y configurar snmp en linux
-
-sudo apt install snmp
-sudo apt install snmpd
-
-
-
----MAQUINA VIRTUAL
-Add-VMHardDiskDrive -VMName "GNS3 VM" -Path "GNS3 VM-disk002.vhd"
-
-Set-VMProcessor -VMName "GNS3 VM" -ExposeVirtualizationExtensions $true
-Set-VMNetworkAdapter -VMName "GNS3 VM" -MacAddressSpoofing on
-
-
-87008094
-74F07DE7D01E 4 COPIAS
